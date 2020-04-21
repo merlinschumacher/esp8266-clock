@@ -151,7 +151,6 @@ void setup()
   //and goes into a blocking loop awaiting configuration
 
   String chipid = "ESP_CLOCK-" + String(ESP.getChipId()); // The chip ID is essentially its MAC address(length: 6 bytes).
-  wifiManager.setHostname(chipid.c_str());
   wifiManager.autoConnect(chipid.c_str());
   //or use this for auto generated name ESP + ChipID
   //if you get here you have connected to the WiFi
