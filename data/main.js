@@ -25,7 +25,6 @@ document.addEventListener('DOMContentLoaded', function (event) {
             console.log(err);
         });
 
-    main.innerHTML = '';
     document.title = "ESP8266 LED Clock";
 
     let title = document.createElement("h1");

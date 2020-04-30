@@ -1,15 +1,10 @@
 #include "webserver.h"
 
 ESP8266WebServer _server(80);
+ESP8266HTTPUpdateServer _httpUpdater;
 
-Webserver::Webserver(Config *config)
+Webserver::Webserver()
 {
-    if (!SPIFFS.begin())
-    {
-        Serial.println("An Error has occurred while mounting SPIFFS");
-        return;
-    }
-    _config = config;
 }
 
 void Webserver::handleRequest()
@@ -102,13 +97,13 @@ bool Webserver::_handleFileRead(String path)
     }
     String contentType = _getContentType(path);
     String pathWithGz = path + ".gz";
-    if (_filesystem->exists(pathWithGz) || _filesystem->exists(path))
+    if (SPIFFS.exists(pathWithGz) || SPIFFS.exists(path))
     {
-        if (_filesystem->exists(pathWithGz))
+        if (SPIFFS.exists(pathWithGz))
         {
             path += ".gz";
         }
-        File file = _filesystem->open(path, "r");
+        File file = SPIFFS.open(path, "r");
         _server.streamFile(file, contentType);
         file.close();
         return true;
@@ -116,38 +111,32 @@ bool Webserver::_handleFileRead(String path)
     return false;
 }
 
-bool Webserver::_handleDataGet()
+void Webserver::_handleDataGet(Config &config)
 {
     Serial.println("Loading config data");
     String message;
-    StaticJsonDocument<512> doc = Webserver::_config->configToJSON();
-    serializeJson(doc, Serial);
+    StaticJsonDocument<512> doc = config.configToJSON();
     serializeJson(doc, message);
-    Serial.println("====");
-    Serial.println(message);
-    Serial.println("====");
     _server.send(200, "text/json", message);
-    return true;
 }
 
-void Webserver::_handleForm()
+void Webserver::_handleDataPut(Config &config)
 {
-    if (_server.method() != HTTP_POST)
-    {
-        _server.send(405, "text/plain", "Method Not Allowed");
-    }
-    else
-    {
-        String message = "POST form was:\n";
-        for (uint8_t i = 0; i < _server.args(); i++)
-        {
-            message += " " + _server.argName(i) + ": " + _server.arg(i) + "\n";
-        }
-        _server.send(200, "text/plain", message);
-    }
+    String message;
+    message = _server.arg(0);
+    StaticJsonDocument<512> doc;
+    Serial.println(message);
+    deserializeJson(doc, message);
+    serializeJson(doc, Serial);
+    config.JSONToConfig(doc);
+    config.save();
+
+    doc = config.configToJSON();
+    serializeJson(doc, message);
+    _server.send(200, "text/json", message);
 }
 
-void Webserver::setup()
+void Webserver::setup(Config &config)
 {
     _server.on("/", HTTP_GET, [this]() {
         if (!_handleFileRead("/index.html"))
@@ -155,7 +144,8 @@ void Webserver::setup()
             _server.send(404, "text/plain", "File not found");
         }
     });
-    _server.on("/data.json", HTTP_GET, [this]() { _handleDataGet(); });
+    _server.on("/data.json", HTTP_GET, [this, &config]() { _handleDataGet(config); });
+    _server.on("/data.json", HTTP_POST, [this, &config]() { _handleDataPut(config); });
 
     _server.onNotFound([this]() {
         if (!_handleFileRead(_server.uri()))
@@ -163,6 +153,6 @@ void Webserver::setup()
             _server.send(404, "text/plain", "File not found");
         }
     });
-
+    _httpUpdater.setup(&_server);
     _server.begin();
 }

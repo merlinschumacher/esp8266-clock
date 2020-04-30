@@ -9,8 +9,9 @@
 
 struct ConfigData
 {
+    char hostname[64];
     char timeserver[64];
-    int timezone;
+    char timezone[64];
     int32 hourColor;
     int32 minuteColor;
     int32 secondColor;
@@ -26,11 +27,10 @@ public:
     void save();
     void load();
     StaticJsonDocument<512> configToJSON();
-    void JSONToConfig(StaticJsonDocument<512>);
+    void JSONToConfig(StaticJsonDocument<512> doc);
 
 private:
     void _loadFile();
-    FS *_filesystem = &SPIFFS;
 };
 
 #endif

@@ -15,6 +15,17 @@
             <label for="test">Testme</label>
             <input type="text" id="test" name="test" />
         </form>
+        <h2>Firmware Update</h2>
+        <form method='POST' action='/update' enctype='multipart/form-data'>
+            Firmware:<br>
+            <input type='file' accept='.bin' name='firmware'>
+            <input type='submit' value='Update Firmware'>
+        </form>
+        <form method='POST' action='/update' enctype='multipart/form-data'>
+            FileSystem:<br>
+            <input type='file' accept='.bin' name='filesystem'>
+            <input type='submit' value='Update FileSystem'>
+        </form>
     </div>
     <script src="/main.js"></script>
 </body>
