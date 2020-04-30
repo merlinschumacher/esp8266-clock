@@ -6,28 +6,76 @@
     <title>ESP-CLOCK</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="/water.css">
+    <style>
+        input[type="color"] {
+            min-height: 3em;
+            min-weight: 8em;
+        }
+    </style>
 </head>
 
 <body>
     <span id="jswarn">ENABLE JAVASCRIPT TO CONFIGURE THE CLOCK</span>
     <div id="main" style="display:none">
-        <form>
-            <label for="test">Testme</label>
-            <input type="text" id="test" name="test" />
-        </form>
-        <h2>Firmware Update</h2>
-        <form method='POST' action='/update' enctype='multipart/form-data'>
-            Firmware:<br>
-            <input type='file' accept='.bin' name='firmware'>
-            <input type='submit' value='Update Firmware'>
-        </form>
-        <form method='POST' action='/update' enctype='multipart/form-data'>
-            FileSystem:<br>
-            <input type='file' accept='.bin' name='filesystem'>
-            <input type='submit' value='Update FileSystem'>
-        </form>
+        <h1 id="title"></h1>
+        <form id="configform">
+            <h3>Color configuration</h3>
+            <p>These are the color values in the day</p>
+            <label for="hourcolor">Hour color</label>
+            <input type="color" id="hourcolor" name="hourcolor" />
+            <label for="minutecolor">Minute color</label>
+            <input type="color" id="minutecolor" name="minutecolor" />
+            <label for="secondcolor">Second color</label>
+            <input type="color" id="secondcolor" name="secondcolor" />
+
+            <p>These are the color values in the night</p>
+            <label for="hourcolordimmed">Hour color</label>
+            <input type="color" id="hourcolordimmed" name="hourcolordimmed" />
+            <label for="minutecolordimmed">Minute color</label>
+            <input type="color" id="minutecolordimmed" name="minutecolordimmed" />
+            <label for="secondcolordimmed">Second color</label>
+            <input type="color" id="secondcolordimmed" name="secondcolordimmed" />
+
+            <h3>Time settings</h3>
+            <p>
+                <label for="hourAlarm">Light up the clock at every hour?</label>
+                <input type="checkbox" id="hourAlarm" name="hourAlarm" />
+            </p>
+            <label for="timeserver">NTP server</label>
+            <input type="text" id="timeserver" name="timeserver" maxlength="64" size="64" required
+                pattern="^([a-zA-Z0-9]([a-zA-Z0-9\-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,6}$" />
+            <label for="timezone">Local timezone</label>
+            <select id="timezone" name="timezone"></select>
+            <h3>System settings</h3>
+            <label for="hostname">Hostname</label>
+            <input type="text" id="hostname" name="hostname" maxlength="64" size="64" required
+                pattern="^[a-zA-Z][a-zA-Z0-9-_\.]{1,64}$" />
+            <button id="submit" name="submit">Save settings permanently</button>
+            <label for="ledpin">RGB strip pin</label>
+            <input type="number" id="ledpin" name="ledpin" min="0" max="255" step="1" />
+            <label for="ledcount">RGB strip pixel count</label>
+            <input type="number" id="ledcount" name="ledcount" min="1" step="1" />
+            <label for="ledcount">Wich pixel is located at 12?</label>
+            <input type="number" id="ledroot" name="ledroot" min="1" step="1" />
+
+            <details>
+                <summary>Advanced settings</summary>
+                <p>
+                    <h2>Firmware Update</h2>
+                    <form method='POST' action='/update' enctype='multipart/form-data'>
+                        Firmware:<br>
+                        <input type='file' accept='.bin' name='firmware'>
+                        <input type='submit' value='Update Firmware'>
+                    </form>
+                    <form method='POST' action='/update' enctype='multipart/form-data'>
+                        FileSystem:<br>
+                        <input type='file' accept='.bin' name='filesystem'>
+                        <input type='submit' value='Update FileSystem'>
+                    </form>
+                </p>
+            </details>
     </div>
-    <script src="/main.js"></script>
+    <script src="/main.js"> </script>
 </body>
 
 </html>

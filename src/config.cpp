@@ -10,28 +10,26 @@ StaticJsonDocument<512> Config::configToJSON()
     StaticJsonDocument<512> doc;
     // Set the values in the document
     doc["hostname"] = config.hostname;
+    doc["timeserver"] = config.timeserver;
     doc["timezone"] = config.timezone;
+
     doc["hourColor"] = config.hourColor;
     doc["minuteColor"] = config.minuteColor;
     doc["secondColor"] = config.secondColor;
 
-    doc["brightnessDay"] = config.brightnessDay;
-    doc["brightnessDimmed"] = config.brightnessDimmed;
+    doc["hourColorDimmed"] = config.hourColorDimmed;
+    doc["minuteColorDimmed"] = config.minuteColorDimmed;
+    doc["secondColorDimmed"] = config.secondColorDimmed;
 
-    doc["timeserver"] = config.timeserver;
+    doc["ledPin"] = config.ledPin;
+    doc["ledCount"] = config.ledCount;
+    doc["ledRoot"] = config.ledRoot;
 
     return doc;
 }
 
 void Config::JSONToConfig(StaticJsonDocument<512> doc)
 {
-    config.hourColor = doc["hourColor"] | 16777215;
-    config.minuteColor = doc["minuteColor"] | 16777215;
-    config.secondColor = doc["secondColor"] | 16777215;
-
-    config.brightnessDay = doc["brightnessDay"] | 255;
-    config.brightnessDimmed = doc["brightnessDimmed"] | 128;
-
     char chipid[8];
     String hostname = "ESPCLOCK-";
     if (not doc.containsKey("hostname"))
@@ -40,20 +38,44 @@ void Config::JSONToConfig(StaticJsonDocument<512> doc)
         hostname += String(chipid);
     }
 
-    strlcpy(config.timezone,                    // <- destination
-            doc["timezone"] | "Europe/Berlin",  // <- source
-            sizeof(config.timeserver));         // <- destination's capacity
-    strlcpy(config.hostname,                    // <- destination
-            doc["hostname"] | hostname.c_str(), // <- source
-            sizeof(config.timeserver));         // <- destination's capacity
-    strlcpy(config.timeserver,                  // <- destination
-            doc["timeserver"] | "pool.ntp.org", // <- source
-            sizeof(config.timeserver));         // <- destination's capacity
+    config.ledPin = doc["ledpin"] | 4;
+
+    strlcpy(config.hostname,
+            doc["hostname"] | hostname.c_str(),
+            sizeof(config.hostname));
+    strlcpy(config.timeserver,
+            doc["timeserver"] | "pool.ntp.org",
+            sizeof(config.timeserver));
+    strlcpy(config.timezone,
+            doc["timezone"] | "Europe/Berlin",
+            sizeof(config.timezone));
+
+    strlcpy(config.hourColor,
+            doc["hourColor"] | "#FF0000",
+            sizeof(config.hourColor));
+    strlcpy(config.minuteColor,
+            doc["minuteColor"] | "#00FF00",
+            sizeof(config.minuteColor));
+    strlcpy(config.secondColor,
+            doc["secondColor"] | "#0000FF",
+            sizeof(config.secondColor));
+
+    strlcpy(config.hourColorDimmed,
+            doc["hourColorDimmed"] | "#770000",
+            sizeof(config.hourColorDimmed));
+    strlcpy(config.minuteColorDimmed,
+            doc["minuteColor"] | "#007700",
+            sizeof(config.minuteColorDimmed));
+    strlcpy(config.secondColorDimmed,
+            doc["secondColor"] | "#000077",
+            sizeof(config.secondColorDimmed));
+
+    config.ledCount = doc["ledCount"] | 60;
+    config.ledRoot = doc["ledRoot"] | 0;
 }
 
 void Config::load()
 {
-    Serial.println("Load file");
     // Open file for reading
     File sourcefile = SPIFFS.open("data.json", "r+");
     // Allocate a temporary JsonDocument
@@ -88,21 +110,15 @@ void Config::save()
         Serial.println(F("Failed to create file"));
         return;
     }
-    Serial.println("file open complete");
 
     StaticJsonDocument<512> doc;
-    Serial.println("created doc");
     doc = Config::configToJSON();
-    Serial.println("config to Json done");
-    serializeJson(doc, Serial);
     // Serialize JSON to file
     if (serializeJson(doc, targetfile) == 0)
     {
         Serial.println(F("Failed to write to file"));
     }
-    Serial.println("wrote file");
 
     // Close the file
     targetfile.close();
-    Serial.println("closed file");
 }

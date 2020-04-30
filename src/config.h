@@ -12,11 +12,15 @@ struct ConfigData
     char hostname[64];
     char timeserver[64];
     char timezone[64];
-    int32 hourColor;
-    int32 minuteColor;
-    int32 secondColor;
-    int brightnessDay;
-    int brightnessDimmed;
+    char hourColor[8];
+    char minuteColor[8];
+    char secondColor[8];
+    char hourColorDimmed[8];
+    char minuteColorDimmed[8];
+    char secondColorDimmed[8];
+    int8 ledPin;
+    int32 ledCount;
+    int32 ledRoot;
 };
 
 class Config

@@ -125,12 +125,12 @@ void Webserver::_handleDataPut(Config &config)
     String message;
     message = _server.arg(0);
     StaticJsonDocument<512> doc;
-    Serial.println(message);
     deserializeJson(doc, message);
-    serializeJson(doc, Serial);
     config.JSONToConfig(doc);
     config.save();
 
+    doc.clear();
+    message = "";
     doc = config.configToJSON();
     serializeJson(doc, message);
     _server.send(200, "text/json", message);
