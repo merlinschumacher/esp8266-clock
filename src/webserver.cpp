@@ -1,7 +1,11 @@
 #include "webserver.h"
 
+#if defined(ESP8266)
 ESP8266WebServer _server(80);
 ESP8266HTTPUpdateServer _httpUpdater;
+#elif defined(ESP32)
+WebServer _server(80);
+#endif
 
 Webserver::Webserver()
 {
@@ -153,6 +157,35 @@ void Webserver::setup(Config &config)
             _server.send(404, "text/plain", "File not found");
         }
     });
+#if defined(ESP8266)
     _httpUpdater.setup(&_server);
+#elif defined(ESP32)
+    _server.on(
+        "/update", HTTP_POST, []() {
+      _server.sendHeader("Connection", "close");
+      _server.send(200, "text/plain", (Update.hasError()) ? "FAIL" : "OK");
+      ESP.restart(); }, []() {
+      HTTPUpload& upload = _server.upload();
+      if (upload.status == UPLOAD_FILE_START) {
+        Serial.setDebugOutput(true);
+        Serial.printf("Update: %s\n", upload.filename.c_str());
+        if (!Update.begin()) { //start with max available size
+          Update.printError(Serial);
+        }
+      } else if (upload.status == UPLOAD_FILE_WRITE) {
+        if (Update.write(upload.buf, upload.currentSize) != upload.currentSize) {
+          Update.printError(Serial);
+        }
+      } else if (upload.status == UPLOAD_FILE_END) {
+        if (Update.end(true)) { //true to set the size to the current progress
+          Serial.printf("Update Success: %u\nRebooting...\n", upload.totalSize);
+        } else {
+          Update.printError(Serial);
+        }
+        Serial.setDebugOutput(false);
+      } else {
+        Serial.printf("Update Failed Unexpectedly (likely broken connection): status=%d\n", upload.status);
+      } });
+#endif
     _server.begin();
 }

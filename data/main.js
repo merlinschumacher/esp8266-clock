@@ -1,6 +1,6 @@
 let configData = [];
 
-function onChangedInput() {
+function onChangedInput(save = false) {
     configData.hostname = document.getElementById("hostname").value;;
     configData.timeserver = document.getElementById("timeserver").value;
     configData.timezone = document.getElementById("timezone").value;
@@ -10,9 +10,10 @@ function onChangedInput() {
     configData.hourColorDimmed = document.getElementById("hourcolordimmed").value;
     configData.minuteColorDimmed = document.getElementById("minutecolordimmed").value;
     configData.secondColorDimmed = document.getElementById("secondcolordimmed").value;
-    configData.ledPin = document.getElementById("ledpin").value;
-    configData.ledCount = document.getElementById("ledcount").value;
-    configData.ledRoot = document.getElementById("ledroot").value;
+    configData.ledPin = parseInt(document.getElementById("ledpin").value);
+    configData.ledCount = parseInt(document.getElementById("ledcount").value);
+    configData.ledRoot = parseInt(document.getElementById("ledroot").value);
+    configData.save = save;
     console.log(configData);
 
     fetch('data.json', {
@@ -60,13 +61,16 @@ document.addEventListener('DOMContentLoaded', function (event) {
             document.getElementById("minutecolordimmed").value = configData.minuteColorDimmed;
             document.getElementById("secondcolordimmed").value = configData.secondColorDimmed;
             document.getElementById("ledpin").value = configData.ledPin;
-            document.getElementById("ledcount").value = configData.ledPin;
+            document.getElementById("ledcount").value = configData.ledCount;
             document.getElementById("ledroot").value = configData.ledRoot;
 
 
             let configInputs = document.querySelectorAll("#configform input, #configform select");
             configInputs.forEach(element => {
                 element.addEventListener("change", onChangedInput);
+            });
+            document.getElementById("submit").addEventListener("click", function () {
+                onChangedInput(true);
             });
 
         })

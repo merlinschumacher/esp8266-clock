@@ -1,11 +1,14 @@
 #ifndef config_h
 #define config_h
-
+#include <stdint.h>
 #include <Arduino.h>
 #include <map>
 #include <SPI.h>
 #include <FS.h>
 #include <ArduinoJson.h>
+#if defined(ESP32)
+#include <SPIFFS.h>
+#endif
 
 struct ConfigData
 {
@@ -18,9 +21,10 @@ struct ConfigData
     char hourColorDimmed[8];
     char minuteColorDimmed[8];
     char secondColorDimmed[8];
-    int8 ledPin;
-    int32 ledCount;
-    int32 ledRoot;
+
+    uint8_t ledPin;
+    uint32_t ledCount;
+    uint32_t ledRoot;
 };
 
 class Config
