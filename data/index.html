@@ -9,7 +9,26 @@
     <style>
         input[type="color"] {
             min-height: 3em;
-            min-weight: 8em;
+            min-width: 8em;
+        }
+
+        .inline {
+            display: flex;
+        }
+
+        .inputgroup {
+            height: 100px;
+            display: flex;
+            align-items: center;
+            flex-grow: 1;
+        }
+
+        .inputgroup>input {
+            width: 33.3%%
+        }
+
+        .inputgroup>label {
+            margin-right: 1em;
         }
     </style>
 </head>
@@ -18,63 +37,106 @@
     <span id="jswarn">ENABLE JAVASCRIPT TO CONFIGURE THE CLOCK</span>
     <div id="main" style="display:none">
         <h1 id="title"></h1>
-        <form id="configform">
-            <span id="currenttime">Current local clock time: <time datetime="2020-01-01 00:00">2020-01-01 00:00</time>
-                <h3>Color configuration</h3>
-                <p>These are the color values in the day</p>
-                <label for="hourcolor">Hour color</label>
-                <input type="color" id="hourcolor" name="hourcolor" />
-                <label for="minutecolor">Minute color</label>
-                <input type="color" id="minutecolor" name="minutecolor" />
-                <label for="secondcolor">Second color</label>
-                <input type="color" id="secondcolor" name="secondcolor" />
+        <form id="configform" onsubmit="return false">
+            <span id="currenttime">Current local clock time: <time datetime="2020-01-01 00:00">2020-01-01
+                    00:00</time></span>
+            <h3>Color configuration</h3>
+            <fieldset>
+                <legend>These are the color values in the day</legend>
+                <div class="inline">
+                    <div class="inputgroup">
+                        <label for="hourcolor">Hour color</label>
+                        <input type="color" id="hourcolor" name="hourcolor" />
+                    </div>
+                    <div class="inputgroup">
+                        <label for="minutecolor">Minute color</label>
+                        <input type="color" id="minutecolor" name="minutecolor" />
+                    </div>
+                    <div class="inputgroup">
+                        <label for="secondcolor">Second color</label>
+                        <input type="color" id="secondcolor" name="secondcolor" />
+                    </div>
+                </div>
+            </fieldset>
 
-                <p>These are the color values in the night</p>
-                <label for="hourcolordimmed">Hour color</label>
-                <input type="color" id="hourcolordimmed" name="hourcolordimmed" />
-                <label for="minutecolordimmed">Minute color</label>
-                <input type="color" id="minutecolordimmed" name="minutecolordimmed" />
-                <label for="secondcolordimmed">Second color</label>
-                <input type="color" id="secondcolordimmed" name="secondcolordimmed" />
+            <fieldset>
+                <legend>These are the color values in the night</legend>
+                <div class="inline">
+                    <div class="inputgroup">
+                        <label for="hourcolordimmed">Hour color</label>
+                        <input type="color" id="hourcolordimmed" name="hourcolordimmed" />
+                    </div>
+                    <div class="inputgroup">
+                        <label for="minutecolordimmed">Minute color</label>
+                        <input type="color" id="minutecolordimmed" name="minutecolordimmed" />
+                    </div>
+                    <div class="inputgroup">
+                        <label for="secondcolordimmed">Second color</label>
+                        <input type="color" id="secondcolordimmed" name="secondcolordimmed" />
+                    </div>
+                </div>
+            </fieldset>
 
-                <h3>Time settings</h3>
+            <fieldset>
+                <legend>Color of the hour dots shown on the clock.</legend>
+                <div class="inline">
+                    <div class="inputgroup">
+                        <label for="hourdotcolor">Hour dot color</label>
+                        <input type="color" id="hourdotcolor" name="hourdotcolor" />
+                    </div>
+                </div>
+            </fieldset>
+            <p>
+                <label for="hourlight">Light up the clock at every hour?</label>
+                <input type="checkbox" id="hourlight" name="hourlight" />
+            </p>
+            <fieldset>
+                <legend>When shall the clock be dimmed?</legend>
+                <div class="inline">
+                    <div class="inputgroup">
+                        <label for="nighttimebegins"> Night begins at: </label>
+                        <input type="time" id="nighttimebegins" name="nighttimebegins" />
+                    </div>
+                    <div class="inputgroup">
+                        <label for="nighttimeends">Night ends at: </label>
+                        <input type="time" id="nighttimeends" name="nighttimeends" />
+                    </div>
+                </div>
+            </fieldset>
+            <label for="timezone">Local timezone</label>
+            <select id="timezone" name="timezone"></select>
+            <h3>LED settings</h3>
+            <label for="ledpin">RGB strip pin</label>
+            <input type="number" id="ledpin" name="ledpin" min="0" max="255" step="1" />
+            <label for="ledcount">RGB strip pixel count</label>
+            <input type="number" id="ledcount" name="ledcount" min="1" step="1" />
+            <label for="ledcount">Wich pixel is located at 12?</label>
+            <input type="number" id="ledroot" name="ledroot" min="1" step="1" />
+            <button id="submit" name="submit">Save settings permanently</button>
+
+            <details>
+                <summary>Advanced settings</summary>
                 <p>
-                    <label for="hourAlarm">Light up the clock at every hour?</label>
-                    <input type="checkbox" id="hourAlarm" name="hourAlarm" />
+                    <label for="timeserver">NTP server</label>
+                    <input type="text" id="timeserver" name="timeserver" maxlength="64" size="64" required
+                        pattern="^([a-zA-Z0-9]([a-zA-Z0-9\-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,6}$" />
+                    <label for="hostname">Hostname</label>
+                    <input type="text" id="hostname" name="hostname" maxlength="64" size="64" required
+                        pattern="^[a-zA-Z][a-zA-Z0-9-_\.]{1,64}$" />
+                    <h2>Firmware Update</h2>
+                    <form method='POST' action='/update' enctype='multipart/form-data'>
+                        Firmware:<br>
+                        <input type='file' accept='.bin' name='firmware'>
+                        <input type='submit' value='Update Firmware'>
+                    </form>
+                    <form method='POST' action='/update' enctype='multipart/form-data'>
+                        FileSystem:<br>
+                        <input type='file' accept='.bin' name='filesystem'>
+                        <input type='submit' value='Update FileSystem'>
+                    </form>
                 </p>
-                <label for="timeserver">NTP server</label>
-                <input type="text" id="timeserver" name="timeserver" maxlength="64" size="64" required
-                    pattern="^([a-zA-Z0-9]([a-zA-Z0-9\-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,6}$" />
-                <label for="timezone">Local timezone</label>
-                <select id="timezone" name="timezone"></select>
-                <h3>System settings</h3>
-                <label for="hostname">Hostname</label>
-                <input type="text" id="hostname" name="hostname" maxlength="64" size="64" required
-                    pattern="^[a-zA-Z][a-zA-Z0-9-_\.]{1,64}$" />
-                <button id="submit" name="submit">Save settings permanently</button>
-                <label for="ledpin">RGB strip pin</label>
-                <input type="number" id="ledpin" name="ledpin" min="0" max="255" step="1" />
-                <label for="ledcount">RGB strip pixel count</label>
-                <input type="number" id="ledcount" name="ledcount" min="1" step="1" />
-                <label for="ledcount">Wich pixel is located at 12?</label>
-                <input type="number" id="ledroot" name="ledroot" min="1" step="1" />
-
-                <details>
-                    <summary>Advanced settings</summary>
-                    <p>
-                        <h2>Firmware Update</h2>
-                        <form method='POST' action='/update' enctype='multipart/form-data'>
-                            Firmware:<br>
-                            <input type='file' accept='.bin' name='firmware'>
-                            <input type='submit' value='Update Firmware'>
-                        </form>
-                        <form method='POST' action='/update' enctype='multipart/form-data'>
-                            FileSystem:<br>
-                            <input type='file' accept='.bin' name='filesystem'>
-                            <input type='submit' value='Update FileSystem'>
-                        </form>
-                    </p>
-                </details>
+            </details>
+        </form>
     </div>
     <script src="/main.js"> </script>
 </body>

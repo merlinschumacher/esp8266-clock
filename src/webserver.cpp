@@ -126,12 +126,14 @@ void Webserver::_handleDataGet(Config &config)
 
 void Webserver::_handleDataPut(Config &config)
 {
-    String message;
-    message = _server.arg(0);
+    String message = _server.arg(0);
     StaticJsonDocument<512> doc;
     deserializeJson(doc, message);
-    config.JSONToConfig(doc);
-    config.save();
+    bool save = config.JSONToConfig(doc);
+    if (save == true)
+    {
+        config.save();
+    };
 
     doc.clear();
     message = "";

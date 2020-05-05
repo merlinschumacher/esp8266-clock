@@ -1,20 +1,29 @@
 let configData = [];
 
-function onChangedInput(save = false) {
+function onChangedInput(saveData = 1) {
     configData.hostname = document.getElementById("hostname").value;;
     configData.timeserver = document.getElementById("timeserver").value;
     configData.timezone = document.getElementById("timezone").value;
+
     configData.hourColor = document.getElementById("hourcolor").value;
     configData.minuteColor = document.getElementById("minutecolor").value;
     configData.secondColor = document.getElementById("secondcolor").value;
+
     configData.hourColorDimmed = document.getElementById("hourcolordimmed").value;
     configData.minuteColorDimmed = document.getElementById("minutecolordimmed").value;
     configData.secondColorDimmed = document.getElementById("secondcolordimmed").value;
+
+    configData.hourDotColor = document.getElementById("hourdotcolor").value;
+
+    configData.nightTimeBegins = document.getElementById("nighttimebegins").value;
+    configData.nightTimeEnds = document.getElementById("nighttimeends").value;
+
+    configData.hourLight = document.getElementById("hourlight").checked;
+
     configData.ledPin = parseInt(document.getElementById("ledpin").value);
     configData.ledCount = parseInt(document.getElementById("ledcount").value);
     configData.ledRoot = parseInt(document.getElementById("ledroot").value);
-    configData.save = save;
-    console.log(configData);
+    configData.saveData = saveData;
 
     fetch('data.json', {
         method: 'POST',
@@ -48,30 +57,36 @@ document.addEventListener('DOMContentLoaded', function (event) {
         })
         .then(function (json) {
             configData = json;
-            console.log(json);
             getTimezones();
             document.title = "⏰" + configData.hostname;
             document.getElementById("title").innerText = "⏰" + configData.hostname;
             document.getElementById("hostname").value = configData.hostname;
             document.getElementById("timeserver").value = configData.timeserver;
+
             document.getElementById("hourcolor").value = configData.hourColor;
             document.getElementById("minutecolor").value = configData.minuteColor;
             document.getElementById("secondcolor").value = configData.secondColor;
+
             document.getElementById("hourcolordimmed").value = configData.hourColorDimmed;
             document.getElementById("minutecolordimmed").value = configData.minuteColorDimmed;
             document.getElementById("secondcolordimmed").value = configData.secondColorDimmed;
+
+            document.getElementById("hourdotcolor").value = configData.hourDotColor;
+
+            document.getElementById("nighttimebegins").value = configData.nightTimeBegins;
+            document.getElementById("nighttimeends").value = configData.nightTimeEnds;
+
+            document.getElementById("hourlight").checked = configData.hourLight;
+
             document.getElementById("ledpin").value = configData.ledPin;
             document.getElementById("ledcount").value = configData.ledCount;
             document.getElementById("ledroot").value = configData.ledRoot;
 
-
             let configInputs = document.querySelectorAll("#configform input, #configform select");
             configInputs.forEach(element => {
-                element.addEventListener("change", onChangedInput);
+                element.addEventListener("change", function () { onChangedInput(0); });
             });
-            document.getElementById("submit").addEventListener("click", function () {
-                onChangedInput(true);
-            });
+            document.getElementById("submit").addEventListener("click", function () { onChangedInput(1); return false; });
 
         })
         .catch(function (err) {
@@ -93,9 +108,6 @@ document.addEventListener('DOMContentLoaded', function (event) {
                 for (var i = 0; i < json.length; i++) {
                     let selected = false;
                     if (json[i] == configData.timezone) {
-                        console.log("selected");
-                        console.log(json[i]);
-                        console.log(configData.timezone);
                         selected = true;
                     }
                     select.options[i] = new Option(json[i], json[i], false, selected);

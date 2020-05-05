@@ -15,12 +15,20 @@ struct ConfigData
     char hostname[64];
     char timeserver[64];
     char timezone[64];
+
     char hourColor[8];
     char minuteColor[8];
     char secondColor[8];
+
     char hourColorDimmed[8];
     char minuteColorDimmed[8];
     char secondColorDimmed[8];
+    char hourDotColor[8];
+
+    char nightTimeBegins[6];
+    char nightTimeEnds[6];
+
+    bool hourLight;
 
     uint8_t ledPin;
     uint32_t ledCount;
@@ -35,7 +43,7 @@ public:
     void save();
     void load();
     StaticJsonDocument<512> configToJSON();
-    void JSONToConfig(StaticJsonDocument<512> doc);
+    bool JSONToConfig(StaticJsonDocument<512> doc);
 
 private:
     void _loadFile();

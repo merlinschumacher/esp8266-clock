@@ -21,6 +21,11 @@ StaticJsonDocument<512> Config::configToJSON()
         doc["minuteColorDimmed"] = config.minuteColorDimmed;
         doc["secondColorDimmed"] = config.secondColorDimmed;
 
+        doc["nightTimeBegins"] = config.nightTimeBegins;
+        doc["nightTimeEnds"] = config.nightTimeEnds;
+
+        doc["hourLight"] = config.hourLight;
+
         doc["ledPin"] = config.ledPin;
         doc["ledCount"] = config.ledCount;
         doc["ledRoot"] = config.ledRoot;
@@ -28,7 +33,7 @@ StaticJsonDocument<512> Config::configToJSON()
         return doc;
 }
 
-void Config::JSONToConfig(StaticJsonDocument<512> doc)
+bool Config::JSONToConfig(StaticJsonDocument<512> doc)
 {
         char chipid[8];
         String hostname = "ESPCLOCK-";
@@ -41,8 +46,6 @@ void Config::JSONToConfig(StaticJsonDocument<512> doc)
 #endif
                 hostname += String(chipid);
         }
-
-        config.ledPin = doc["ledpin"] | 4;
 
         strlcpy(config.hostname,
                 doc["hostname"] | hostname.c_str(),
@@ -74,10 +77,29 @@ void Config::JSONToConfig(StaticJsonDocument<512> doc)
                 doc["secondColor"] | "#000077",
                 sizeof(config.secondColorDimmed));
 
-        config.ledCount = doc["ledCount"] | 59;
-        Serial.println(config.ledCount);
-        serializeJson(doc, Serial);
-        config.ledRoot = doc["ledRoot"] | 0;
+        strlcpy(config.nightTimeBegins,
+                doc["nightTimeBegins"] | "22:00",
+                sizeof(config.nightTimeBegins));
+        strlcpy(config.nightTimeEnds,
+                doc["nightTimeEnds"] | "08:00",
+                sizeof(config.nightTimeEnds));
+
+        config.hourLight = doc["hourLight"] | false;
+
+        config.ledPin = doc["ledpin"] | 4;
+        config.ledCount = doc["ledCount"] | 60;
+        config.ledRoot = doc["ledRoot"] | 1;
+
+        uint8_t save = doc["saveData"] | 0;
+        Serial.println(save);
+        if (save == 1)
+        {
+                return true;
+        }
+        else
+        {
+                return false;
+        };
 }
 
 void Config::load()
@@ -103,6 +125,7 @@ void Config::load()
         // Copy values from the JsonDocument to the Config
         // Close the file (Curiously, File's destructor doesn't close the file)
         sourcefile.close();
+        Serial.println("Loaded configuration file from SPIFFS.");
 }
 
 void Config::save()
@@ -127,4 +150,5 @@ void Config::save()
 
         // Close the file
         targetfile.close();
+        Serial.println("Saved configuration file to SPIFFS.");
 }
