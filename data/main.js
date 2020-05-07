@@ -1,6 +1,6 @@
 let configData = [];
 
-function onChangedInput(saveData = 1) {
+function onChangedInput(saveData = false) {
     configData.hostname = document.getElementById("hostname").value;;
     configData.timeserver = document.getElementById("timeserver").value;
     configData.timezone = document.getElementById("timezone").value;
@@ -84,9 +84,9 @@ document.addEventListener('DOMContentLoaded', function (event) {
 
             let configInputs = document.querySelectorAll("#configform input, #configform select");
             configInputs.forEach(element => {
-                element.addEventListener("change", function () { onChangedInput(0); });
+                element.addEventListener("change", function () { onChangedInput(false); });
             });
-            document.getElementById("submit").addEventListener("click", function () { onChangedInput(1); return false; });
+            document.getElementById("submit").addEventListener("click", function () { onChangedInput(true); return false; });
 
         })
         .catch(function (err) {

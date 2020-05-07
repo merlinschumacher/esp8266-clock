@@ -3,10 +3,10 @@
 #include <stdint.h>
 #include <Arduino.h>
 #include <map>
-#include <SPI.h>
-#include <FS.h>
 #include <ArduinoJson.h>
-#if defined(ESP32)
+#if defined(ESP8266)
+#include <FS.h>
+#elif defined(ESP32)
 #include <SPIFFS.h>
 #endif
 
@@ -30,7 +30,7 @@ struct ConfigData
 
     bool hourLight;
 
-    uint8_t ledPin;
+    uint32_t ledPin;
     uint32_t ledCount;
     uint32_t ledRoot;
 };
@@ -42,8 +42,8 @@ public:
     ConfigData config;
     void save();
     void load();
-    StaticJsonDocument<512> configToJSON();
-    bool JSONToConfig(StaticJsonDocument<512> doc);
+    StaticJsonDocument<1024> configToJSON();
+    bool JSONToConfig(StaticJsonDocument<1024> doc);
 
 private:
     void _loadFile();

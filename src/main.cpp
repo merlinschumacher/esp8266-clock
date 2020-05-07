@@ -15,7 +15,11 @@
 
 Config config;
 Webserver webserver;
+#if defined(ESP8266)
 NeoPixelBus<NeoGrbwFeature, NeoEsp8266BitBangWs2812xMethod> *strip = NULL;
+#elif defined(ESP32)
+NeoPixelBus<NeoGrbwFeature, NeoEsp32BitBangWs2812xMethod> *strip = NULL;
+#endif
 Timezone localTime;
 
 void initStrip()
@@ -24,7 +28,11 @@ void initStrip()
   {
     delete strip;
   }
+#if defined(ESP8266)
   strip = new NeoPixelBus<NeoGrbwFeature, NeoEsp8266BitBangWs2812xMethod>(config.config.ledCount, config.config.ledPin);
+#elif defined(ESP32)
+  strip = new NeoPixelBus<NeoGrbwFeature, NeoEsp32BitBangWs2812xMethod>(config.config.ledCount, config.config.ledPin);
+#endif
   strip->Begin();
 }
 
@@ -32,7 +40,11 @@ void setup()
 {
   Serial.begin(115200);
   WiFiManager wifiManager;
+#if defined(ESP8266)
   SPIFFS.begin();
+#elif defined(ESP32)
+  SPIFFS.begin();
+#endif
   config.load();
   String hostname = config.config.hostname;
   String apname = "⏰" + hostname;
@@ -76,6 +88,17 @@ uint8_t calculateHourHand()
   return hourHand;
 }
 
+uint8_t *calculateHourDots()
+{
+  static uint8_t dots[12];
+  for (size_t i = 1; i < 13; i++)
+  {
+    dots[i] = floor((float)(config.config.ledCount / 12 * i));
+  }
+
+  return dots;
+}
+
 void loop()
 {
 #if defined(ESP8266)
@@ -83,10 +106,11 @@ void loop()
 #endif
   webserver.handleRequest();
   RgbwColor off(0, 0, 0, 0);
-  HtmlColor hour, minute, second;
+  HtmlColor hour, minute, second, dot;
   hour.Parse<HtmlShortColorNames>(config.config.hourColor, sizeof(config.config.hourColor));
   minute.Parse<HtmlShortColorNames>(config.config.minuteColor, sizeof(config.config.minuteColor));
   second.Parse<HtmlShortColorNames>(config.config.secondColor, sizeof(config.config.secondColor));
+  dot.Parse<HtmlShortColorNames>(config.config.hourDotColor, sizeof(config.config.hourDotColor));
 
   if (strip != NULL && secondChanged())
   {
@@ -95,6 +119,14 @@ void loop()
     strip->SetPixelColor(calculateSecondHand(), second);
     strip->SetPixelColor(calculateMinuteHand(), minute);
     strip->SetPixelColor(calculateHourHand(), hour);
+
+    uint8_t *dots = calculateHourDots();
+    for (size_t i = 0; i < sizeof(dots); i++)
+    {
+      Serial.println(dots[i]);
+      strip->SetPixelColor(dots[i], dot);
+    }
+
     strip->Show();
   }
   delay(100);

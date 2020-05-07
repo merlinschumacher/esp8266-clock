@@ -5,9 +5,9 @@ Config::Config()
 {
 }
 
-StaticJsonDocument<512> Config::configToJSON()
+StaticJsonDocument<1024> Config::configToJSON()
 {
-        StaticJsonDocument<512> doc;
+        StaticJsonDocument<1024> doc;
         // Set the values in the document
         doc["hostname"] = config.hostname;
         doc["timeserver"] = config.timeserver;
@@ -27,13 +27,13 @@ StaticJsonDocument<512> Config::configToJSON()
         doc["hourLight"] = config.hourLight;
 
         doc["ledPin"] = config.ledPin;
-        doc["ledCount"] = config.ledCount;
-        doc["ledRoot"] = config.ledRoot;
+        doc["ledCount"] = config.ledCount + 1;
+        doc["ledRoot"] = config.ledRoot + 1;
 
         return doc;
 }
 
-bool Config::JSONToConfig(StaticJsonDocument<512> doc)
+bool Config::JSONToConfig(StaticJsonDocument<1024> doc)
 {
         char chipid[8];
         String hostname = "ESPCLOCK-";
@@ -86,13 +86,13 @@ bool Config::JSONToConfig(StaticJsonDocument<512> doc)
 
         config.hourLight = doc["hourLight"] | false;
 
-        config.ledPin = doc["ledpin"] | 4;
+        config.ledPin = doc["ledPin"] | 4;
         config.ledCount = doc["ledCount"] | 60;
         config.ledRoot = doc["ledRoot"] | 1;
+        config.ledCount--;
+        config.ledRoot--;
 
-        uint8_t save = doc["saveData"] | 0;
-        Serial.println(save);
-        if (save == 1)
+        if (doc["saveData"] == true)
         {
                 return true;
         }
@@ -105,7 +105,12 @@ bool Config::JSONToConfig(StaticJsonDocument<512> doc)
 void Config::load()
 {
         // Open file for reading
+#if defined(ESP8266)
         File sourcefile = SPIFFS.open("data.json", "r+");
+#elif defined(ESP32)
+        File sourcefile = SPIFFS.open("data.json", "r+");
+#endif
+
         // Allocate a temporary JsonDocument
         // Don't forget to change the capacity to match your requirements.
         // Use arduinojson.org/v6/assistant to compute the capacity.
@@ -125,13 +130,17 @@ void Config::load()
         // Copy values from the JsonDocument to the Config
         // Close the file (Curiously, File's destructor doesn't close the file)
         sourcefile.close();
-        Serial.println("Loaded configuration file from SPIFFS.");
+        Serial.println("Loaded configuration file from flash.");
 }
 
 void Config::save()
 {
         // Delete existing file, otherwise the configuration is appended to the file
+#if defined(ESP8266)
         File targetfile = SPIFFS.open("data.json", "w+");
+#elif defined(ESP32)
+        File targetfile = SPIFFS.open("data.json", "w+");
+#endif
 
         // Open file for writing
         if (!targetfile)
@@ -150,5 +159,5 @@ void Config::save()
 
         // Close the file
         targetfile.close();
-        Serial.println("Saved configuration file to SPIFFS.");
+        Serial.println("Saved configuration file to flash.");
 }

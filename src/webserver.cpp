@@ -101,6 +101,7 @@ bool Webserver::_handleFileRead(String path)
     }
     String contentType = _getContentType(path);
     String pathWithGz = path + ".gz";
+#if defined(ESP8266)
     if (SPIFFS.exists(pathWithGz) || SPIFFS.exists(path))
     {
         if (SPIFFS.exists(pathWithGz))
@@ -112,6 +113,19 @@ bool Webserver::_handleFileRead(String path)
         file.close();
         return true;
     }
+#elif defined(ESP32)
+    if (SPIFFS.exists(pathWithGz) || SPIFFS.exists(path))
+    {
+        if (SPIFFS.exists(pathWithGz))
+        {
+            path += ".gz";
+        }
+        File file = SPIFFS.open(path, "r");
+        _server.streamFile(file, contentType);
+        file.close();
+        return true;
+    }
+#endif
     return false;
 }
 
@@ -119,7 +133,7 @@ void Webserver::_handleDataGet(Config &config)
 {
     Serial.println("Loading config data");
     String message;
-    StaticJsonDocument<512> doc = config.configToJSON();
+    StaticJsonDocument<1024> doc = config.configToJSON();
     serializeJson(doc, message);
     _server.send(200, "text/json", message);
 }
@@ -127,7 +141,7 @@ void Webserver::_handleDataGet(Config &config)
 void Webserver::_handleDataPut(Config &config)
 {
     String message = _server.arg(0);
-    StaticJsonDocument<512> doc;
+    StaticJsonDocument<1024> doc;
     deserializeJson(doc, message);
     bool save = config.JSONToConfig(doc);
     if (save == true)
