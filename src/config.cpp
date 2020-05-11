@@ -21,6 +21,8 @@ StaticJsonDocument<1024> Config::configToJSON()
         doc["minuteColorDimmed"] = config.minuteColorDimmed;
         doc["secondColorDimmed"] = config.secondColorDimmed;
 
+        doc["hourDotColor"] = config.hourDotColor;
+
         doc["nightTimeBegins"] = config.nightTimeBegins;
         doc["nightTimeEnds"] = config.nightTimeEnds;
 
@@ -77,6 +79,10 @@ bool Config::JSONToConfig(StaticJsonDocument<1024> doc)
                 doc["secondColor"] | "#000077",
                 sizeof(config.secondColorDimmed));
 
+        strlcpy(config.hourDotColor,
+                doc["hourDotColor"] | "#111111",
+                sizeof(config.hourDotColor));
+
         strlcpy(config.nightTimeBegins,
                 doc["nightTimeBegins"] | "22:00",
                 sizeof(config.nightTimeBegins));
@@ -114,7 +120,7 @@ void Config::load()
         // Allocate a temporary JsonDocument
         // Don't forget to change the capacity to match your requirements.
         // Use arduinojson.org/v6/assistant to compute the capacity.
-        StaticJsonDocument<512> doc;
+        StaticJsonDocument<1024> doc;
 
         // Deserialize the JSON document
         DeserializationError error = deserializeJson(doc, sourcefile);
@@ -149,7 +155,7 @@ void Config::save()
                 return;
         }
 
-        StaticJsonDocument<512> doc;
+        StaticJsonDocument<1024> doc;
         doc = Config::configToJSON();
         // Serialize JSON to file
         if (serializeJson(doc, targetfile) == 0)

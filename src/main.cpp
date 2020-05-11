@@ -91,9 +91,11 @@ uint8_t calculateHourHand()
 uint8_t *calculateHourDots()
 {
   static uint8_t dots[12];
+  float step = (float)config.config.ledCount / 12;
+
   for (size_t i = 1; i < 13; i++)
   {
-    dots[i] = floor((float)(config.config.ledCount / 12 * i));
+    dots[i] = floor(step * i);
   }
 
   return dots;
@@ -116,16 +118,15 @@ void loop()
   {
     // Serial.println("Current time: " + localTime.dateTime());
     strip->ClearTo(off);
-    strip->SetPixelColor(calculateSecondHand(), second);
-    strip->SetPixelColor(calculateMinuteHand(), minute);
-    strip->SetPixelColor(calculateHourHand(), hour);
 
     uint8_t *dots = calculateHourDots();
-    for (size_t i = 0; i < sizeof(dots); i++)
+    for (uint8_t i = 0; i < 13; ++i)
     {
-      Serial.println(dots[i]);
       strip->SetPixelColor(dots[i], dot);
     }
+    strip->SetPixelColor(calculateHourHand(), hour);
+    strip->SetPixelColor(calculateMinuteHand(), minute);
+    strip->SetPixelColor(calculateSecondHand(), second);
 
     strip->Show();
   }
