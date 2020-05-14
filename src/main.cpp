@@ -28,6 +28,7 @@ void initStrip()
   {
     delete strip;
   }
+  Serial.println(config.config.ledCount);
 #if defined(ESP8266)
   strip = new NeoPixelBus<NeoGrbwFeature, NeoEsp8266BitBangWs2812xMethod>(config.config.ledCount, config.config.ledPin);
 #elif defined(ESP32)
@@ -48,6 +49,8 @@ void setup()
   config.load();
   String hostname = config.config.hostname;
   String apname = "⏰" + hostname;
+  Serial.print("Hostname: ");
+  Serial.println(hostname);
 
 #if defined(ESP8266)
   WiFi.hostname(hostname.c_str());
@@ -60,13 +63,11 @@ void setup()
   waitForSync();
   setDebug(INFO);
   Serial.println("UTC: " + UTC.dateTime());
+  localTime.setLocation(config.config.timezone);
   webserver.setup(config);
   MDNS.begin(hostname.c_str());
   MDNS.addService("http", "tcp", 80);
   initStrip();
-  Serial.print("Hostname: ");
-  Serial.println(hostname);
-  localTime.setLocation(config.config.timezone);
 }
 
 uint8_t calculateSecondHand()
@@ -91,19 +92,6 @@ uint8_t calculateHourHand()
   return hourHand;
 }
 
-uint8_t *calculateHourDots()
-{
-  static uint8_t dots[12];
-  float step = (float)config.config.ledCount / 12;
-
-  for (size_t i = 1; i < 13; i++)
-  {
-    dots[i] = floor(step * i);
-  }
-
-  return dots;
-}
-
 void loop()
 {
 #if defined(ESP8266)
@@ -116,25 +104,23 @@ void loop()
   minute.Parse<HtmlShortColorNames>(config.config.minuteColor, sizeof(config.config.minuteColor));
   second.Parse<HtmlShortColorNames>(config.config.secondColor, sizeof(config.config.secondColor));
   dot.Parse<HtmlShortColorNames>(config.config.hourDotColor, sizeof(config.config.hourDotColor));
-  // if (secondChanged())
-  // {
-  //   webserver.currentTime = localTime.dateTime();
-  // }
   if (strip != NULL && secondChanged())
   {
-    // Serial.println("Current time: " + localTime.dateTime());
+    webserver.currentTime = localTime.dateTime();
     strip->ClearTo(off);
 
-    uint8_t *dots = calculateHourDots();
-    for (uint8_t i = 0; i < 13; ++i)
+    // calculate hour dots
+    float step = (float)config.config.ledCount / 12;
+    for (size_t i = 1; i < 13; i++)
     {
-      strip->SetPixelColor(dots[i], dot);
+      strip->SetPixelColor(floor(step * i), dot);
     }
+
     strip->SetPixelColor(calculateHourHand(), hour);
     strip->SetPixelColor(calculateMinuteHand(), minute);
     strip->SetPixelColor(calculateSecondHand(), second);
 
     strip->Show();
-  }
+  };
   delay(100);
 }

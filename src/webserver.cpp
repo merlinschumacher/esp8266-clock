@@ -129,11 +129,6 @@ bool Webserver::_handleFileRead(String path)
     return false;
 }
 
-// void Webserver::_handleTimeGet()
-// {
-//     _server.send(200, "text/plain", currentTime);
-// }
-
 void Webserver::_handleDataGet(Config &config)
 {
     Serial.println("Loading config data");
@@ -169,7 +164,7 @@ void Webserver::setup(Config &config)
             _server.send(404, "text/plain", "File not found");
         }
     });
-    // _server.on("/time", HTTP_GET, [this]() { _handleTimeGet(); });
+    _server.on("/time", HTTP_GET, [this]() { _server.send(200, "text/plain", currentTime); });
     _server.on("/data.json", HTTP_GET, [this, &config]() { _handleDataGet(config); });
     _server.on("/data.json", HTTP_POST, [this, &config]() { _handleDataPut(config); });
 

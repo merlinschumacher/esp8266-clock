@@ -112,9 +112,9 @@ void Config::load()
 {
         // Open file for reading
 #if defined(ESP8266)
-        File sourcefile = SPIFFS.open("data.json", "r+");
+        File sourcefile = SPIFFS.open("data.json", "r");
 #elif defined(ESP32)
-        File sourcefile = SPIFFS.open("data.json", "r+");
+        File sourcefile = SPIFFS.open("data.json", "r");
 #endif
 
         // Allocate a temporary JsonDocument
@@ -143,9 +143,9 @@ void Config::save()
 {
         // Delete existing file, otherwise the configuration is appended to the file
 #if defined(ESP8266)
-        File targetfile = SPIFFS.open("data.json", "w+");
+        File targetfile = SPIFFS.open("data.json", "w");
 #elif defined(ESP32)
-        File targetfile = SPIFFS.open("data.json", "w+");
+        File targetfile = SPIFFS.open("data.json", "w");
 #endif
 
         // Open file for writing
