@@ -14,13 +14,13 @@
 #include "config.h"
 
 Config config;
+Timezone localTime;
 Webserver webserver;
 #if defined(ESP8266)
 NeoPixelBus<NeoGrbwFeature, NeoEsp8266BitBangWs2812xMethod> *strip = NULL;
 #elif defined(ESP32)
 NeoPixelBus<NeoGrbwFeature, NeoEsp32BitBangWs2812xMethod> *strip = NULL;
 #endif
-Timezone localTime;
 
 void initStrip()
 {
@@ -72,12 +72,14 @@ void setup()
 uint8_t calculateSecondHand()
 {
   uint8_t secondHand = round((float)config.config.ledCount / 60 * localTime.second());
+  // secondHand = (secondHand + config.config.ledRoot) % config.config.ledCount;
   return secondHand;
 }
 
 uint8_t calculateMinuteHand()
 {
   uint8_t minuteHand = round((float)config.config.ledCount / 60 * localTime.minute());
+  // minuteHand = (minuteHand + config.config.ledRoot) % config.config.ledCount;
   return minuteHand;
 }
 
@@ -85,6 +87,7 @@ uint8_t calculateHourHand()
 {
   int minuteAddition = floor((float)((config.config.ledCount / 12) / 60) * localTime.minute());
   uint8_t hourHand = floor((float)(config.config.ledCount / 12) * (localTime.hour() / 2) + minuteAddition);
+  // hourHand = (hourHand + config.config.ledRoot) % config.config.ledCount;
   return hourHand;
 }
 
@@ -113,7 +116,10 @@ void loop()
   minute.Parse<HtmlShortColorNames>(config.config.minuteColor, sizeof(config.config.minuteColor));
   second.Parse<HtmlShortColorNames>(config.config.secondColor, sizeof(config.config.secondColor));
   dot.Parse<HtmlShortColorNames>(config.config.hourDotColor, sizeof(config.config.hourDotColor));
-
+  // if (secondChanged())
+  // {
+  //   webserver.currentTime = localTime.dateTime();
+  // }
   if (strip != NULL && secondChanged())
   {
     // Serial.println("Current time: " + localTime.dateTime());

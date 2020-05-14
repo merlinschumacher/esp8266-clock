@@ -1,51 +1,56 @@
 let configData = [];
 
 function onChangedInput(saveData = false) {
-    configData.hostname = document.getElementById("hostname").value;;
-    configData.timeserver = document.getElementById("timeserver").value;
-    configData.timezone = document.getElementById("timezone").value;
+    if (document.getElementById("configform").checkValidity()) {
 
-    configData.hourColor = document.getElementById("hourcolor").value;
-    configData.minuteColor = document.getElementById("minutecolor").value;
-    configData.secondColor = document.getElementById("secondcolor").value;
+        configData.hostname = document.getElementById("hostname").value;;
+        configData.timeserver = document.getElementById("timeserver").value;
+        configData.timezone = document.getElementById("timezone").value;
 
-    configData.hourColorDimmed = document.getElementById("hourcolordimmed").value;
-    configData.minuteColorDimmed = document.getElementById("minutecolordimmed").value;
-    configData.secondColorDimmed = document.getElementById("secondcolordimmed").value;
+        configData.hourColor = document.getElementById("hourcolor").value;
+        configData.minuteColor = document.getElementById("minutecolor").value;
+        configData.secondColor = document.getElementById("secondcolor").value;
 
-    configData.hourDotColor = document.getElementById("hourdotcolor").value;
+        configData.hourColorDimmed = document.getElementById("hourcolordimmed").value;
+        configData.minuteColorDimmed = document.getElementById("minutecolordimmed").value;
+        configData.secondColorDimmed = document.getElementById("secondcolordimmed").value;
 
-    configData.nightTimeBegins = document.getElementById("nighttimebegins").value;
-    configData.nightTimeEnds = document.getElementById("nighttimeends").value;
+        configData.hourDotColor = document.getElementById("hourdotcolor").value;
 
-    configData.hourLight = document.getElementById("hourlight").checked;
+        configData.nightTimeBegins = document.getElementById("nighttimebegins").value;
+        configData.nightTimeEnds = document.getElementById("nighttimeends").value;
 
-    configData.ledPin = parseInt(document.getElementById("ledpin").value);
-    configData.ledCount = parseInt(document.getElementById("ledcount").value);
-    configData.ledRoot = parseInt(document.getElementById("ledroot").value);
-    configData.saveData = saveData;
+        configData.hourLight = document.getElementById("hourlight").checked;
 
-    fetch('data.json', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(configData),
-    })
-        .then(response => response.json())
-        .then(data => {
-            console.log('Success:', data);
+        configData.ledPin = parseInt(document.getElementById("ledpin").value);
+        configData.ledCount = parseInt(document.getElementById("ledcount").value);
+        configData.ledRoot = parseInt(document.getElementById("ledroot").value);
+        configData.saveData = saveData;
+
+        fetch('data.json', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(configData),
         })
-        .catch((error) => {
-            console.error('Error:', error);
-            alert("Failed to save settings!");
-        });
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+                alert("Failed to save settings!");
+            });
+    }
 }
 
 
 document.addEventListener('DOMContentLoaded', function (event) {
 
     let main = document.getElementById("main");
+    let currentTime = document.getElementById("currenttime");
+
     document.getElementById("jswarn").remove();
     main.style.display = "block";
     fetch('data.json')
@@ -119,6 +124,21 @@ document.addEventListener('DOMContentLoaded', function (event) {
                 console.log(err);
             });
     }
+    setInterval(function () {
 
+        fetch('time')
+            .then(function (response) {
+                if (response.ok)
+                    return response.text();
+                else
+                    throw new Error('Failed to load current time!');
+            })
+            .then(function (time) {
+                currentTime.innerText = time;
+            })
+            .catch(function (err) {
+                console.log(err);
+            });
+    }, 1000);
 
 });

@@ -20,10 +20,12 @@ public:
     Webserver();
     void setup(Config &config);
     void handleRequest();
+    // String currentTime = "";
 
 private:
     void _handleNotFound();
     bool _handleFileRead(String path);
+    // void _handleTimeGet();
     void _handleDataGet(Config &config);
     void _handleDataPut(Config &config);
     String _getContentType(String filename);

@@ -30,6 +30,16 @@
         .inputgroup>label {
             margin-right: 1em;
         }
+
+        .aside {
+            font-size: .8em;
+            color: #999;
+        }
+
+        #submit {
+            float: right;
+            background: #0B0;
+        }
     </style>
 </head>
 
@@ -38,8 +48,7 @@
     <div id="main" style="display:none">
         <h1 id="title"></h1>
         <form id="configform" onsubmit="return false">
-            <span id="currenttime">Current local clock time: <time datetime="2020-01-01 00:00">2020-01-01
-                    00:00</time></span>
+            <span id="currenttime"></span>
             <button id="submit" name="submit">Save settings permanently</button>
             <h3>Color configuration</h3>
             <fieldset>
@@ -104,10 +113,10 @@
                     </div>
                 </div>
             </fieldset>
-            <label for="timezone">Local timezone</label>
+            <label for="timezone">Local timezone <span class="aside">(Change requires restart)</span></label>
             <select id="timezone" name="timezone"></select>
             <h3>LED settings</h3>
-            <label for="ledpin">RGB strip pin</label>
+            <label for="ledpin">RGB strip pin <span class="aside">(Change requires restart)</span></label>
             <input type="number" id="ledpin" name="ledpin" min="0" max="255" step="1" />
             <label for="ledcount">RGB strip pixel count</label>
             <input type="number" id="ledcount" name="ledcount" min="1" step="1" />
