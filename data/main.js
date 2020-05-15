@@ -16,6 +16,8 @@ function onChangedInput(saveData = false) {
         configData.secondColorDimmed = document.getElementById("secondcolordimmed").value;
 
         configData.hourDotColor = document.getElementById("hourdotcolor").value;
+        configData.hourSegmentColor = document.getElementById("hoursegmentcolor").value;
+        configData.hourQuarterColor = document.getElementById("hourquartercolor").value;
 
         configData.nightTimeBegins = document.getElementById("nighttimebegins").value;
         configData.nightTimeEnds = document.getElementById("nighttimeends").value;
@@ -77,6 +79,8 @@ document.addEventListener('DOMContentLoaded', function (event) {
             document.getElementById("secondcolordimmed").value = configData.secondColorDimmed;
 
             document.getElementById("hourdotcolor").value = configData.hourDotColor;
+            document.getElementById("hourquartercolor").value = configData.hourQuarterColor;
+            document.getElementById("hoursegmentcolor").value = configData.hourSegmentColor;
 
             document.getElementById("nighttimebegins").value = configData.nightTimeBegins;
             document.getElementById("nighttimeends").value = configData.nightTimeEnds;

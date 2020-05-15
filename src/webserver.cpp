@@ -133,6 +133,7 @@ void Webserver::_handleDataGet(Config &config)
 {
     Serial.println("Loading config data");
     String message;
+    config.load();
     StaticJsonDocument<1024> doc = config.configToJSON();
     serializeJson(doc, message);
     _server.send(200, "text/json", message);

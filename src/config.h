@@ -23,7 +23,10 @@ struct ConfigData
     char hourColorDimmed[8];
     char minuteColorDimmed[8];
     char secondColorDimmed[8];
+
     char hourDotColor[8];
+    char hourSegmentColor[8];
+    char hourQuarterColor[8];
 
     char nightTimeBegins[6];
     char nightTimeEnds[6];

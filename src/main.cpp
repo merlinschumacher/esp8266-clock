@@ -17,7 +17,7 @@ Config config;
 Timezone localTime;
 Webserver webserver;
 #if defined(ESP8266)
-NeoPixelBus<NeoGrbwFeature, NeoEsp8266BitBangWs2812xMethod> *strip = NULL;
+NeoPixelBus<NeoGrbFeature, NeoEsp8266BitBangWs2812xMethod> *strip = NULL;
 #elif defined(ESP32)
 NeoPixelBus<NeoGrbwFeature, NeoEsp32BitBangWs2812xMethod> *strip = NULL;
 #endif
@@ -30,7 +30,7 @@ void initStrip()
   }
   Serial.println(config.config.ledCount);
 #if defined(ESP8266)
-  strip = new NeoPixelBus<NeoGrbwFeature, NeoEsp8266BitBangWs2812xMethod>(config.config.ledCount, config.config.ledPin);
+  strip = new NeoPixelBus<NeoGrbFeature, NeoEsp8266BitBangWs2812xMethod>(config.config.ledCount, config.config.ledPin);
 #elif defined(ESP32)
   strip = new NeoPixelBus<NeoGrbwFeature, NeoEsp32BitBangWs2812xMethod>(config.config.ledCount, config.config.ledPin);
 #endif
@@ -72,24 +72,48 @@ void setup()
 
 uint8_t calculateSecondHand()
 {
-  uint8_t secondHand = round((float)config.config.ledCount / 60 * localTime.second());
-  // secondHand = (secondHand + config.config.ledRoot) % config.config.ledCount;
+  uint8_t secondHand = round((float)(config.config.ledCount + 1) / 60 * localTime.second());
+  secondHand = (secondHand + config.config.ledRoot) % config.config.ledCount;
   return secondHand;
 }
 
 uint8_t calculateMinuteHand()
 {
-  uint8_t minuteHand = round((float)config.config.ledCount / 60 * localTime.minute());
-  // minuteHand = (minuteHand + config.config.ledRoot) % config.config.ledCount;
+  uint8_t minuteHand = round((float)(config.config.ledCount + 1) / 60 * localTime.minute());
+  minuteHand = (minuteHand + config.config.ledRoot) % config.config.ledCount;
   return minuteHand;
 }
 
 uint8_t calculateHourHand()
 {
-  int minuteAddition = floor((float)((config.config.ledCount / 12) / 60) * localTime.minute());
-  uint8_t hourHand = floor((float)(config.config.ledCount / 12) * (localTime.hour() / 2) + minuteAddition);
-  // hourHand = (hourHand + config.config.ledRoot) % config.config.ledCount;
+  uint8_t hour = localTime.hour() % 12;
+  uint8_t hourHand = floor((float)(config.config.ledCount + 1) / 12 * hour);
+  uint8_t minuteBracket = floor((float)localTime.minute() / 12.5);
+  uint8_t minuteOffset = floor((float)(config.config.ledCount + 1) / 60 * minuteBracket);
+  hourHand = (hourHand + minuteOffset + config.config.ledRoot) % config.config.ledCount;
   return hourHand;
+}
+
+void setPixel(uint8_t pos, RgbColor color, bool blend = true)
+{
+  if (blend)
+  {
+    RgbColor currentcolor = strip->GetPixelColor(pos);
+    uint8_t colorSum = currentcolor.R + currentcolor.G + currentcolor.B;
+    if (colorSum == 0)
+    {
+      strip->SetPixelColor(pos, color);
+    }
+    else
+    {
+      RgbColor targetcolor = RgbColor::LinearBlend(currentcolor, color, 0.25);
+      strip->SetPixelColor(pos, targetcolor);
+    }
+  }
+  else
+  {
+    strip->SetPixelColor(pos, color);
+  }
 }
 
 void loop()
@@ -98,29 +122,57 @@ void loop()
   MDNS.update();
 #endif
   webserver.handleRequest();
-  RgbwColor off(0, 0, 0, 0);
-  HtmlColor hour, minute, second, dot;
-  hour.Parse<HtmlShortColorNames>(config.config.hourColor, sizeof(config.config.hourColor));
-  minute.Parse<HtmlShortColorNames>(config.config.minuteColor, sizeof(config.config.minuteColor));
-  second.Parse<HtmlShortColorNames>(config.config.secondColor, sizeof(config.config.secondColor));
-  dot.Parse<HtmlShortColorNames>(config.config.hourDotColor, sizeof(config.config.hourDotColor));
+
+  HtmlColor htmlconv;
+  htmlconv.Parse<HtmlShortColorNames>("#000000");
+  RgbColor off(htmlconv);
+  htmlconv.Parse<HtmlShortColorNames>(config.config.hourColor, sizeof(config.config.hourColor));
+  RgbColor hour(htmlconv);
+  htmlconv.Parse<HtmlShortColorNames>(config.config.minuteColor, sizeof(config.config.minuteColor));
+  RgbColor minute(htmlconv);
+  htmlconv.Parse<HtmlShortColorNames>(config.config.secondColor, sizeof(config.config.secondColor));
+  RgbColor second(htmlconv);
+  htmlconv.Parse<HtmlShortColorNames>(config.config.hourDotColor, sizeof(config.config.hourDotColor));
+  RgbColor dot(htmlconv);
+  htmlconv.Parse<HtmlShortColorNames>(config.config.hourQuarterColor, sizeof(config.config.hourQuarterColor));
+  RgbColor quarter(htmlconv);
+  htmlconv.Parse<HtmlShortColorNames>(config.config.hourSegmentColor, sizeof(config.config.hourSegmentColor));
+  RgbColor segment(htmlconv);
+
   if (strip != NULL && secondChanged())
   {
     webserver.currentTime = localTime.dateTime();
     strip->ClearTo(off);
 
-    // calculate hour dots
-    float step = (float)config.config.ledCount / 12;
-    for (size_t i = 1; i < 13; i++)
+    uint8_t hour12 = localTime.hour() % 12;
+    uint8_t segmentLength = floor((float)(config.config.ledCount + 1) / 12);
+    uint8_t segmentStart = floor((float)(config.config.ledCount + 1) / 12 * hour12);
+    segmentStart = (segmentStart + config.config.ledRoot) % config.config.ledCount;
+    for (size_t i = 0; i < segmentLength; i++)
     {
-      strip->SetPixelColor(floor(step * i), dot);
+      strip->SetPixelColor(segmentStart + i, segment);
     }
 
-    strip->SetPixelColor(calculateHourHand(), hour);
-    strip->SetPixelColor(calculateMinuteHand(), minute);
-    strip->SetPixelColor(calculateSecondHand(), second);
+    // calculate hour dots
+    float step = (float)(config.config.ledCount + 1) / 12;
+    for (size_t i = 0; i < 12; i++)
+    {
+      uint8_t dotPos = (uint8_t)floor(step * i);
+      dotPos = (dotPos + config.config.ledRoot) % config.config.ledCount;
+      if (i % 3 == 0)
+      {
+        strip->SetPixelColor(dotPos, quarter);
+      }
+      else
+      {
+        strip->SetPixelColor(dotPos, dot);
+      }
+    }
+
+    setPixel(calculateHourHand(), hour);
+    setPixel(calculateMinuteHand(), minute);
+    setPixel(calculateSecondHand(), second);
 
     strip->Show();
   };
-  delay(100);
 }
