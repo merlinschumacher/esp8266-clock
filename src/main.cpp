@@ -28,7 +28,6 @@ void initStrip()
   {
     delete strip;
   }
-  Serial.println(config.config.ledCount);
 #if defined(ESP8266)
   strip = new NeoPixelBus<NeoGrbFeature, NeoEsp8266BitBangWs2812xMethod>(config.config.ledCount, config.config.ledPin);
 #elif defined(ESP32)
@@ -88,8 +87,7 @@ uint8_t calculateHourHand()
 {
   uint8_t hour = localTime.hour() % 12;
   uint8_t hourHand = floor((float)(config.config.ledCount + 1) / 12 * hour);
-  uint8_t minuteBracket = floor((float)localTime.minute() / 12.5);
-  uint8_t minuteOffset = floor((float)(config.config.ledCount + 1) / 60 * minuteBracket);
+  uint8_t minuteOffset = floor((float)localTime.minute() * (config.config.ledCount + 1) / 12 / 60);
   hourHand = (hourHand + minuteOffset + config.config.ledRoot) % config.config.ledCount;
   return hourHand;
 }
@@ -116,31 +114,134 @@ void setPixel(uint8_t pos, RgbColor color, bool blend = true)
   }
 }
 
+HtmlColor htmlToColor(String color)
+{
+  HtmlColor htmlconv;
+  htmlconv.Parse<HtmlShortColorNames>(color);
+  return htmlconv;
+}
+String split(String s, char parser, int index)
+{
+  String rs = "";
+  int parserCnt = 0;
+  int rFromIndex = 0, rToIndex = -1;
+  while (index >= parserCnt)
+  {
+    rFromIndex = rToIndex + 1;
+    rToIndex = s.indexOf(parser, rFromIndex);
+    if (index == parserCnt)
+    {
+      if (rToIndex == 0 || rToIndex == -1)
+        return "";
+      return s.substring(rFromIndex, rToIndex);
+    }
+    else
+      parserCnt++;
+  }
+  return rs;
+}
+
+String getStringPartByNr(String data, char separator, int index)
+{
+
+  uint8_t stringData = 0;
+  String dataPart = "";
+  for (uint8_t i = 0; i < data.length(); i++)
+  {
+    if (data[i] == separator)
+    {
+      stringData++;
+    }
+    else if (stringData == index)
+    {
+      dataPart.concat(data[i]);
+    }
+    else if (stringData > index)
+    {
+      return dataPart;
+      break;
+    }
+  }
+  return dataPart;
+}
+
+uint16_t timeFromString(String time)
+{
+  uint8_t hour, minute;
+  String hourString = getStringPartByNr(time, ':', 0);
+  String minuteString = getStringPartByNr(time, ':', 1);
+  hour = hourString.toInt();
+  minute = minuteString.toInt();
+  return hour * 60 + minute;
+}
+
+bool isNight()
+{
+  uint16_t nightStartMinutes = timeFromString(config.config.nightTimeBegins);
+  uint16_t nightEndMinutes = timeFromString(config.config.nightTimeEnds);
+  uint16_t currentMinutes = localTime.hour() * 60 + localTime.minute();
+  if (nightStartMinutes > nightEndMinutes)
+  {
+    if (nightStartMinutes <= currentMinutes || currentMinutes <= nightEndMinutes)
+    {
+      return true;
+    }
+    else
+    {
+      return false;
+    }
+  }
+  else
+  {
+    if (nightStartMinutes <= currentMinutes && currentMinutes <= nightEndMinutes)
+    {
+      return true;
+    }
+    else
+    {
+      return false;
+    }
+  }
+}
+
 void loop()
 {
 #if defined(ESP8266)
   MDNS.update();
 #endif
   webserver.handleRequest();
-
-  HtmlColor htmlconv;
-  htmlconv.Parse<HtmlShortColorNames>("#000000");
-  RgbColor off(htmlconv);
-  htmlconv.Parse<HtmlShortColorNames>(config.config.hourColor, sizeof(config.config.hourColor));
-  RgbColor hour(htmlconv);
-  htmlconv.Parse<HtmlShortColorNames>(config.config.minuteColor, sizeof(config.config.minuteColor));
-  RgbColor minute(htmlconv);
-  htmlconv.Parse<HtmlShortColorNames>(config.config.secondColor, sizeof(config.config.secondColor));
-  RgbColor second(htmlconv);
-  htmlconv.Parse<HtmlShortColorNames>(config.config.hourDotColor, sizeof(config.config.hourDotColor));
-  RgbColor dot(htmlconv);
-  htmlconv.Parse<HtmlShortColorNames>(config.config.hourQuarterColor, sizeof(config.config.hourQuarterColor));
-  RgbColor quarter(htmlconv);
-  htmlconv.Parse<HtmlShortColorNames>(config.config.hourSegmentColor, sizeof(config.config.hourSegmentColor));
-  RgbColor segment(htmlconv);
-
   if (strip != NULL && secondChanged())
   {
+
+    RgbColor off(0, 0, 0);
+    String hourColorString, minuteColorString, secondColorString, hourDotString, hourQuarterString, hourSegmentString;
+
+    if (isNight())
+    {
+      hourColorString = config.config.hourColorDimmed;
+      minuteColorString = config.config.minuteColorDimmed;
+      secondColorString = config.config.secondColorDimmed;
+      hourDotString = config.config.hourDotColorDimmed;
+      hourQuarterString = config.config.hourQuarterColorDimmed;
+      hourSegmentString = config.config.hourSegmentColorDimmed;
+    }
+    else
+    {
+      hourColorString = config.config.hourColor;
+      minuteColorString = config.config.minuteColor;
+      secondColorString = config.config.secondColor;
+      hourDotString = config.config.hourDotColor;
+      hourQuarterString = config.config.hourQuarterColor;
+      hourSegmentString = config.config.hourSegmentColor;
+    }
+
+    RgbColor hourColor(htmlToColor(hourColorString));
+    RgbColor minuteColor(htmlToColor(minuteColorString));
+    RgbColor secondColor(htmlToColor(secondColorString));
+    RgbColor dot(htmlToColor(hourDotString));
+    RgbColor quarter(htmlToColor(hourQuarterString));
+    RgbColor segment(htmlToColor(hourSegmentString));
+
     webserver.currentTime = localTime.dateTime();
     strip->ClearTo(off);
 
@@ -169,9 +270,9 @@ void loop()
       }
     }
 
-    setPixel(calculateHourHand(), hour);
-    setPixel(calculateMinuteHand(), minute);
-    setPixel(calculateSecondHand(), second);
+    setPixel(calculateHourHand(), hourColor);
+    setPixel(calculateMinuteHand(), minuteColor);
+    setPixel(calculateSecondHand(), secondColor);
 
     strip->Show();
   };

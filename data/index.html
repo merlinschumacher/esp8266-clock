@@ -67,6 +67,20 @@
                         <input type="color" id="secondcolor" name="secondcolor" />
                     </div>
                 </div>
+                <div class="inline">
+                    <div class="inputgroup">
+                        <label for="hourdotcolor">Hour dot color</label>
+                        <input type="color" id="hourdotcolor" name="hourdotcolor" />
+                    </div>
+                    <div class="inputgroup">
+                        <label for="hourdotcolor">Hour segment color</label>
+                        <input type="color" id="hoursegmentcolor" name="hoursegmentcolor" />
+                    </div>
+                    <div class="inputgroup">
+                        <label for="hourdotcolor">Hour quarter color</label>
+                        <input type="color" id="hourquartercolor" name="hourquartercolor" />
+                    </div>
+                </div>
             </fieldset>
 
             <fieldset>
@@ -85,28 +99,29 @@
                         <input type="color" id="secondcolordimmed" name="secondcolordimmed" />
                     </div>
                 </div>
-            </fieldset>
-
-            <fieldset>
-                <legend>Color of the hour dots shown on the clock.</legend>
                 <div class="inline">
                     <div class="inputgroup">
-                        <label for="hourdotcolor">Hour dot color</label>
-                        <input type="color" id="hourdotcolor" name="hourdotcolor" />
+                        <label for="hourdotcolordimmed">Hour dot color</label>
+                        <input type="color" id="hourdotcolordimmed" name="hourdotcolordimmed" />
                     </div>
                     <div class="inputgroup">
-                        <label for="hourdotcolor">Hour segment color</label>
-                        <input type="color" id="hoursegmentcolor" name="hoursegmentcolor" />
+                        <label for="hourdotcolordimmed">Hour segment color</label>
+                        <input type="color" id="hoursegmentcolordimmed" name="hoursegmentcolordimmed" />
                     </div>
                     <div class="inputgroup">
-                        <label for="hourdotcolor">Hour quarter color</label>
-                        <input type="color" id="hourquartercolor" name="hourquartercolor" />
+                        <label for="hourdotcolordimmed">Hour quarter color</label>
+                        <input type="color" id="hourquartercolordimmed" name="hourquartercolordimmed" />
                     </div>
                 </div>
             </fieldset>
+
             <p>
                 <label for="hourlight">Light up the clock at every hour?</label>
                 <input type="checkbox" id="hourlight" name="hourlight" />
+            </p>
+            <p>
+                <label for="blendcolors">Blend colors when lights overlap?</label>
+                <input type="checkbox" id="blendcolors" name="blendcolors" />
             </p>
             <fieldset>
                 <legend>When shall the clock be dimmed?</legend>
@@ -118,6 +133,19 @@
                     <div class="inputgroup">
                         <label for="nighttimeends">Night ends at: </label>
                         <input type="time" id="nighttimeends" name="nighttimeends" />
+                    </div>
+                </div>
+            </fieldset>
+            <fieldset>
+                <legend>Set alarm</legend>
+                <div class="inline">
+                    <div class="inputgroup">
+                        <label for="alarmactive">Enable alarm?</label>
+                        <input type="checkbox" id="alarmactive" name="alarmactive" />
+                    </div>
+                    <div class="inputgroup">
+                        <label for="alarmtime">Alarm time: </label>
+                        <input type="time" id="alarmtime" name="alarmtime" />
                     </div>
                 </div>
             </fieldset>

@@ -19,14 +19,23 @@ function onChangedInput(saveData = false) {
         configData.hourSegmentColor = document.getElementById("hoursegmentcolor").value;
         configData.hourQuarterColor = document.getElementById("hourquartercolor").value;
 
+        configData.hourDotColorDimmed = document.getElementById("hourdotcolordimmed").value;
+        configData.hourSegmentColorDimmed = document.getElementById("hoursegmentcolordimmed").value;
+        configData.hourQuarterColorDimmed = document.getElementById("hourquartercolordimmed").value;
+
         configData.nightTimeBegins = document.getElementById("nighttimebegins").value;
         configData.nightTimeEnds = document.getElementById("nighttimeends").value;
 
         configData.hourLight = document.getElementById("hourlight").checked;
+        configData.blendColors = document.getElementById("blendcolors").checked;
 
         configData.ledPin = parseInt(document.getElementById("ledpin").value);
         configData.ledCount = parseInt(document.getElementById("ledcount").value);
         configData.ledRoot = parseInt(document.getElementById("ledroot").value);
+
+        configData.alarmActive = document.getElementById("alarmactive").checked;
+        configData.alarmTime = document.getElementById("alarmtime").value;
+
         configData.saveData = saveData;
 
         fetch('data.json', {
@@ -82,14 +91,22 @@ document.addEventListener('DOMContentLoaded', function (event) {
             document.getElementById("hourquartercolor").value = configData.hourQuarterColor;
             document.getElementById("hoursegmentcolor").value = configData.hourSegmentColor;
 
+            document.getElementById("hourdotcolordimmed").value = configData.hourDotColorDimmed;
+            document.getElementById("hourquartercolordimmed").value = configData.hourQuarterColorDimmed;
+            document.getElementById("hoursegmentcolordimmed").value = configData.hourSegmentColorDimmed;
+
             document.getElementById("nighttimebegins").value = configData.nightTimeBegins;
             document.getElementById("nighttimeends").value = configData.nightTimeEnds;
 
             document.getElementById("hourlight").checked = configData.hourLight;
+            document.getElementById("blendcolors").checked = configData.blendColors;
 
             document.getElementById("ledpin").value = configData.ledPin;
             document.getElementById("ledcount").value = configData.ledCount;
             document.getElementById("ledroot").value = configData.ledRoot;
+
+            document.getElementById("alarmactive").checked = configData.alarmActive;
+            document.getElementById("alarmtime").value = configData.alarmTime;
 
             let configInputs = document.querySelectorAll("#configform input, #configform select");
             configInputs.forEach(element => {

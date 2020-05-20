@@ -28,10 +28,18 @@ struct ConfigData
     char hourSegmentColor[8];
     char hourQuarterColor[8];
 
+    char hourDotColorDimmed[8];
+    char hourSegmentColorDimmed[8];
+    char hourQuarterColorDimmed[8];
+
     char nightTimeBegins[6];
     char nightTimeEnds[6];
 
     bool hourLight;
+    bool blendColors;
+
+    bool alarmActive;
+    char alarmTime[6];
 
     uint32_t ledPin;
     uint32_t ledCount;

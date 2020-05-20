@@ -25,10 +25,18 @@ StaticJsonDocument<1024> Config::configToJSON()
         doc["hourSegmentColor"] = config.hourSegmentColor;
         doc["hourQuarterColor"] = config.hourQuarterColor;
 
+        doc["hourDotColorDimmed"] = config.hourDotColorDimmed;
+        doc["hourSegmentColorDimmed"] = config.hourSegmentColorDimmed;
+        doc["hourQuarterColorDimmed"] = config.hourQuarterColorDimmed;
+
         doc["nightTimeBegins"] = config.nightTimeBegins;
         doc["nightTimeEnds"] = config.nightTimeEnds;
 
         doc["hourLight"] = config.hourLight;
+        doc["blendColors"] = config.blendColors;
+
+        doc["alarmTime"] = config.alarmTime;
+        doc["alarmActive"] = config.alarmActive;
 
         doc["ledPin"] = config.ledPin;
         doc["ledCount"] = config.ledCount + 1;
@@ -91,6 +99,16 @@ bool Config::JSONToConfig(StaticJsonDocument<1024> doc)
                 doc["hourQuarterColor"] | "#000001",
                 sizeof(config.hourQuarterColor));
 
+        strlcpy(config.hourDotColorDimmed,
+                doc["hourDotColorDimmed"] | "#000000",
+                sizeof(config.hourDotColorDimmed));
+        strlcpy(config.hourSegmentColorDimmed,
+                doc["hourSegmentColorDimmed"] | "#000000",
+                sizeof(config.hourSegmentColorDimmed));
+        strlcpy(config.hourQuarterColorDimmed,
+                doc["hourQuarterColorDimmed"] | "#000000",
+                sizeof(config.hourQuarterColorDimmed));
+
         strlcpy(config.nightTimeBegins,
                 doc["nightTimeBegins"] | "22:00",
                 sizeof(config.nightTimeBegins));
@@ -99,6 +117,12 @@ bool Config::JSONToConfig(StaticJsonDocument<1024> doc)
                 sizeof(config.nightTimeEnds));
 
         config.hourLight = doc["hourLight"] | false;
+        config.blendColors = doc["blendColors"] | true;
+
+        config.alarmActive = doc["alarmActive"] | false;
+        strlcpy(config.alarmTime,
+                doc["alarmTime"] | "08:00",
+                sizeof(config.alarmTime));
 
         config.ledPin = doc["ledPin"] | 4;
         config.ledCount = doc["ledCount"] | 60;
