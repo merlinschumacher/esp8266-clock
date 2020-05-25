@@ -114,6 +114,24 @@ document.addEventListener('DOMContentLoaded', function (event) {
             });
             document.getElementById("submit").addEventListener("click", function () { onChangedInput(true); return false; });
 
+            document.getElementById("reset").addEventListener("click", function () {
+
+                fetch('reset')
+                    .then(function (response) {
+                        if (response.ok)
+                            return response.text();
+                        else
+                            throw new Error('Failed to trigger reset!');
+                    })
+                    .then(function (res) {
+                        location.reload();
+                    })
+                    .catch(function (err) {
+                        alert('Resetting has failed! Try to manually reload the page.');
+                        console.log(err);
+                    });
+            });
+
         })
         .catch(function (err) {
             alert("Failed to load settings!");

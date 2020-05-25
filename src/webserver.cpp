@@ -1,4 +1,8 @@
 #include "webserver.h"
+#include "index_html.h"
+#include "main_js.h"
+#include "timezones_json.h"
+#include "water_css.h"
 
 #if defined(ESP8266)
 ESP8266WebServer _server(80);
@@ -14,63 +18,6 @@ Webserver::Webserver()
 void Webserver::handleRequest()
 {
     _server.handleClient();
-}
-
-String Webserver::_getContentType(String filename)
-{
-    if (_server.hasArg("download"))
-    {
-        return "application/octet-stream";
-    }
-    else if (filename.endsWith(".htm"))
-    {
-        return "text/html";
-    }
-    else if (filename.endsWith(".html"))
-    {
-        return "text/html";
-    }
-    else if (filename.endsWith(".css"))
-    {
-        return "text/css";
-    }
-    else if (filename.endsWith(".js"))
-    {
-        return "application/javascript";
-    }
-    else if (filename.endsWith(".png"))
-    {
-        return "image/png";
-    }
-    else if (filename.endsWith(".gif"))
-    {
-        return "image/gif";
-    }
-    else if (filename.endsWith(".jpg"))
-    {
-        return "image/jpeg";
-    }
-    else if (filename.endsWith(".ico"))
-    {
-        return "image/x-icon";
-    }
-    else if (filename.endsWith(".xml"))
-    {
-        return "text/xml";
-    }
-    else if (filename.endsWith(".pdf"))
-    {
-        return "application/x-pdf";
-    }
-    else if (filename.endsWith(".zip"))
-    {
-        return "application/x-zip";
-    }
-    else if (filename.endsWith(".gz"))
-    {
-        return "application/x-gzip";
-    }
-    return "text/plain";
 }
 
 void Webserver::_handleNotFound()
@@ -90,43 +37,6 @@ void Webserver::_handleNotFound()
     }
 
     _server.send(404, "text/plain", message);
-}
-
-bool Webserver::_handleFileRead(String path)
-{
-    Serial.println("handleFileRead: " + path);
-    if (path.endsWith("/"))
-    {
-        path += "index.htm";
-    }
-    String contentType = _getContentType(path);
-    String pathWithGz = path + ".gz";
-#if defined(ESP8266)
-    if (SPIFFS.exists(pathWithGz) || SPIFFS.exists(path))
-    {
-        if (SPIFFS.exists(pathWithGz))
-        {
-            path += ".gz";
-        }
-        File file = SPIFFS.open(path, "r");
-        _server.streamFile(file, contentType);
-        file.close();
-        return true;
-    }
-#elif defined(ESP32)
-    if (SPIFFS.exists(pathWithGz) || SPIFFS.exists(path))
-    {
-        if (SPIFFS.exists(pathWithGz))
-        {
-            path += ".gz";
-        }
-        File file = SPIFFS.open(path, "r");
-        _server.streamFile(file, contentType);
-        file.close();
-        return true;
-    }
-#endif
-    return false;
 }
 
 void Webserver::_handleDataGet(Config &config)
@@ -157,25 +67,35 @@ void Webserver::_handleDataPut(Config &config)
     _server.send(200, "text/json", message);
 }
 
+void Webserver::_resetConfig(Config &config)
+{
+    Serial.println("Resetting config file and rebooting.");
+    StaticJsonDocument<128> doc;
+    deserializeJson(doc, "");
+    bool save = config.JSONToConfig(doc);
+    config.save();
+    ESP.eraseConfig();
+    _server.send(200, "text/plain", "reset");
+    ESP.reset();
+}
+
 void Webserver::setup(Config &config)
 {
-    _server.on("/", HTTP_GET, [this]() {
-        if (!_handleFileRead("/index.html"))
-        {
-            _server.send(404, "text/plain", "File not found");
-        }
-    });
+    _server.on("/", HTTP_GET, [this]() {_server.sendHeader("Content-Encoding", "gzip"); _server.send_P(200, "text/html", index_html_gz, index_html_gz_len); });
+    _server.on("/index.html", HTTP_GET, [this]() {_server.sendHeader("Content-Encoding", "gzip"); _server.send_P(200, "text/html", index_html_gz, index_html_gz_len); });
+    _server.on("/timezones.json", HTTP_GET, [this]() { _server.sendHeader("Content-Encoding", "gzip");_server.send_P(200, "text/json", timezones_json_gz, timezones_json_gz_len); });
+    _server.on("/water.css", HTTP_GET, [this]() { _server.sendHeader("Content-Encoding", "gzip");_server.send_P(200, "text/css", water_css_gz, water_css_gz_len); });
+    _server.on("/main.js", HTTP_GET, [this]() { _server.sendHeader("Content-Encoding", "gzip");_server.send_P(200, "application/javascript", main_js_gz, main_js_gz_len); });
+
     _server.on("/time", HTTP_GET, [this]() { _server.send(200, "text/plain", currentTime); });
-    _server.on("/timezones.json", HTTP_GET, [this]() { _server.send_P(200, "application/x-gzip", timezones_json_gz, sizeof(timezones_json_gz)); });
-    _server.on("/water.css", HTTP_GET, [this]() { _server.send_P(200, "application/x-gzip", water_css_gz, sizeof(water_css_gz)); });
+
+    _server.on("/reset", HTTP_GET, [this, &config]() { _resetConfig(config); _server.send(200, "text/plain", ""); });
+
     _server.on("/data.json", HTTP_GET, [this, &config]() { _handleDataGet(config); });
     _server.on("/data.json", HTTP_POST, [this, &config]() { _handleDataPut(config); });
 
     _server.onNotFound([this]() {
-        if (!_handleFileRead(_server.uri()))
-        {
-            _server.send(404, "text/plain", "File not found");
-        }
+        _server.send(404, "text/plain", "File not found");
     });
 #if defined(ESP8266)
     _httpUpdater.setup(&_server);

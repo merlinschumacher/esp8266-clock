@@ -60,4 +60,4 @@ private:
     void _loadFile();
 };
 
-#endif
+#endif //config_h

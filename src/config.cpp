@@ -39,7 +39,7 @@ StaticJsonDocument<1024> Config::configToJSON()
         doc["alarmActive"] = config.alarmActive;
 
         doc["ledPin"] = config.ledPin;
-        doc["ledCount"] = config.ledCount + 1;
+        doc["ledCount"] = config.ledCount;
         doc["ledRoot"] = config.ledRoot + 1;
 
         return doc;

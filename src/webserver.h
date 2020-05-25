@@ -13,8 +13,6 @@
 #include <SPIFFS.h>
 #endif
 #include "config.h"
-#include "timezones.h"
-#include "water_css.h"
 
 class Webserver
 {
@@ -26,10 +24,10 @@ public:
 
 private:
     void _handleNotFound();
-    bool _handleFileRead(String path);
     void _handleDataGet(Config &config);
     void _handleDataPut(Config &config);
+    void _resetConfig(Config &config);
     String _getContentType(String filename);
 };
 
-#endif
+#endif //webserver_h

@@ -168,20 +168,20 @@
                     <label for="hostname">Hostname</label>
                     <input type="text" id="hostname" name="hostname" maxlength="64" size="64" required
                         pattern="^[a-zA-Z][a-zA-Z0-9-_\.]{1,64}$" />
-                    <h2>Firmware Update</h2>
-                    <form method='POST' action='/update' enctype='multipart/form-data'>
-                        Firmware:<br>
-                        <input type='file' accept='.bin' name='firmware'>
-                        <input type='submit' value='Update Firmware'>
-                    </form>
-                    <form method='POST' action='/update' enctype='multipart/form-data'>
-                        FileSystem:<br>
-                        <input type='file' accept='.bin' name='filesystem'>
-                        <input type='submit' value='Update FileSystem'>
-                    </form>
                 </p>
+                <p>
+                    <button id="reset">Reset all settings</button>
             </details>
         </form>
+        <details>
+            <summary>Software Update</summary>
+            <h2>Firmware Update</h2>
+            <form method='POST' action='/update' enctype='multipart/form-data'>
+                Firmware:<br>
+                <input type='file' accept='.bin' name='firmware'>
+                <input type='submit' value='Update Firmware'>
+            </form>
+        </details>
     </div>
     <script src="/main.js"> </script>
 </body>
