@@ -166,6 +166,8 @@ void Webserver::setup(Config &config)
         }
     });
     _server.on("/time", HTTP_GET, [this]() { _server.send(200, "text/plain", currentTime); });
+    _server.on("/timezones.json", HTTP_GET, [this]() { _server.send_P(200, "application/x-gzip", timezones_json_gz, sizeof(timezones_json_gz)); });
+    _server.on("/water.css", HTTP_GET, [this]() { _server.send_P(200, "application/x-gzip", water_css_gz, sizeof(water_css_gz)); });
     _server.on("/data.json", HTTP_GET, [this, &config]() { _handleDataGet(config); });
     _server.on("/data.json", HTTP_POST, [this, &config]() { _handleDataPut(config); });
 

@@ -13,6 +13,8 @@
 #include <SPIFFS.h>
 #endif
 #include "config.h"
+#include "timezones.h"
+#include "water_css.h"
 
 class Webserver
 {

@@ -145,21 +145,18 @@ document.addEventListener('DOMContentLoaded', function (event) {
                 console.log(err);
             });
     }
-    setInterval(function () {
 
-        fetch('time')
-            .then(function (response) {
-                if (response.ok)
-                    return response.text();
-                else
-                    throw new Error('Failed to load current time!');
-            })
-            .then(function (time) {
-                currentTime.innerText = time;
-            })
-            .catch(function (err) {
-                console.log(err);
-            });
-    }, 1000);
-
+    fetch('time')
+        .then(function (response) {
+            if (response.ok)
+                return response.text();
+            else
+                throw new Error('Failed to load current time!');
+        })
+        .then(function (time) {
+            currentTime.innerText = time;
+        })
+        .catch(function (err) {
+            console.log(err);
+        });
 });

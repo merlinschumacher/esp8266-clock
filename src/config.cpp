@@ -127,7 +127,6 @@ bool Config::JSONToConfig(StaticJsonDocument<1024> doc)
         config.ledPin = doc["ledPin"] | 4;
         config.ledCount = doc["ledCount"] | 60;
         config.ledRoot = doc["ledRoot"] | 1;
-        config.ledCount--;
         config.ledRoot--;
 
         if (doc["saveData"] == true)
