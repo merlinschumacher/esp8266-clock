@@ -84,10 +84,10 @@ bool Config::JSONToConfig(StaticJsonDocument<1024> doc)
                 doc["hourColorDimmed"] | "#770000",
                 sizeof(config.hourColorDimmed));
         strlcpy(config.minuteColorDimmed,
-                doc["minuteColor"] | "#007700",
+                doc["minuteColorDimmed"] | "#007700",
                 sizeof(config.minuteColorDimmed));
         strlcpy(config.secondColorDimmed,
-                doc["secondColor"] | "#000077",
+                doc["secondColorDimmed"] | "#000077",
                 sizeof(config.secondColorDimmed));
 
         strlcpy(config.hourDotColor,

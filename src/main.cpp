@@ -139,7 +139,7 @@ void loop()
   uint8_t sec = second();
   uint8_t min = minute();
 
-  if (currentMinute != min)
+  if (currentSecond != sec)
   {
     currentMinute = minute();
     updateColors();
