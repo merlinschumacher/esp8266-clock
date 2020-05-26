@@ -63,7 +63,9 @@ You can update the firmware version using the web interface by uploading a file 
 
 ## Notes and Links
 
-The firmware has been build with [PlatformIO](https://platformio.org/). It uses the libraries [WifiManager](https://github.com/tzapu/WiFiManager), [ArduinoJSON](https://arduinojson.org/), [NeoPixelBus](https://github.com/Makuna/NeoPixelBus/) and [ezTime](https://github.com/ropg/ezTime).
+The firmware has been build with [PlatformIO](https://platformio.org/). It uses the libraries [WifiManager](https://github.com/tzapu/WiFiManager), [ArduinoJSON](https://arduinojson.org/), [NeoPixelBus](https://github.com/Makuna/NeoPixelBus/) and [ezTime](https://github.com/ropg/ezTime). The web interface uses [Water.css](https://watercss.netlify.app/) for styling.
+
+The software was inspired by the [esp8266-NeoPixel-Clock](https://github.com/radimkeseg/esp8266-NeoPixel-Clock) by Radim Keseg. The rainbow was taken from an [example by ACROBOTIC](https://github.com/acrobotic/Ai_Demos_NeoPixelBus/blob/master/Rainbow/Rainbow.ino). The string splitting function was taken from [here](https://github.com/BenTommyE/Arduino_getStringPartByNr/blob/master/getStringPartByNr.ino).
 
 Due to the fact, that the firmware uses the NeoPixelBus bitbanging method there might be issues with longer LED strips. Strips up to 60 LEDs worked fine for me. If you have issues with the LEDs not lighting up correctly change the method in the code and build your own version. See the [NeoPixelBus wiki](https://github.com/Makuna/NeoPixelBus/wiki/ESP8266-NeoMethods#neoesp8266dma800kbpsmethod) for further details. 
 
