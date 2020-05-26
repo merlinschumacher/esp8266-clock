@@ -7,6 +7,9 @@ Config config;
 Timezone localTime;
 Webserver webserver;
 
+WiFiClient espClient;
+PubSubClient client(espClient);
+
 uint8_t currentMinute = 60;
 uint8_t currentSecond = 60;
 

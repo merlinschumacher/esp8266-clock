@@ -7,6 +7,7 @@
 #include <ESPmDNS.h>
 #endif
 #include <WiFiManager.h>
+#include <PubSubClient.h>
 #include <NeoPixelBus.h>
 #include <ezTime.h>
 #include "webserver.h"
@@ -27,8 +28,9 @@ void renderSecondHand()
     currentPixelColor = DimColor(percent, secondColor);
     upcomingPixelColor = DimColor(100 - percent, secondColor);
 
+    uint8_t nextPixel = (secondHand + 1) % 60;
     setPixel(secondHand, currentPixelColor, false);
-    setPixel(secondHand + 1, upcomingPixelColor, false);
+    setPixel(nextPixel, upcomingPixelColor, false);
   }
   else
   {
