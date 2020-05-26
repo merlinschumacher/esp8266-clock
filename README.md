@@ -45,6 +45,12 @@ If your strip contains more or less than 60 LEDs you can specify them. Note that
 
 If your LED does not start at the top (12 o'clock). You can add an offset by specifing the pixel located at the top. 
 
+### Saving
+
+Some changes, like the colors, are updated immediately but not permamently saved. To make them permanent click the big green button at the top.
+
+Changes to the LED configuration or the timezone may need a restart of the ESP.
+
 ### Advanced settings and updates
 
 If you have a NTP server in your local network you can specify it manually. The default "pool.ntp.org" should be sufficient for most uses.
