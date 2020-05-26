@@ -35,6 +35,8 @@ To have the clock light up in a rainbow color on the hour just check the box.
 
 If you want the colors of two elements to blend when they overlap enable "Blend colors when lights overlap". This way for example a red hour hand and a blue second hand overlapping will create a purple light.
 
+To enable a fluid progression of brightness between seconds set the fluid motion option. It is still experimental and might be buggy.
+
 To select your current timezome just click on the dropdown field and look for your contintent and city.
 
 ### LED settings

@@ -37,6 +37,7 @@ struct ConfigData
 
     bool hourLight;
     bool blendColors;
+    bool fluidMotion;
 
     bool alarmActive;
     char alarmTime[6];

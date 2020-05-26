@@ -28,6 +28,7 @@ function onChangedInput(saveData = false) {
 
         configData.hourLight = document.getElementById("hourlight").checked;
         configData.blendColors = document.getElementById("blendcolors").checked;
+        configData.fluidMotion = document.getElementById("fluidmotion").checked;
 
         configData.ledPin = parseInt(document.getElementById("ledpin").value);
         configData.ledCount = parseInt(document.getElementById("ledcount").value);
@@ -100,6 +101,7 @@ document.addEventListener('DOMContentLoaded', function (event) {
 
             document.getElementById("hourlight").checked = configData.hourLight;
             document.getElementById("blendcolors").checked = configData.blendColors;
+            document.getElementById("fluidmotion").checked = configData.fluidMotion;
 
             document.getElementById("ledpin").value = configData.ledPin;
             document.getElementById("ledcount").value = configData.ledCount;

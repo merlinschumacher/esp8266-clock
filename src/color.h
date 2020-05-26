@@ -96,4 +96,14 @@ void updateColors()
     segment = htmlToColor(hourSegmentString);
 }
 
+RgbColor DimColor(float percent, RgbColor sourceColor)
+{
+    RgbColor targetColor(0, 0, 0);
+    percent = 100 - percent;
+    targetColor.R = (sourceColor.R * percent) / 100;
+    targetColor.G = (sourceColor.G * percent) / 100;
+    targetColor.B = (sourceColor.B * percent) / 100;
+    return targetColor;
+}
+
 #endif //color_h

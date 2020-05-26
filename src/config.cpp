@@ -34,6 +34,7 @@ StaticJsonDocument<1024> Config::configToJSON()
 
         doc["hourLight"] = config.hourLight;
         doc["blendColors"] = config.blendColors;
+        doc["fluidMotion"] = config.fluidMotion;
 
         doc["alarmTime"] = config.alarmTime;
         doc["alarmActive"] = config.alarmActive;
@@ -118,6 +119,7 @@ bool Config::JSONToConfig(StaticJsonDocument<1024> doc)
 
         config.hourLight = doc["hourLight"] | false;
         config.blendColors = doc["blendColors"] | true;
+        config.fluidMotion = doc["fluidMotion"] | true;
 
         config.alarmActive = doc["alarmActive"] | false;
         strlcpy(config.alarmTime,

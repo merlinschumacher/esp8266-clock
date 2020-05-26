@@ -16,11 +16,24 @@
 #include "color.h"
 #include "led.h"
 
-uint8_t calculateSecondHand()
+void renderSecondHand()
 {
   uint8_t secondHand = floor((float)(config.config.ledCount / 60) * localTime.second());
   secondHand = (secondHand + config.config.ledRoot) % config.config.ledCount;
-  return secondHand;
+  if (config.config.fluidMotion)
+  {
+    RgbColor currentPixelColor, upcomingPixelColor;
+    float percent = (ms() % 1000) / 10;
+    currentPixelColor = DimColor(percent, secondColor);
+    upcomingPixelColor = DimColor(100 - percent, secondColor);
+
+    setPixel(secondHand, currentPixelColor, false);
+    setPixel(secondHand + 1, upcomingPixelColor, false);
+  }
+  else
+  {
+    setPixel(secondHand, secondColor, config.config.blendColors);
+  }
 }
 
 uint8_t calculateMinuteHand()
@@ -39,7 +52,7 @@ uint8_t calculateHourHand()
   return hourHand;
 }
 
-void showClockHandles()
+void showClockElements()
 {
 
   webserver.currentTime = localTime.dateTime();
@@ -72,7 +85,7 @@ void showClockHandles()
 
   setPixel(calculateHourHand(), hourColor, config.config.blendColors);
   setPixel(calculateMinuteHand(), minuteColor, config.config.blendColors);
-  setPixel(calculateSecondHand(), secondColor, config.config.blendColors);
+  renderSecondHand();
 
   strip->Show();
 }
@@ -119,6 +132,7 @@ void loop()
   MDNS.update();
 #endif
   webserver.handleRequest();
+  events();
 
   uint8_t sec = second();
   uint8_t min = minute();
@@ -137,10 +151,10 @@ void loop()
   {
     hourRainbow();
   }
-  else if (currentSecond != sec && !isAlarm() && currentMinute != 0)
+  else if (!isAlarm() && currentMinute != 0)
   {
     currentSecond = second();
-    showClockHandles();
+    showClockElements();
     animationPos = 0;
   }
 }

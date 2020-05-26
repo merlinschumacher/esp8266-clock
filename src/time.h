@@ -4,16 +4,16 @@
 uint64_t lasttime = 0;
 bool tick()
 {
-    uint64_t diff = micros() - lasttime;
+    uint64_t diff = ms() - lasttime;
 
-    if (diff >= 16000)
+    if (diff >= 16)
     {
-        lasttime = micros();
+        lasttime = ms();
         return true;
     }
     else if (diff < 0)
     {
-        lasttime = micros();
+        lasttime = ms();
         return true;
     }
     return false;
