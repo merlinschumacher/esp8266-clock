@@ -70,9 +70,8 @@ void Webserver::_handleDataPut(Config &config)
 void Webserver::_resetConfig(Config &config)
 {
     Serial.println("Resetting config file and rebooting.");
-    StaticJsonDocument<128> doc;
+    StaticJsonDocument<1> doc;
     deserializeJson(doc, "");
-    bool save = config.JSONToConfig(doc);
     config.save();
     ESP.eraseConfig();
     _server.send(200, "text/plain", "reset");

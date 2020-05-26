@@ -3,7 +3,7 @@ let configData = [];
 function onChangedInput(saveData = false) {
     if (document.getElementById("configform").checkValidity()) {
 
-        configData.hostname = document.getElementById("hostname").value;;
+        configData.hostname = document.getElementById("hostname").value;
         configData.timeserver = document.getElementById("timeserver").value;
         configData.timezone = document.getElementById("timezone").value;
 

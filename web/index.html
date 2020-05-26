@@ -115,14 +115,6 @@
                 </div>
             </fieldset>
 
-            <p>
-                <label for="hourlight">Light up the clock at every hour?</label>
-                <input type="checkbox" id="hourlight" name="hourlight" />
-            </p>
-            <p>
-                <label for="blendcolors">Blend colors when lights overlap?</label>
-                <input type="checkbox" id="blendcolors" name="blendcolors" />
-            </p>
             <fieldset>
                 <legend>When shall the clock be dimmed?</legend>
                 <div class="inline">
@@ -149,14 +141,22 @@
                     </div>
                 </div>
             </fieldset>
+            <p>
+                <label for="hourlight">Light up the clock on the hour?</label>
+                <input type="checkbox" id="hourlight" name="hourlight" />
+            </p>
+            <p>
+                <label for="blendcolors">Blend colors when elements overlap?</label>
+                <input type="checkbox" id="blendcolors" name="blendcolors" />
+            </p>
             <label for="timezone">Local timezone <span class="aside">(Change requires restart)</span></label>
             <select id="timezone" name="timezone"></select>
             <h3>LED settings</h3>
-            <label for="ledpin">RGB strip pin <span class="aside">(Change requires restart)</span></label>
+            <label for="ledpin">LED strip GPIO pin <span class="aside">(Change requires restart)</span></label>
             <input type="number" id="ledpin" name="ledpin" min="0" max="255" step="1" />
-            <label for="ledcount">RGB strip pixel count</label>
+            <label for="ledcount">Number of LEDs</label>
             <input type="number" id="ledcount" name="ledcount" min="1" step="1" />
-            <label for="ledcount">Wich pixel is located at 12?</label>
+            <label for="ledcount">Wich LED is located at 12 o'clock?</label>
             <input type="number" id="ledroot" name="ledroot" min="1" step="1" />
 
             <details>
