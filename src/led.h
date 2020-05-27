@@ -1,5 +1,6 @@
 #ifndef led_h
 #define led_h
+#include <NeoPixelBus.h>
 
 void initStrip()
 {

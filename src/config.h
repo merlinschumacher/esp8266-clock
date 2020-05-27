@@ -3,6 +3,7 @@
 #include <ArduinoJson.h>
 #if defined(ESP8266)
 #include <FS.h>
+#include <LittleFS.h>
 #elif defined(ESP32)
 #include <SPIFFS.h>
 #endif

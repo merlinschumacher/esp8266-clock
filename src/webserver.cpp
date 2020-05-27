@@ -75,7 +75,11 @@ void Webserver::_resetConfig(Config &config)
   config.save();
 
   WiFi.disconnect(true);
+#if defined(ESP8266)
+  LittleFS.format();
+#elif defined(ESP32)
   SPIFFS.format();
+#endif
   ESP.restart();
   _server.send(200, "text/plain", "reset");
 }

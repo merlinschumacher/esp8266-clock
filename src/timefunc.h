@@ -1,6 +1,6 @@
-#ifndef time_h
-#define time_h
-#include <Arduino.h>
+#ifndef timefunc_h
+#define timefunc_h
+#include <ezTime.h>
 uint64_t lasttime = 0;
 
 bool tick()
@@ -97,4 +97,4 @@ bool isAlarm()
     };
 }
 
-#endif //time_h
+#endif //timefunc_h

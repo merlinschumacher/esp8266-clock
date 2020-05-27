@@ -63,7 +63,7 @@ void alarmAnimation()
     strip->Show();
 }
 
-void hourRainbow()
+void hourRainbow(bool isNight = false)
 {
     for (uint16_t j = 0; j < 256 * 5; j++)
     {
@@ -72,7 +72,7 @@ void hourRainbow()
             animationPos = ((i * 256 / config.config.ledCount) + j) & 0xFF;
             RgbColor rainbow = Rainbow(animationPos);
             animationColor = rainbow;
-            if (isNight())
+            if (isNight)
             {
                 rainbow = DimColor(90, rainbow);
             }
@@ -82,10 +82,10 @@ void hourRainbow()
         animationColor.Darken(100);
     }
 }
-void updateColors()
+void updateColors(bool isNight = false)
 {
 
-    if (isNight())
+    if (isNight)
     {
         hourColorString = config.config.hourColorDimmed;
         minuteColorString = config.config.minuteColorDimmed;

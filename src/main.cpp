@@ -3,6 +3,7 @@
 #include <ESP8266WiFi.h>
 #include <ESP8266mDNS.h>
 #include <FS.h>
+#include <LittleFS.h>
 #elif defined(ESP32)
 #include <WiFi.h>
 #include <ESPmDNS.h>
@@ -15,7 +16,7 @@
 #include "webserver.h"
 #include "config.h"
 #include "vars.h"
-#include "time.h"
+#include "timefunc.h"
 #include "color.h"
 #include "led.h"
 
@@ -99,7 +100,7 @@ void setup()
   Serial.begin(115200);
   WiFiManager wifiManager;
 #if defined(ESP8266)
-  SPIFFS.begin();
+  LittleFS.begin();
 #elif defined(ESP32)
   SPIFFS.begin();
 #endif
@@ -138,12 +139,11 @@ void loop()
   events();
 
   uint8_t sec = second();
-  uint8_t min = minute();
 
   if (currentSecond != sec)
   {
     currentMinute = minute();
-    updateColors();
+    updateColors(isNight());
   }
 
   if (isAlarm() && tick())
