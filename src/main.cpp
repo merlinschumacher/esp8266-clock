@@ -32,8 +32,8 @@ void renderSecondHand()
     upcomingPixelColor = DimColor(100 - percent, secondColor);
 
     uint8_t nextPixel = (secondHand + 1) % 60;
-    setPixel(secondHand, currentPixelColor, false);
-    setPixel(nextPixel, upcomingPixelColor, false);
+    setPixel(secondHand, currentPixelColor, config.config.blendColors);
+    setPixel(nextPixel, upcomingPixelColor, config.config.blendColors);
   }
   else
   {
