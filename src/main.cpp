@@ -57,22 +57,8 @@ uint8_t calculateHourHand()
   return hourHand;
 }
 
-void showClockElements()
+void renderHourDots()
 {
-
-  webserver.currentTime = localTime.dateTime();
-  strip->ClearTo(off);
-
-  uint8_t hour12 = localTime.hour() % 12;
-  uint8_t segmentLength = floor((float)config.config.ledCount / 12);
-  uint8_t segmentStart = floor((float)config.config.ledCount / 12 * hour12);
-  segmentStart = (segmentStart + config.config.ledRoot) % config.config.ledCount;
-  for (size_t i = 0; i < segmentLength; i++)
-  {
-    strip->SetPixelColor(segmentStart + i, segment);
-  }
-
-  // calculate hour dots
   float step = (float)config.config.ledCount / 12;
   for (size_t i = 0; i < 12; i++)
   {
@@ -87,12 +73,23 @@ void showClockElements()
       strip->SetPixelColor(dotPos, dot);
     }
   }
+}
 
-  setPixel(calculateHourHand(), hourColor, config.config.blendColors);
-  setPixel(calculateMinuteHand(), minuteColor, config.config.blendColors);
-  renderSecondHand();
+void renderHourSegment()
+{
 
-  strip->Show();
+  uint8_t hour12 = localTime.hour() % 12;
+  uint8_t segmentLength = floor((float)config.config.ledCount / 12);
+  uint8_t segmentStart = floor((float)config.config.ledCount / 12 * hour12);
+  segmentStart = (segmentStart + config.config.ledRoot) % config.config.ledCount;
+  for (size_t i = 0; i < segmentLength; i++)
+  {
+    strip->SetPixelColor(segmentStart + i, segment);
+  }
+}
+
+void showClockElements()
+{
 }
 
 void setup()
@@ -140,24 +137,35 @@ void loop()
 
   uint8_t sec = second();
 
+  strip->ClearTo(off);
   if (currentSecond != sec)
   {
     currentMinute = minute();
+    currentSecond = sec;
     updateColors(isNight());
+    webserver.currentTime = localTime.dateTime();
   }
 
   if (isAlarm() && tick())
   {
-    alarmAnimation();
+    alarmAnimation(isNight());
   }
   else if (config.config.hourLight && currentMinute == 0 && !isAlarm() && tick())
   {
-    hourRainbow();
+    hourRainbow(isNight());
   }
-  else if (!isAlarm() && currentMinute != 0)
+  else if (!isAlarm() && currentMinute != 0 && tick())
   {
-    currentSecond = second();
-    showClockElements();
+    currentSecond = sec;
+    renderHourDots();
+    renderHourSegment();
+
+    setPixel(calculateHourHand(), hourColor, config.config.blendColors);
+    setPixel(calculateMinuteHand(), minuteColor, config.config.blendColors);
+    renderSecondHand();
+
+    strip->Show();
     animationPos = 0;
   }
+  yield();
 }

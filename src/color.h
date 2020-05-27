@@ -50,13 +50,18 @@ RgbColor Alarm(uint8_t WheelPos)
     }
 }
 
-void alarmAnimation()
+void alarmAnimation(bool isNight = false)
 {
 
     for (uint16_t i = 0; i < config.config.ledCount; i++)
     {
         animationPos++;
         animationColor = Alarm(animationPos);
+
+        if (isNight)
+        {
+            animationColor = DimColor(90, animationColor);
+        }
         uint8_t pixelPos = (i + second()) % 60;
         strip->SetPixelColor(pixelPos, animationColor);
     }
