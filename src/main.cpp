@@ -2,9 +2,11 @@
 #if defined(ESP8266)
 #include <ESP8266WiFi.h>
 #include <ESP8266mDNS.h>
+#include <FS.h>
 #elif defined(ESP32)
 #include <WiFi.h>
 #include <ESPmDNS.h>
+#include <SPIFFS.h>
 #endif
 #include <WiFiManager.h>
 #include <PubSubClient.h>
@@ -112,7 +114,6 @@ void setup()
 #elif defined(ESP8266)
   WiFi.setHostname(hostname.c_str());
 #endif
-
   wifiManager.autoConnect(apname.c_str());
   setServer(config.config.timeserver);
   waitForSync();

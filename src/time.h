@@ -1,7 +1,8 @@
 #ifndef time_h
 #define time_h
-
+#include <Arduino.h>
 uint64_t lasttime = 0;
+
 bool tick()
 {
     uint64_t diff = ms() - lasttime;

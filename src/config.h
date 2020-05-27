@@ -1,8 +1,5 @@
 #ifndef config_h
 #define config_h
-#include <stdint.h>
-#include <Arduino.h>
-#include <map>
 #include <ArduinoJson.h>
 #if defined(ESP8266)
 #include <FS.h>

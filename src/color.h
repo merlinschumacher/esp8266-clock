@@ -9,6 +9,16 @@ HtmlColor htmlToColor(String color)
     return rgb;
 }
 
+RgbColor DimColor(float percent, RgbColor sourceColor)
+{
+    RgbColor targetColor(0, 0, 0);
+    percent = 100 - percent;
+    targetColor.R = (sourceColor.R * percent) / 100;
+    targetColor.G = (sourceColor.G * percent) / 100;
+    targetColor.B = (sourceColor.B * percent) / 100;
+    return targetColor;
+}
+
 RgbColor Rainbow(uint8_t WheelPos)
 {
     WheelPos = 255 - WheelPos;
@@ -60,8 +70,13 @@ void hourRainbow()
         for (uint16_t i = 0; i < config.config.ledCount; i++)
         {
             animationPos = ((i * 256 / config.config.ledCount) + j) & 0xFF;
-            animationColor = Rainbow(animationPos);
-            strip->SetPixelColor(i, animationColor);
+            RgbColor rainbow = Rainbow(animationPos);
+            animationColor = rainbow;
+            if (isNight())
+            {
+                rainbow = DimColor(90, rainbow);
+            }
+            strip->SetPixelColor(i, rainbow);
         }
         strip->Show();
         animationColor.Darken(100);
@@ -94,16 +109,6 @@ void updateColors()
     dot = htmlToColor(hourDotString);
     quarter = htmlToColor(hourQuarterString);
     segment = htmlToColor(hourSegmentString);
-}
-
-RgbColor DimColor(float percent, RgbColor sourceColor)
-{
-    RgbColor targetColor(0, 0, 0);
-    percent = 100 - percent;
-    targetColor.R = (sourceColor.R * percent) / 100;
-    targetColor.G = (sourceColor.G * percent) / 100;
-    targetColor.B = (sourceColor.B * percent) / 100;
-    return targetColor;
 }
 
 #endif //color_h

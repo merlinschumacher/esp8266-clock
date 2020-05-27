@@ -1,7 +1,5 @@
-#include <ezTime.h>
-#include <NeoPixelBus.h>
-#include "webserver.h"
-#include "config.h"
+#ifndef vars_h
+#define vars_h
 
 Config config;
 Timezone localTime;
@@ -30,3 +28,5 @@ NeoPixelBus<NeoGrbFeature, NeoEsp8266BitBangWs2812xMethod> *strip = NULL;
 #elif defined(ESP32)
 NeoPixelBus<NeoGrbFeature, NeoEsp32BitBangWs2812xMethod> *strip = NULL;
 #endif
+
+#endif //vars_h
