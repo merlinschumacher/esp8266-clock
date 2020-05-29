@@ -21,6 +21,7 @@ public:
     void setup(Config &config);
     void handleRequest();
     String currentTime = "";
+    String version = "";
 
 private:
     void _handleNotFound();

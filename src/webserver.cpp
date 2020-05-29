@@ -93,6 +93,7 @@ void Webserver::setup(Config &config)
   _server.on("/main.js", HTTP_GET, [this]() { _server.sendHeader("Content-Encoding", "gzip");_server.send_P(200, "application/javascript", main_js_gz, main_js_gz_len); });
 
   _server.on("/time", HTTP_GET, [this]() { _server.send(200, "text/plain", currentTime); });
+  _server.on("/version", HTTP_GET, [this]() { _server.send(200, "text/plain", version); });
 
   _server.on("/reset", HTTP_GET, [this, &config]() { _resetConfig(config); _server.send(200, "text/plain", ""); });
 
