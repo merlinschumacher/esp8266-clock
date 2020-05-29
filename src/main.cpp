@@ -1,3 +1,4 @@
+#define VERSION "v0.4"
 #include <Arduino.h>
 #if defined(ESP8266)
 #include <ESP8266WiFi.h>
@@ -125,6 +126,7 @@ void setup()
   updateColors();
   currentMinute = minute();
   currentSecond = second();
+  webserver.version = VERSION;
 }
 
 void loop()

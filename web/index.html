@@ -14,6 +14,7 @@
 
         .inline {
             display: flex;
+            flex-wrap: wrap;
         }
 
         .inputgroup {
@@ -29,6 +30,7 @@
 
         .inputgroup>label {
             margin-right: 1em;
+            width: 6rem;
         }
 
         .aside {
@@ -39,6 +41,12 @@
         #submit {
             float: right;
             background: #0B0;
+        }
+
+        footer {
+            font-size: .9rem;
+            margin-top: 1em;
+            color: #666;
         }
     </style>
 </head>
@@ -187,7 +195,12 @@
             </form>
         </details>
     </div>
-    <script src="/main.js"> </script>
+    <footer>ESP NeoPixel Clock <span id="version"></span> by Merlin Schumacher.
+        <a href="https://github.com/merlinschumacher/esp8266-clock" target="_blank">
+            Source and Info
+        </a>
+    </footer>
+    <script src="/main.js"></script>
 </body>
 
 </html>

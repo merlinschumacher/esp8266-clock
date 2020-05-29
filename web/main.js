@@ -62,6 +62,7 @@ document.addEventListener('DOMContentLoaded', function (event) {
 
     let main = document.getElementById("main");
     let currentTime = document.getElementById("currenttime");
+    let versionSpan = document.getElementById("version");
 
     document.getElementById("jswarn").remove();
     main.style.display = "block";
@@ -175,6 +176,20 @@ document.addEventListener('DOMContentLoaded', function (event) {
         })
         .then(function (time) {
             currentTime.innerText = time;
+        })
+        .catch(function (err) {
+            console.log(err);
+        });
+
+    fetch('version')
+        .then(function (response) {
+            if (response.ok)
+                return response.text();
+            else
+                throw new Error('Failed to load version!');
+        })
+        .then(function (version) {
+            versionSpan.innerText = version;
         })
         .catch(function (err) {
             console.log(err);
