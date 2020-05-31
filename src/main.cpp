@@ -89,10 +89,6 @@ void renderHourSegment()
   }
 }
 
-void showClockElements()
-{
-}
-
 void setup()
 {
   Serial.begin(115200);
