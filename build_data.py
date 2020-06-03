@@ -6,8 +6,8 @@ target_files = ["index_html.h", "main_js.h", "timezones_json.h", "water_css.h"]
 i = 0
 while i < len(source_files):
     env.Execute("gzip -c -9 web/"+source_files[i]+"> web/"+source_files[i]+".gz")
-    env.Execute("xxd -i web/"+source_files[i]+".gz src/"+target_files[i])
-    with open("src/"+target_files[i], 'r+') as f:
+    env.Execute("xxd -i web/"+source_files[i]+".gz include/"+target_files[i])
+    with open("include/"+target_files[i], 'r+') as f:
         s = f.read()
         s = s.replace("unsigned char", "const char")
         s = s.replace("web_", "")
