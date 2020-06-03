@@ -116,9 +116,14 @@ void setup()
   wifiManager.autoConnect(apname.c_str());
   setServer(config.config.timeserver);
   waitForSync();
+#ifdef DEBUG_BUILD
   setDebug(INFO);
+#else
+  setDebug(INFO);
+#endif
   Serial.println("UTC: " + UTC.dateTime());
   localTime.setLocation(config.config.timezone);
+  localTime.setDefault();
   webserver.setup(config);
   MDNS.begin(hostname.c_str());
   MDNS.addService("http", "tcp", 80);
@@ -135,6 +140,10 @@ void loop()
   MDNS.update();
 #endif
   webserver.handleRequest();
+  if (timeStatus() != timeSet)
+  {
+    return;
+  }
   events();
 
   uint8_t sec = second();
@@ -152,11 +161,11 @@ void loop()
   {
     alarmAnimation(isNight());
   }
-  else if (config.config.hourLight && currentMinute == 0 && !isAlarm() && tick())
+  else if (config.config.hourLight && currentMinute == 0 && tick())
   {
     hourRainbow(isNight());
   }
-  else if (!isAlarm() && currentMinute != 0 && tick())
+  else if (tick())
   {
     currentSecond = sec;
     renderHourDots();
@@ -170,4 +179,10 @@ void loop()
     animationPos = 0;
   }
   yield();
+#ifdef DEBUG_BUILD
+  Serial.println(ESP.getMaxFreeBlockSize());
+  Serial.println(ESP.getFreeHeap());
+  Serial.println(ESP.getHeapFragmentation());
+  Serial.println("====");
+#endif
 }
