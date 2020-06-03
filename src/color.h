@@ -70,7 +70,7 @@ void alarmAnimation(bool isNight = false)
 
 void hourRainbow(bool isNight = false)
 {
-    for (uint16_t j = 0; j < 256 * 5; j++)
+    for (uint16_t j = 0; j < 256; j++)
     {
         for (uint16_t i = 0; i < config.config.ledCount; i++)
         {
@@ -85,6 +85,7 @@ void hourRainbow(bool isNight = false)
         }
         strip->Show();
         animationColor.Darken(100);
+        yield();
     }
 }
 void updateColors(bool isNight = false)
