@@ -4,6 +4,18 @@ Config::Config()
 {
 }
 
+const char *getHostname()
+{
+        char chipid[8];
+        String hostname = "ESPCLOCK-";
+#if defined(ESP8266)
+        String(ESP.getChipId()).toCharArray(chipid, 8);
+#elif defined(ESP32)
+        String((uint32_t)ESP.getEfuseMac()).toCharArray(chipid, 8);
+#endif
+        hostname += String(chipid);
+        return hostname.c_str();
+}
 StaticJsonDocument<1024> Config::configToJSON()
 {
         StaticJsonDocument<1024> doc;
@@ -47,21 +59,19 @@ StaticJsonDocument<1024> Config::configToJSON()
 
 bool Config::JSONToConfig(StaticJsonDocument<1024> doc)
 {
-        char chipid[8];
-        String hostname = "ESPCLOCK-";
+
         if (not doc.containsKey("hostname"))
         {
-#if defined(ESP8266)
-                String(ESP.getChipId()).toCharArray(chipid, 8);
-#elif defined(ESP32)
-                String((uint32_t)ESP.getEfuseMac()).toCharArray(chipid, 8);
-#endif
-                hostname += String(chipid);
+                strlcpy(config.hostname,
+                        doc["hostname"],
+                        sizeof(config.hostname));
         }
-
-        strlcpy(config.hostname,
-                doc["hostname"] | hostname.c_str(),
-                sizeof(config.hostname));
+        else
+        {
+                strlcpy(config.hostname,
+                        getHostname(),
+                        sizeof(config.hostname));
+        }
         strlcpy(config.timeserver,
                 doc["timeserver"] | "pool.ntp.org",
                 sizeof(config.timeserver));
