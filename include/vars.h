@@ -13,7 +13,7 @@ uint8_t currentSecond = 60;
 
 uint8_t animationPos = 0;
 
-String hourColorString, minuteColorString, secondColorString, hourDotString, hourQuarterString, hourSegmentString;
+String hourColorString, minuteColorString, secondColorString, hourDotString, hourQuarterString, hourSegmentString, bgColorString;
 RgbColor animationColor;
 RgbColor off(0, 0, 0);
 RgbColor hourColor(0, 0, 0);
@@ -22,11 +22,18 @@ RgbColor secondColor(0, 0, 0);
 RgbColor dot(0, 0, 0);
 RgbColor quarter(0, 0, 0);
 RgbColor segment(0, 0, 0);
+RgbColor bgColor(0, 0, 0);
 
 #if defined(ESP8266)
 NeoPixelBus<NeoGrbFeature, NeoEsp8266BitBangWs2812xMethod> *strip = NULL;
+#ifdef OPTBACKLIGHT
+NeoPixelBus<NeoGrbFeature, NeoEsp8266BitBangWs2812xMethod> *bgStrip = NULL;
+#endif
 #elif defined(ESP32)
 NeoPixelBus<NeoGrbFeature, NeoEsp32BitBangWs2812xMethod> *strip = NULL;
+#ifdef OPTBACKLIGHT
+NeoPixelBus<NeoGrbFeature, NeoEsp32BitBangWs2812xMethod> *bgStrip = NULL;
+#endif
 #endif
 
 #endif //vars_h

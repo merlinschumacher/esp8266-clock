@@ -99,6 +99,7 @@ void updateColors(bool isNight = false)
         hourDotString = config.config.hourDotColorDimmed;
         hourQuarterString = config.config.hourQuarterColorDimmed;
         hourSegmentString = config.config.hourSegmentColorDimmed;
+        bgColorString = config.config.bgColorDimmed;
     }
     else
     {
@@ -108,6 +109,7 @@ void updateColors(bool isNight = false)
         hourDotString = config.config.hourDotColor;
         hourQuarterString = config.config.hourQuarterColor;
         hourSegmentString = config.config.hourSegmentColor;
+        bgColorString = config.config.bgColorDimmed;
     }
     hourColor = htmlToColor(hourColorString);
     minuteColor = htmlToColor(minuteColorString);
@@ -115,6 +117,7 @@ void updateColors(bool isNight = false)
     dot = htmlToColor(hourDotString);
     quarter = htmlToColor(hourQuarterString);
     segment = htmlToColor(hourSegmentString);
+    bgColor = htmlToColor(bgColorString);
 }
 
 #endif //color_h

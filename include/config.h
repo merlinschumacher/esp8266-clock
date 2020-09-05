@@ -40,6 +40,11 @@ struct ConfigData
     bool alarmActive;
     char alarmTime[6];
 
+    char bgColor[8];
+    char bgColorDimmed[8];
+    uint32_t bgLedPin;
+    uint32_t bgLedCount;
+
     uint32_t ledPin;
     uint32_t ledCount;
     uint32_t ledRoot;

@@ -48,6 +48,10 @@
             margin-top: 1em;
             color: #666;
         }
+
+        .optbacklight {
+            display: none;
+        }
     </style>
 </head>
 
@@ -149,6 +153,33 @@
                     </div>
                 </div>
             </fieldset>
+            <p class="optbglight">
+                <label for="bglight">Enable a second LED strip as background light?</label>
+                <input type="checkbox" id="bglight" name="bglight" onclick="showBgLight()" />
+            </p>
+            <fieldset id="bglightfield" class="optbglight">
+                <legend>Background light settings</legend>
+                <div class="inline">
+                    <div class="inputgroup">
+                        <label for="bgcolor">Background light color</label>
+                        <input type="color" id="bgcolor" name="bgcolor" />
+                    </div>
+                    <div class="inputgroup">
+                        <label for="minutecolordimmed">Background light color in the night</label>
+                        <input type="color" id="bgcolordimmed" name="bgcolordimmed" />
+                    </div>
+                </div>
+                <h3>LED settings</h3>
+                <p>
+                    <label for="bgledpin">Background light LED strip GPIO pin <span class="aside">(Change requires
+                            restart)</span></label>
+                    <input type="number" id="bgledpin" name="bgledpin" min="0" max="255" step="1" />
+                </p>
+                <p>
+                    <label for="bgledcount">Number of LEDs</label>
+                    <input type="number" id="bgledcount" name="bgledcount" min="1" step="1" />
+                </p>
+            </fieldset>
             <p>
                 <label for="hourlight">Light up the clock on the hour?</label>
                 <input type="checkbox" id="hourlight" name="hourlight" />
@@ -183,6 +214,7 @@
                 </p>
                 <p>
                     <button id="reset">Reset all settings</button>
+                </p>
             </details>
         </form>
         <details>

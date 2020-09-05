@@ -1,4 +1,5 @@
 #define VERSION "v0.4"
+#define OPTBACKLIGHT true
 #include <Arduino.h>
 #if defined(ESP8266)
 #include <ESP8266WiFi.h>
@@ -89,6 +90,15 @@ void renderHourSegment()
   }
 }
 
+void setBacklight()
+{
+
+  for (size_t i = 0; i < config.config.bgLedCount; i++)
+  {
+    strip->SetPixelColor(i, bgColor);
+  }
+}
+
 void setup()
 {
   Serial.begin(115200);
@@ -113,7 +123,7 @@ void setup()
   setServer(config.config.timeserver);
   waitForSync();
 #ifdef DEBUG_BUILD
-  setDebug(INFO);
+  setDebug(DEBUG);
 #else
   setDebug(INFO);
 #endif

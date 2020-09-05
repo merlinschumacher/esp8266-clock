@@ -6,15 +6,17 @@ Config::Config()
 
 const char *getHostname()
 {
-        char chipid[8];
-        String hostname = "ESPCLOCK-";
-#if defined(ESP8266)
-        String(ESP.getChipId()).toCharArray(chipid, 8);
-#elif defined(ESP32)
-        String((uint32_t)ESP.getEfuseMac()).toCharArray(chipid, 8);
-#endif
-        hostname += String(chipid);
-        return hostname.c_str();
+        //         char chipid[8];
+        // #if defined(ESP8266)
+        //         String(ESP.getChipId()).toCharArray(chipid, 8);
+        // #elif defined(ESP32)
+        //         String((uint32_t)ESP.getEfuseMac()).toCharArray(chipid, 8);
+        // #endif
+        //         char hostname[64];
+        //         strcpy(hostname, "ESPCLOCK-");
+        //         strcat(hostname, chipid);
+        //         return hostname;
+        return "ESPCLOCK";
 }
 StaticJsonDocument<1024> Config::configToJSON()
 {
@@ -53,7 +55,13 @@ StaticJsonDocument<1024> Config::configToJSON()
         doc["ledPin"] = config.ledPin;
         doc["ledCount"] = config.ledCount;
         doc["ledRoot"] = config.ledRoot + 1;
-
+#ifdef OPTBACKLIGHT
+        dec["optBaclight"] = true;
+        doc["bgLedPin"] = config.bgLedPin;
+        doc["bgLedCount"] = config.bgLedCount;
+        doc["bgColor"] = config.bgColorDimmed;
+        doc["bgColor"] = config.bgColorDimmed;
+#endif
         return doc;
 }
 
@@ -135,6 +143,17 @@ bool Config::JSONToConfig(StaticJsonDocument<1024> doc)
                 doc["alarmTime"] | "08:00",
                 sizeof(config.alarmTime));
 
+#ifdef OPTBACKLIGHT
+
+        strlcpy(config.bgColor,
+                doc["bgColor"] | "#000000",
+                sizeof(config.bgColor));
+        strlcpy(config.bgColorDimmed,
+                doc["bgColor"] | "#000000",
+                sizeof(config.bgColorDimmed));
+        config.ledPin = doc["bgLedPin"] | 6;
+        config.ledPin = doc["bgLedCount"] | 60;
+#endif
         config.ledPin = doc["ledPin"] | 4;
         config.ledCount = doc["ledCount"] | 60;
         config.ledRoot = doc["ledRoot"] | 1;
