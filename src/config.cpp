@@ -6,21 +6,18 @@ Config::Config()
 
 const char *getHostname()
 {
-        //         char chipid[8];
-        // #if defined(ESP8266)
-        //         String(ESP.getChipId()).toCharArray(chipid, 8);
-        // #elif defined(ESP32)
-        //         String((uint32_t)ESP.getEfuseMac()).toCharArray(chipid, 8);
-        // #endif
-        //         char hostname[64];
-        //         strcpy(hostname, "ESPCLOCK-");
-        //         strcat(hostname, chipid);
-        //         return hostname;
-        return "ESPCLOCK";
+        char hostname[64];
+#if defined(ESP8266)
+        uint32_t chipid = ESP.getChipId();
+#elif defined(ESP32)
+        uint64_t chipid = ESP.getEfuseMac();
+#endif
+        snprintf(hostname, 64, "ESPCLOCK-%08X", chipid);
+        return hostname;
 }
-StaticJsonDocument<1024> Config::configToJSON()
+StaticJsonDocument<2048> Config::configToJSON()
 {
-        StaticJsonDocument<1024> doc;
+        StaticJsonDocument<2048> doc;
         // Set the values in the document
         doc["hostname"] = config.hostname;
         doc["timeserver"] = config.timeserver;
@@ -56,7 +53,7 @@ StaticJsonDocument<1024> Config::configToJSON()
         doc["ledCount"] = config.ledCount;
         doc["ledRoot"] = config.ledRoot + 1;
 #ifdef OPTBACKLIGHT
-        dec["optBaclight"] = true;
+        dec["bgLight"] = config.bgLight;
         doc["bgLedPin"] = config.bgLedPin;
         doc["bgLedCount"] = config.bgLedCount;
         doc["bgColor"] = config.bgColorDimmed;
@@ -65,7 +62,7 @@ StaticJsonDocument<1024> Config::configToJSON()
         return doc;
 }
 
-bool Config::JSONToConfig(StaticJsonDocument<1024> doc)
+bool Config::JSONToConfig(StaticJsonDocument<2048> doc)
 {
 
         if (not doc.containsKey("hostname"))
@@ -145,6 +142,7 @@ bool Config::JSONToConfig(StaticJsonDocument<1024> doc)
 
 #ifdef OPTBACKLIGHT
 
+        config.bgLight = doc["bgLight"] | false;
         strlcpy(config.bgColor,
                 doc["bgColor"] | "#000000",
                 sizeof(config.bgColor));

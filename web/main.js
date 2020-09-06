@@ -46,6 +46,7 @@ function onChangedInput(saveData = false) {
         configData.alarmActive = document.getElementById("alarmactive").checked;
         configData.alarmTime = document.getElementById("alarmtime").value;
 
+        configData.bgLight = parseInt(document.getElementById("bglight").value);
         configData.bgColor = document.getElementById("bgcolor").value;
         configData.bgColorDimmed = document.getElementById("bgcolordimmed").value;
         configData.bgLedPin = parseInt(document.getElementById("bgledpin").value);
@@ -125,17 +126,12 @@ document.addEventListener('DOMContentLoaded', function (event) {
             document.getElementById("alarmactive").checked = configData.alarmActive;
             document.getElementById("alarmtime").value = configData.alarmTime;
 
+            document.getElementById("bglight").value = configData.bgLight;
             document.getElementById("bgcolor").value = configData.bgColor;
             document.getElementById("bgcolordimmed").value = configData.bgColorDimmed;
             document.getElementById("bgledpin").value = configData.bgLedPin;
             document.getElementById("bgledcount").value = configData.bgLedCount;
 
-            if (configData.optBacklight) {
-                var elem = document.getElementsByClassName("optbacklight");
-                for (let i = 0; i < x.length; i++) {
-                    elem[i].style.display = "unset";
-                }
-            }
             let configInputs = document.querySelectorAll("#configform input, #configform select");
             configInputs.forEach(element => {
                 element.addEventListener("change", function () { onChangedInput(false); });

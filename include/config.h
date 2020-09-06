@@ -40,6 +40,7 @@ struct ConfigData
     bool alarmActive;
     char alarmTime[6];
 
+    bool bgLight;
     char bgColor[8];
     char bgColorDimmed[8];
     uint32_t bgLedPin;
@@ -57,8 +58,8 @@ public:
     ConfigData config;
     void save();
     void load();
-    StaticJsonDocument<1024> configToJSON();
-    bool JSONToConfig(StaticJsonDocument<1024> doc);
+    StaticJsonDocument<2048> configToJSON();
+    bool JSONToConfig(StaticJsonDocument<2048> doc);
 
 private:
     void _loadFile();

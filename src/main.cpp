@@ -1,5 +1,5 @@
 #define VERSION "v0.4"
-#define OPTBACKLIGHT true
+// #define OPTBACKLIGHT true
 #include <Arduino.h>
 #if defined(ESP8266)
 #include <ESP8266WiFi.h>
@@ -102,6 +102,7 @@ void setBacklight()
 void setup()
 {
   Serial.begin(115200);
+  Serial.println("ESPCLOCK");
   WiFiManager wifiManager;
 #if defined(ESP8266)
   LittleFS.begin();
