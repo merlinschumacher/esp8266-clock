@@ -109,7 +109,7 @@ void updateColors(bool isNight = false)
         hourDotString = config.config.hourDotColor;
         hourQuarterString = config.config.hourQuarterColor;
         hourSegmentString = config.config.hourSegmentColor;
-        bgColorString = config.config.bgColorDimmed;
+        bgColorString = config.config.bgColor;
     }
     hourColor = htmlToColor(hourColorString);
     minuteColor = htmlToColor(minuteColorString);

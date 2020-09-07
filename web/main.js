@@ -1,11 +1,12 @@
 let configData = [];
 
-function showBgLight() {
-    let x = document.getElementById("bglightsettings");
-    if (x.style.display === "none") {
-        x.style.display = "block";
+function showBgLightOptions() {
+    let optionBox = document.getElementById("bglightfield");
+    let checkbox = document.getElementById("bglight");
+    if (checkbox.checked) {
+        optionBox.style.display = "block";
     } else {
-        x.style.display = "none";
+        optionBox.style.display = "none";
     }
 }
 
@@ -46,7 +47,7 @@ function onChangedInput(saveData = false) {
         configData.alarmActive = document.getElementById("alarmactive").checked;
         configData.alarmTime = document.getElementById("alarmtime").value;
 
-        configData.bgLight = parseInt(document.getElementById("bglight").value);
+        configData.bgLight = document.getElementById("bglight").checked;
         configData.bgColor = document.getElementById("bgcolor").value;
         configData.bgColorDimmed = document.getElementById("bgcolordimmed").value;
         configData.bgLedPin = parseInt(document.getElementById("bgledpin").value);
@@ -126,7 +127,7 @@ document.addEventListener('DOMContentLoaded', function (event) {
             document.getElementById("alarmactive").checked = configData.alarmActive;
             document.getElementById("alarmtime").value = configData.alarmTime;
 
-            document.getElementById("bglight").value = configData.bgLight;
+            document.getElementById("bglight").checked = configData.bgLight;
             document.getElementById("bgcolor").value = configData.bgColor;
             document.getElementById("bgcolordimmed").value = configData.bgColorDimmed;
             document.getElementById("bgledpin").value = configData.bgLedPin;
@@ -155,7 +156,8 @@ document.addEventListener('DOMContentLoaded', function (event) {
                         console.log(err);
                     });
             });
-
+            document.getElementById("bglight").addEventListener("click", function () { showBgLightOptions(); return false; });
+            showBgLightOptions();
         })
         .catch(function (err) {
             alert("Failed to load settings!");

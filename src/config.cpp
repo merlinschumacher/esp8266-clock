@@ -4,15 +4,17 @@ Config::Config()
 {
 }
 
-const char *getHostname()
+String _getHostname()
 {
-        char hostname[64];
+        String hostname;
 #if defined(ESP8266)
         uint32_t chipid = ESP.getChipId();
 #elif defined(ESP32)
         uint64_t chipid = ESP.getEfuseMac();
 #endif
-        snprintf(hostname, 64, "ESPCLOCK-%08X", chipid);
+        char chipidS[16];
+        snprintf(chipidS, 64, "%08X", chipid);
+        hostname = "ESPCLOCK-" + String(chipidS);
         return hostname;
 }
 StaticJsonDocument<2048> Config::configToJSON()
@@ -52,20 +54,19 @@ StaticJsonDocument<2048> Config::configToJSON()
         doc["ledPin"] = config.ledPin;
         doc["ledCount"] = config.ledCount;
         doc["ledRoot"] = config.ledRoot + 1;
-#ifdef OPTBACKLIGHT
-        dec["bgLight"] = config.bgLight;
+
+        doc["bgLight"] = config.bgLight;
         doc["bgLedPin"] = config.bgLedPin;
         doc["bgLedCount"] = config.bgLedCount;
-        doc["bgColor"] = config.bgColorDimmed;
-        doc["bgColor"] = config.bgColorDimmed;
-#endif
+        doc["bgColor"] = config.bgColor;
+        doc["bgColorDimmed"] = config.bgColorDimmed;
         return doc;
 }
 
 bool Config::JSONToConfig(StaticJsonDocument<2048> doc)
 {
 
-        if (not doc.containsKey("hostname"))
+        if (doc.containsKey("hostname"))
         {
                 strlcpy(config.hostname,
                         doc["hostname"],
@@ -74,7 +75,7 @@ bool Config::JSONToConfig(StaticJsonDocument<2048> doc)
         else
         {
                 strlcpy(config.hostname,
-                        getHostname(),
+                        _getHostname().c_str(),
                         sizeof(config.hostname));
         }
         strlcpy(config.timeserver,
@@ -140,18 +141,16 @@ bool Config::JSONToConfig(StaticJsonDocument<2048> doc)
                 doc["alarmTime"] | "08:00",
                 sizeof(config.alarmTime));
 
-#ifdef OPTBACKLIGHT
-
         config.bgLight = doc["bgLight"] | false;
         strlcpy(config.bgColor,
                 doc["bgColor"] | "#000000",
                 sizeof(config.bgColor));
         strlcpy(config.bgColorDimmed,
-                doc["bgColor"] | "#000000",
+                doc["bgColorDimmed"] | "#000000",
                 sizeof(config.bgColorDimmed));
-        config.ledPin = doc["bgLedPin"] | 6;
-        config.ledPin = doc["bgLedCount"] | 60;
-#endif
+        config.bgLedPin = doc["bgLedPin"] | 15;
+        config.bgLedCount = doc["bgLedCount"] | 60;
+
         config.ledPin = doc["ledPin"] | 4;
         config.ledCount = doc["ledCount"] | 60;
         config.ledRoot = doc["ledRoot"] | 1;
@@ -173,13 +172,13 @@ void Config::load()
 #if defined(ESP8266)
         File sourcefile = LittleFS.open("data.json", "r");
 #elif defined(ESP32)
-        File sourcefile = SPIFFS.open("data.json", "r");
+        File sourcefile = SPIFFS.open("/data.json", "r");
 #endif
 
         // Allocate a temporary JsonDocument
         // Don't forget to change the capacity to match your requirements.
         // Use arduinojson.org/v6/assistant to compute the capacity.
-        StaticJsonDocument<1024> doc;
+        StaticJsonDocument<2048> doc;
 
         // Deserialize the JSON document
         DeserializationError error = deserializeJson(doc, sourcefile);
@@ -204,7 +203,7 @@ void Config::save()
 #if defined(ESP8266)
         File targetfile = LittleFS.open("data.json", "w");
 #elif defined(ESP32)
-        File targetfile = SPIFFS.open("data.json", "w");
+        File targetfile = SPIFFS.open("/data.json", "w");
 #endif
 
         // Open file for writing
@@ -214,7 +213,7 @@ void Config::save()
                 return;
         }
 
-        StaticJsonDocument<1024> doc;
+        StaticJsonDocument<2048> doc;
         doc = Config::configToJSON();
         // Serialize JSON to file
         if (serializeJson(doc, targetfile) == 0)

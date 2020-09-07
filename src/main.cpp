@@ -1,5 +1,4 @@
 #define VERSION "v0.4"
-// #define OPTBACKLIGHT true
 #include <Arduino.h>
 #if defined(ESP8266)
 #include <ESP8266WiFi.h>
@@ -95,8 +94,9 @@ void setBacklight()
 
   for (size_t i = 0; i < config.config.bgLedCount; i++)
   {
-    strip->SetPixelColor(i, bgColor);
+    bgStrip->SetPixelColor(i, bgColor);
   }
+  bgStrip->Show();
 }
 
 void setup()
@@ -107,6 +107,7 @@ void setup()
 #if defined(ESP8266)
   LittleFS.begin();
 #elif defined(ESP32)
+  SPIFFS.format();
   SPIFFS.begin();
 #endif
   config.load();
@@ -162,6 +163,16 @@ void loop()
     currentSecond = sec;
     updateColors(isNight());
     webserver.currentTime = localTime.dateTime();
+    setBacklight();
+#ifdef DEBUG_BUILD
+    Serial.print("MaxFreeBlockSize: ");
+    Serial.println(ESP.getMaxFreeBlockSize());
+    Serial.print("FreeHeap: ");
+    Serial.println(ESP.getFreeHeap());
+    Serial.print("HeapFragmentation: ");
+    Serial.println(ESP.getHeapFragmentation());
+    Serial.println("====");
+#endif
   }
 
   if (isAlarm() && tick())
@@ -186,10 +197,4 @@ void loop()
     animationPos = 0;
   }
   yield();
-#ifdef DEBUG_BUILD
-  Serial.println(ESP.getMaxFreeBlockSize());
-  Serial.println(ESP.getFreeHeap());
-  Serial.println(ESP.getHeapFragmentation());
-  Serial.println("====");
-#endif
 }

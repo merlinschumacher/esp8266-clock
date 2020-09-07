@@ -44,7 +44,7 @@ void Webserver::_handleDataGet(Config &config)
   Serial.println("Loading config data");
   String message;
   config.load();
-  StaticJsonDocument<1024> doc = config.configToJSON();
+  StaticJsonDocument<2048> doc = config.configToJSON();
   serializeJson(doc, message);
   _server.send(200, "text/json", message);
 }
@@ -52,7 +52,7 @@ void Webserver::_handleDataGet(Config &config)
 void Webserver::_handleDataPut(Config &config)
 {
   String message = _server.arg(0);
-  StaticJsonDocument<1024> doc;
+  StaticJsonDocument<2048> doc;
   deserializeJson(doc, message);
   bool save = config.JSONToConfig(doc);
   if (save == true)

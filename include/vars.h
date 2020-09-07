@@ -26,14 +26,10 @@ RgbColor bgColor(0, 0, 0);
 
 #if defined(ESP8266)
 NeoPixelBus<NeoGrbFeature, NeoEsp8266BitBangWs2812xMethod> *strip = NULL;
-#ifdef OPTBACKLIGHT
 NeoPixelBus<NeoGrbFeature, NeoEsp8266BitBangWs2812xMethod> *bgStrip = NULL;
-#endif
 #elif defined(ESP32)
 NeoPixelBus<NeoGrbFeature, NeoEsp32BitBangWs2812xMethod> *strip = NULL;
-#ifdef OPTBACKLIGHT
 NeoPixelBus<NeoGrbFeature, NeoEsp32BitBangWs2812xMethod> *bgStrip = NULL;
-#endif
 #endif
 
 #endif //vars_h
