@@ -18,3 +18,6 @@ while i < len(source_files):
         f.close()
     env.Execute("rm web/"+source_files[i]+".gz")
     i = i+1
+
+build_tag = env['PIOENV']
+env.Replace(PROGNAME="firmware_%s" % build_tag)
