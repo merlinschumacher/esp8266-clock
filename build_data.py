@@ -1,5 +1,6 @@
 Import("env")
 
+build_tag = env['PIOENV']
 print("converting web files to headers");
 source_files = ["index.html", "main.js", "timezones.json", "water.css"]
 target_files = ["index_html.h", "main_js.h", "timezones_json.h", "water_css.h"]
@@ -19,5 +20,6 @@ while i < len(source_files):
     env.Execute("rm web/"+source_files[i]+".gz")
     i = i+1
 
-build_tag = env['PIOENV']
+print("changing program filename to ") 
+print( PROGNAME="firmware_%s" % build_tag )
 env.Replace(PROGNAME="firmware_%s" % build_tag)
