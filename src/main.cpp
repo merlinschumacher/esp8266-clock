@@ -10,7 +10,6 @@
 #include <SPIFFS.h>
 #endif
 #include <WiFiManager.h>
-#include <PubSubClient.h>
 #include <NeoPixelBus.h>
 #include <ezTime.h>
 #include "webserver.h"
