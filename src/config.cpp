@@ -4,7 +4,7 @@ Config::Config()
 {
 }
 
-String _getHostname()
+String Config::_getHostname()
 {
         String hostname;
 #if defined(ESP8266)
@@ -17,6 +17,7 @@ String _getHostname()
         hostname = "ESPCLOCK-" + String(chipidS);
         return hostname;
 }
+
 StaticJsonDocument<2048> Config::configToJSON()
 {
         StaticJsonDocument<2048> doc;

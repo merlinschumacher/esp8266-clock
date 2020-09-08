@@ -64,8 +64,16 @@ void alarmAnimation(bool isNight = false)
         }
         uint8_t pixelPos = (i + second()) % 60;
         strip->SetPixelColor(pixelPos, animationColor);
+        if (config.config.bgLight)
+        {
+            bgStrip->SetPixelColor(pixelPos, animationColor);
+        }
     }
     strip->Show();
+    if (config.config.bgLight)
+    {
+        bgStrip->Show();
+    }
 }
 
 void hourRainbow(bool isNight = false)
@@ -82,8 +90,16 @@ void hourRainbow(bool isNight = false)
                 rainbow = DimColor(90, rainbow);
             }
             strip->SetPixelColor(i, rainbow);
+            if (config.config.bgLight)
+            {
+                bgStrip->SetPixelColor(i, rainbow);
+            }
         }
         strip->Show();
+        if (config.config.bgLight)
+        {
+            bgStrip->Show();
+        }
         animationColor.Darken(100);
         yield();
     }

@@ -1,4 +1,3 @@
-#define VERSION "v0.4"
 #include <Arduino.h>
 #if defined(ESP8266)
 #include <ESP8266WiFi.h>
@@ -91,18 +90,38 @@ void renderHourSegment()
 
 void setBacklight()
 {
-
-  for (size_t i = 0; i < config.config.bgLedCount; i++)
+  if (config.config.bgLight && !isAlarm() && currentMinute != 15)
   {
-    bgStrip->SetPixelColor(i, bgColor);
+    for (size_t i = 0; i < config.config.bgLedCount; i++)
+    {
+      bgStrip->SetPixelColor(i, bgColor);
+    }
+    bgStrip->Show();
   }
-  bgStrip->Show();
+}
+
+void printDebugInfo()
+{
+#ifdef DEBUG_BUILD
+  Serial.println("====");
+  Serial.print("MaxFreeBlockSize: ");
+  Serial.println(ESP.getMaxFreeBlockSize());
+  Serial.print("FreeHeap: ");
+  Serial.println(ESP.getFreeHeap());
+  Serial.print("HeapFragmentation: ");
+  Serial.println(ESP.getHeapFragmentation());
+  Serial.print("Uptime: ");
+  Serial.println(int(millis() / 1000));
+  Serial.println("====");
+#endif
 }
 
 void setup()
 {
   Serial.begin(115200);
-  Serial.println("ESPCLOCK");
+  Serial.println();
+  Serial.print("ESPCLOCK Version ");
+  Serial.println(VERSION);
   WiFiManager wifiManager;
 #if defined(ESP8266)
   LittleFS.begin();
@@ -121,14 +140,14 @@ void setup()
 #elif defined(ESP8266)
   WiFi.setHostname(hostname.c_str());
 #endif
+
   wifiManager.autoConnect(apname.c_str());
-  setServer(config.config.timeserver);
-  waitForSync();
 #ifdef DEBUG_BUILD
   setDebug(DEBUG);
-#else
-  setDebug(INFO);
 #endif
+  setServer(config.config.timeserver);
+  waitForSync();
+
   Serial.println("UTC: " + UTC.dateTime());
   localTime.setLocation(config.config.timezone);
   localTime.setDefault();
@@ -164,22 +183,14 @@ void loop()
     updateColors(isNight());
     webserver.currentTime = localTime.dateTime();
     setBacklight();
-#ifdef DEBUG_BUILD
-    Serial.print("MaxFreeBlockSize: ");
-    Serial.println(ESP.getMaxFreeBlockSize());
-    Serial.print("FreeHeap: ");
-    Serial.println(ESP.getFreeHeap());
-    Serial.print("HeapFragmentation: ");
-    Serial.println(ESP.getHeapFragmentation());
-    Serial.println("====");
-#endif
+    printDebugInfo();
   }
 
   if (isAlarm() && tick())
   {
     alarmAnimation(isNight());
   }
-  else if (config.config.hourLight && currentMinute == 0 && tick())
+  else if (config.config.hourLight && currentMinute == 15 && tick())
   {
     hourRainbow(isNight());
   }
