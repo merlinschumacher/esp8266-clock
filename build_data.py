@@ -20,6 +20,5 @@ while i < len(source_files):
     env.Execute("rm web/"+source_files[i]+".gz")
     i = i+1
 
-print("changing program filename to ") 
-print( PROGNAME="firmware_%s" % build_tag )
+print("changing program filename ") 
 env.Replace(PROGNAME="firmware_%s" % build_tag)
