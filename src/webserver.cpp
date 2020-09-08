@@ -1,8 +1,8 @@
-#include "webserver.h"
-#include "index_html.h"
-#include "main_js.h"
-#include "timezones_json.h"
-#include "water_css.h"
+#include "webserver.hpp"
+#include "index_html.hpp"
+#include "main_js.hpp"
+#include "timezones_json.hpp"
+#include "water_css.hpp"
 
 #if defined(ESP8266)
 ESP8266WebServer _server(80);

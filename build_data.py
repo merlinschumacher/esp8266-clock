@@ -3,7 +3,7 @@ Import("env")
 build_tag = env['PIOENV']
 print("converting web files to headers");
 source_files = ["index.html", "main.js", "timezones.json", "water.css"]
-target_files = ["index_html.h", "main_js.h", "timezones_json.h", "water_css.h"]
+target_files = ["index_html.hpp", "main_js.hpp", "timezones_json.hpp", "water_css.hpp"]
 i = 0
 while i < len(source_files):
     env.Execute("gzip -c -9 web/"+source_files[i]+"> web/"+source_files[i]+".gz")

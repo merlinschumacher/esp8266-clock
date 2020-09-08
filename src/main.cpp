@@ -12,12 +12,12 @@
 #include <WiFiManager.h>
 #include <NeoPixelBus.h>
 #include <ezTime.h>
-#include "webserver.h"
-#include "config.h"
-#include "vars.h"
-#include "timefunc.h"
-#include "color.h"
-#include "led.h"
+#include "webserver.hpp"
+#include "config.hpp"
+#include "vars.hpp"
+#include "timefunc.hpp"
+#include "color.hpp"
+#include "led.hpp"
 
 void renderSecondHand()
 {

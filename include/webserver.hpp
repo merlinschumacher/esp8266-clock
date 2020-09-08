@@ -12,7 +12,7 @@
 #include <Update.h>
 #include <SPIFFS.h>
 #endif
-#include "config.h"
+#include "config.hpp"
 
 class Webserver
 {
