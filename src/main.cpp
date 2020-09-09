@@ -89,7 +89,7 @@ void renderHourSegment()
 
 void setBacklight()
 {
-  if (config.config.bgLight && !isAlarm() && currentMinute != 15)
+  if (config.config.bgLight && !isAlarm() && currentMinute != 0)
   {
     for (size_t i = 0; i < config.config.bgLedCount; i++)
     {
@@ -189,7 +189,7 @@ void loop()
   {
     alarmAnimation(isNight());
   }
-  else if (config.config.hourLight && currentMinute == 15 && tick())
+  else if (config.config.hourLight && currentMinute == 0 && tick())
   {
     hourRainbow(isNight());
   }
