@@ -17,7 +17,7 @@ if build_type  == "debug":
         .strip()
         .decode("utf-8")
     )
-    dt_string = datetime.now().strftime("_%d-%m-%Y_%H:%M:%S")
+    dt_string = datetime.now().strftime("_%d-%m-%Y_%H-%M-%S")
     version = revision + dt_string; 
     flags = "-fexceptions -DDEBUG_BUILD -O0 -ggdb3 -g3 "
 else:
