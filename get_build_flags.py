@@ -32,4 +32,4 @@ if sys.argv[2] == "esp8266":
     common_flags = "-DCONT_STACKSIZE=20480 "
     print(common_flags + flags + "-DVERSION='\"%s\"'" % version)
 elif sys.argv[2] == "esp32":
-    print("-DVERSION='\"%s\"'" % version)
+    print(flags + " -DVERSION='\"%s\"'" % version)

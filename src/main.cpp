@@ -103,12 +103,16 @@ void printDebugInfo()
 {
 #ifdef DEBUG_BUILD
   Serial.println("====");
-  Serial.print("MaxFreeBlockSize: ");
-  Serial.println(ESP.getMaxFreeBlockSize());
   Serial.print("FreeHeap: ");
   Serial.println(ESP.getFreeHeap());
+#if defined(ESP8266)
   Serial.print("HeapFragmentation: ");
   Serial.println(ESP.getHeapFragmentation());
+  Serial.print("MaxFreeBlockSize: ");
+  Serial.println(ESP.getMaxFreeBlockSize());
+#else if defined(ESP32)
+  Serial.print(xPortGetFreeHeapSize());
+#endif
   Serial.print("Uptime: ");
   Serial.println(int(millis() / 1000));
   Serial.println("====");
