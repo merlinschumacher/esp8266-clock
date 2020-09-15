@@ -26,7 +26,7 @@ void renderSecondHand()
   if (config.config.fluidMotion)
   {
     RgbColor currentPixelColor, upcomingPixelColor;
-    float percent = (ms() % 1000) / 10;
+    float percent = (localTime.ms() % 1000) / 10;
     currentPixelColor = DimColor(percent, secondColor);
     upcomingPixelColor = DimColor(100 - percent, secondColor);
 
@@ -54,6 +54,21 @@ uint8_t calculateHourHand()
   uint8_t minuteOffset = floor((float)localTime.minute() * config.config.ledCount / 12 / 60);
   hourHand = (hourHand + minuteOffset + config.config.ledRoot) % config.config.ledCount;
   return hourHand;
+}
+
+uint8_t calculateDayHand()
+{
+  return config.config.ledDayRoot + localTime.day();
+}
+
+uint8_t calculateMonthHand()
+{
+  return config.config.ledMonthRoot + localTime.month();
+}
+
+uint8_t calculateWeekdayHand()
+{
+  return config.config.ledWeekdayRoot + localTime.weekday();
 }
 
 void renderHourDots()
@@ -210,5 +225,12 @@ void loop()
     strip->Show();
     animationPos = 0;
   }
+  if (minuteChanged())
+  {
+    Serial.println(calculateDayHand());
+    Serial.println(calculateMonthHand());
+    Serial.println(calculateWeekdayHand());
+  }
+
   yield();
 }

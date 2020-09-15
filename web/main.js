@@ -43,6 +43,9 @@ function onChangedInput(saveData = false) {
         configData.ledPin = parseInt(document.getElementById("ledpin").value);
         configData.ledCount = parseInt(document.getElementById("ledcount").value);
         configData.ledRoot = parseInt(document.getElementById("ledroot").value);
+        configData.ledDayRoot = parseInt(document.getElementById("leddayroot").value);
+        configData.ledMonthRoot = parseInt(document.getElementById("ledmonthroot").value);
+        configData.ledWeekdayRoot = parseInt(document.getElementById("ledweekdayroot").value);
 
         configData.alarmActive = document.getElementById("alarmactive").checked;
         configData.alarmTime = document.getElementById("alarmtime").value;
@@ -123,6 +126,9 @@ document.addEventListener('DOMContentLoaded', function (event) {
             document.getElementById("ledpin").value = configData.ledPin;
             document.getElementById("ledcount").value = configData.ledCount;
             document.getElementById("ledroot").value = configData.ledRoot;
+            document.getElementById("leddayroot").value = configData.ledDayRoot;
+            document.getElementById("ledmonthroot").value = configData.ledMonthRoot;
+            document.getElementById("ledweekdayroot").value = configData.ledWeekdayRoot;
 
             document.getElementById("alarmactive").checked = configData.alarmActive;
             document.getElementById("alarmtime").value = configData.alarmTime;

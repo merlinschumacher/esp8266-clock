@@ -49,6 +49,9 @@ struct ConfigData
     uint32_t ledPin;
     uint32_t ledCount;
     uint32_t ledRoot;
+    uint32_t ledMonthRoot;
+    uint32_t ledDayRoot;
+    uint32_t ledWeekdayRoot;
 };
 
 class Config

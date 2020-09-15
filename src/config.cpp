@@ -55,6 +55,9 @@ StaticJsonDocument<2048> Config::configToJSON()
         doc["ledPin"] = config.ledPin;
         doc["ledCount"] = config.ledCount;
         doc["ledRoot"] = config.ledRoot + 1;
+        doc["ledDayRoot"] = config.ledDayRoot + 1;
+        doc["ledMonthRoot"] = config.ledMonthRoot + 1;
+        doc["ledWeekdayRoot"] = config.ledWeekdayRoot + 1;
 
         doc["bgLight"] = config.bgLight;
         doc["bgLedPin"] = config.bgLedPin;
@@ -155,7 +158,14 @@ bool Config::JSONToConfig(StaticJsonDocument<2048> doc)
         config.ledPin = doc["ledPin"] | 4;
         config.ledCount = doc["ledCount"] | 60;
         config.ledRoot = doc["ledRoot"] | 1;
+        config.ledDayRoot = doc["ledDayRoot"] | 62;
+        config.ledMonthRoot = doc["ledMonthRoot"] | 93;
+        config.ledWeekdayRoot = doc["ledWeekdayRoot"] | 105;
+
         config.ledRoot--;
+        config.ledDayRoot--;
+        config.ledMonthRoot--;
+        config.ledWeekdayRoot--;
 
         if (doc["saveData"] == true)
         {
