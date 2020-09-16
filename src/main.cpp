@@ -58,17 +58,24 @@ uint8_t calculateHourHand()
 
 uint8_t calculateDayHand()
 {
-  return config.config.ledDayRoot + localTime.day();
+  return config.config.dayOffset + localTime.day() - 1;
 }
 
 uint8_t calculateMonthHand()
 {
-  return config.config.ledMonthRoot + localTime.month();
+  return config.config.monthOffset + localTime.month() - 1;
 }
 
 uint8_t calculateWeekdayHand()
 {
-  return config.config.ledWeekdayRoot + localTime.weekday();
+  // correct weekday to be using 0 for monday and 7 for sunday
+  uint8_t dow = localTime.weekday();
+  dow--;
+  if (dow == 0)
+  {
+    dow = 7;
+  }
+  return config.config.weekdayOffset + dow - 1;
 }
 
 void renderHourDots()
@@ -150,7 +157,7 @@ void setup()
   config.load();
   char hostname[64];
   char apname[66] = "⏰";
-  strncpy(hostname, config.config.hostname, sizeof(hostname));
+  strlcpy(hostname, config.config.hostname, sizeof(hostname));
   strncat(apname, hostname, sizeof(apname));
   Serial.print("Hostname: ");
   Serial.println(hostname);
@@ -178,7 +185,6 @@ void setup()
   updateColors();
   currentMinute = minute();
   currentSecond = second();
-  webserver.version = VERSION;
 }
 
 void loop()
@@ -201,7 +207,7 @@ void loop()
     currentMinute = minute();
     currentSecond = sec;
     updateColors(isNight());
-    webserver.currentTime = localTime.dateTime();
+    strlcpy(webserver.currentTime, localTime.dateTime().c_str(), sizeof(webserver.currentTime));
     setBacklight();
     printDebugInfo();
   }
@@ -223,16 +229,13 @@ void loop()
     setPixel(calculateHourHand(), hourColor, config.config.blendColors);
     setPixel(calculateMinuteHand(), minuteColor, config.config.blendColors);
     renderSecondHand();
+    setPixel(calculateMonthHand(), minuteColor, config.config.blendColors);
+    setPixel(calculateDayHand(), dayColor, config.config.blendColors);
+    setPixel(calculateWeekdayHand(), minuteColor, config.config.blendColors);
 
     strip->Show();
     animationPos = 0;
   }
-  // if (minuteChanged())
-  // {
-  //   Serial.println(calculateDayHand());
-  //   Serial.println(calculateMonthHand());
-  //   Serial.println(calculateWeekdayHand());
-  // }
 
   yield();
 }

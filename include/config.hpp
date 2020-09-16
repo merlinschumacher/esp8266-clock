@@ -25,10 +25,20 @@ struct ConfigData
     char hourDotColor[8];
     char hourSegmentColor[8];
     char hourQuarterColor[8];
-
     char hourDotColorDimmed[8];
     char hourSegmentColorDimmed[8];
     char hourQuarterColorDimmed[8];
+    uint32_t monthOffset;
+    uint32_t dayOffset;
+    uint32_t weekdayOffset;
+
+    char monthColor[8];
+    char dayColor[8];
+    char weekdayColor[8];
+
+    char monthColorDimmed[8];
+    char dayColorDimmed[8];
+    char weekdayColorDimmed[8];
 
     char nightTimeBegins[6];
     char nightTimeEnds[6];
@@ -49,9 +59,6 @@ struct ConfigData
     uint32_t ledPin;
     uint32_t ledCount;
     uint32_t ledRoot;
-    uint32_t ledMonthRoot;
-    uint32_t ledDayRoot;
-    uint32_t ledWeekdayRoot;
 };
 
 class Config

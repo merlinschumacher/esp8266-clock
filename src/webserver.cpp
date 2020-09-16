@@ -2,7 +2,7 @@
 #include "index_html.hpp"
 #include "main_js.hpp"
 #include "timezones_json.hpp"
-#include "water_css.hpp"
+#include "main_css.hpp"
 
 #if defined(ESP8266)
 ESP8266WebServer _server(80);
@@ -52,7 +52,7 @@ void Webserver::_handleDataGet(Config &config)
 void Webserver::_handleDataPut(Config &config)
 {
   char message[2048];
-  strncpy(message, _server.arg(0).c_str(), sizeof(message));
+  strlcpy(message, _server.arg(0).c_str(), sizeof(message));
   StaticJsonDocument<2048> doc;
   deserializeJson(doc, message);
   bool save = config.JSONToConfig(doc);
@@ -90,11 +90,11 @@ void Webserver::setup(Config &config)
   _server.on("/", HTTP_GET, [this]() {_server.sendHeader("Content-Encoding", "gzip"); _server.send_P(200, "text/html", index_html_gz, index_html_gz_len); });
   _server.on("/index.html", HTTP_GET, [this]() {_server.sendHeader("Content-Encoding", "gzip"); _server.send_P(200, "text/html", index_html_gz, index_html_gz_len); });
   _server.on("/timezones.json", HTTP_GET, [this]() { _server.sendHeader("Content-Encoding", "gzip");_server.send_P(200, "text/json", timezones_json_gz, timezones_json_gz_len); });
-  _server.on("/water.css", HTTP_GET, [this]() { _server.sendHeader("Content-Encoding", "gzip");_server.send_P(200, "text/css", water_css_gz, water_css_gz_len); });
+  _server.on("/main.css", HTTP_GET, [this]() { _server.sendHeader("Content-Encoding", "gzip");_server.send_P(200, "text/css", main_css_gz, main_css_gz_len); });
   _server.on("/main.js", HTTP_GET, [this]() { _server.sendHeader("Content-Encoding", "gzip");_server.send_P(200, "application/javascript", main_js_gz, main_js_gz_len); });
 
   _server.on("/time", HTTP_GET, [this]() { _server.send(200, "text/plain", currentTime); });
-  _server.on("/version", HTTP_GET, [this]() { _server.send(200, "text/plain", version); });
+  _server.on("/version", HTTP_GET, [this]() { _server.send(200, "text/plain", VERSION); });
 
   _server.on("/reset", HTTP_GET, [this, &config]() { _resetConfig(config); _server.send(200, "text/plain", ""); });
 

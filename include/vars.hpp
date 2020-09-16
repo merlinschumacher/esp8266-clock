@@ -12,7 +12,7 @@ uint8_t currentSecond = 60;
 
 uint8_t animationPos = 0;
 
-String hourColorString, minuteColorString, secondColorString, hourDotString, hourQuarterString, hourSegmentString, bgColorString;
+String hourColorString, minuteColorString, secondColorString, hourDotString, hourQuarterString, hourSegmentString, bgColorString, dayColorString, monthColorString, weekdayColorString;
 RgbColor animationColor;
 RgbColor off(0, 0, 0);
 RgbColor hourColor(0, 0, 0);
@@ -22,6 +22,9 @@ RgbColor dot(0, 0, 0);
 RgbColor quarter(0, 0, 0);
 RgbColor segment(0, 0, 0);
 RgbColor bgColor(0, 0, 0);
+RgbColor dayColor(0, 0, 0);
+RgbColor weekdayColor(0, 0, 0);
+RgbColor monthColor(0, 0, 0);
 
 #if defined(ESP8266)
 NeoPixelBus<NeoGrbFeature, NeoEsp8266BitBangWs2812xMethod> *strip = NULL;

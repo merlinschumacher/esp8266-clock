@@ -20,8 +20,7 @@ public:
     Webserver();
     void setup(Config &config);
     void handleRequest();
-    String currentTime = "";
-    String version = "";
+    char currentTime[64];
 
 private:
     void _handleNotFound();

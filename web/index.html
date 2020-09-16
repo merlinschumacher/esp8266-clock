@@ -5,54 +5,7 @@
     <meta charset="utf-8">
     <title>ESP-CLOCK</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="/water.css">
-    <style>
-        input[type="color"] {
-            min-height: 3em;
-            min-width: 8em;
-        }
-
-        .inline {
-            display: flex;
-            flex-wrap: wrap;
-        }
-
-        .inputgroup {
-            height: 100px;
-            display: flex;
-            align-items: center;
-            flex-grow: 1;
-        }
-
-        .inputgroup>input {
-            width: 33.3%%
-        }
-
-        .inputgroup>label {
-            margin-right: 1em;
-            width: 6rem;
-        }
-
-        .aside {
-            font-size: .8em;
-            color: #999;
-        }
-
-        #submit {
-            float: right;
-            background: #0B0;
-        }
-
-        footer {
-            font-size: .9rem;
-            margin-top: 1em;
-            color: #666;
-        }
-
-        #bglightfield {
-            display: none;
-        }
-    </style>
+    <link rel="stylesheet" href="/main.css">
 </head>
 
 <body>
@@ -154,6 +107,68 @@
                 </div>
             </fieldset>
             <p>
+                <label for="daymonth">Enable LEDs for Month/Day/Weekday</label>
+                <input type="checkbox" id="daymonth" name="daymonth" />
+            </p>
+
+            <h3 class="daymonthconfig">Color configuration</h3>
+            <fieldset class="daymonthconfig">
+                <legend>These are the color values in the day</legend>
+                <div class="inline">
+                    <div class="inputgroup">
+                        <label for="monthcolor">Month color</label>
+                        <input type="color" id="monthcolor" name="monthcolor" />
+                    </div>
+                    <div class="inputgroup">
+                        <label for="daycolor">Day color</label>
+                        <input type="color" id="daycolor" name="daycolor" />
+                    </div>
+                    <div class="inputgroup">
+                        <label for="weekdaycolor">Weekday color</label>
+                        <input type="color" id="weekdaycolor" name="weekdaycolor" />
+                    </div>
+                </div>
+            </fieldset>
+            <fieldset class="daymonthconfig">
+                <legend>These are the color values in the night</legend>
+                <div class="inline">
+                    <div class="inputgroup">
+                        <label for="monthcolordimmed">Month color</label>
+                        <input type="color" id="monthcolordimmed" name="monthcolordimmed" />
+                    </div>
+                    <div class="inputgroup">
+                        <label for="daycolordimmed">Day color</label>
+                        <input type="color" id="daycolordimmed" name="daycolordimmed" />
+                    </div>
+                    <div class="inputgroup">
+                        <label for="weekdaycolor">Weekday color</label>
+                        <input type="color" id="weekdaycolordimmed" name="weekdaycolordimmed" />
+                    </div>
+                </div>
+            </fieldset>
+            <fieldset class="daymonthconfig">
+                <legend>LED Settings</legend>
+                <aside>
+                    Theses variables define where the first LEDs for a month, day or weekday light up.
+                    The month needs 12 LEDs, day 31, weekday 7.
+                </aside>
+                <div class="inline">
+                    <div class="inputgroup">
+                        <label for="monthoffset">Month LED offset</label>
+                        <input type="number" id="monthoffset" name="monthoffset" min="0" max="1024" step="1" />
+                    </div>
+                    <div class="inputgroup">
+                        <label for="dayoffset">Day LED offset</label>
+                        <input type="number" id="dayoffset" name="dayoffset" min="0" max="1024" step="1" />
+                    </div>
+                    <div class="inputgroup">
+                        <label for="weekdayoffset">Weekday LED offset</label>
+                        <input type="number" id="weekdayoffset" name="weekdayoffset" min="0" max="1024" step="1" />
+                    </div>
+                </div>
+            </fieldset>
+
+            <p>
                 <label for="bglight">Enable a second LED strip as background light?</label>
                 <input type="checkbox" id="bglight" name="bglight" />
             </p>
@@ -197,7 +212,11 @@
             <h3>LED settings</h3>
             <label for="ledpin">LED strip GPIO pin <span class="aside">(Change requires restart)</span></label>
             <input type="number" id="ledpin" name="ledpin" min="0" max="255" step="1" />
-            <label for="ledcount">Number of LEDs</label>
+            <label for="ledcount">Number of LEDs<br />
+                <aside>This must be the absolute number of connected LEDs. The first 60 LEDs are always used for the
+                    time.
+                </aside>
+            </label>
             <input type="number" id="ledcount" name="ledcount" min="1" step="1" />
             <label for="ledcount">Wich LED is located at 12 o'clock?</label>
             <input type="number" id="ledroot" name="ledroot" min="1" step="1" />

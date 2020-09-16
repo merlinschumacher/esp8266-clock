@@ -14,8 +14,8 @@ void Config::_getHostname(char *hostname)
 #endif
         char chipidS[16];
         snprintf(chipidS, 64, "%08X", chipid);
-        strncpy(hostn, chipidS, sizeof(hostname));
-        strncpy(hostname, hostn, sizeof(hostname));
+        strlcpy(hostn, chipidS, sizeof(hostname));
+        strlcpy(hostname, hostn, sizeof(hostname));
 }
 
 StaticJsonDocument<2048> Config::configToJSON()
@@ -42,6 +42,16 @@ StaticJsonDocument<2048> Config::configToJSON()
         doc["hourSegmentColorDimmed"] = config.hourSegmentColorDimmed;
         doc["hourQuarterColorDimmed"] = config.hourQuarterColorDimmed;
 
+        doc["dayColor"] = config.dayColor;
+        doc["monthColor"] = config.monthColor;
+        doc["weekdayColor"] = config.weekdayColor;
+        doc["dayColorDimmed"] = config.dayColorDimmed;
+        doc["monthColorDimmed"] = config.monthColorDimmed;
+        doc["weekdayColorDimmed"] = config.weekdayColorDimmed;
+        doc["monthOffset"] = config.monthOffset + 1;
+        doc["dayOffset"] = config.dayOffset + 1;
+        doc["weekdayOffset"] = config.weekdayOffset + 1;
+
         doc["nightTimeBegins"] = config.nightTimeBegins;
         doc["nightTimeEnds"] = config.nightTimeEnds;
 
@@ -55,9 +65,6 @@ StaticJsonDocument<2048> Config::configToJSON()
         doc["ledPin"] = config.ledPin;
         doc["ledCount"] = config.ledCount;
         doc["ledRoot"] = config.ledRoot + 1;
-        doc["ledDayRoot"] = config.ledDayRoot + 1;
-        doc["ledMonthRoot"] = config.ledMonthRoot + 1;
-        doc["ledWeekdayRoot"] = config.ledWeekdayRoot + 1;
 
         doc["bgLight"] = config.bgLight;
         doc["bgLedPin"] = config.bgLedPin;
@@ -131,6 +138,26 @@ bool Config::JSONToConfig(StaticJsonDocument<2048> doc)
                 doc["hourQuarterColorDimmed"] | "#000000",
                 sizeof(config.hourQuarterColorDimmed));
 
+        strlcpy(config.dayColor,
+                doc["dayColor"] | "#FF00CE",
+                sizeof(config.dayColor));
+        strlcpy(config.monthColor,
+                doc["monthColor"] | "#FFFA00",
+                sizeof(config.monthColor));
+        strlcpy(config.weekdayColor,
+                doc["weekdayColor"] | "#00FFC7",
+                sizeof(config.weekdayColor));
+
+        strlcpy(config.dayColorDimmed,
+                doc["dayColorDimmed"] | "#7B0063",
+                sizeof(config.dayColorDimmed));
+        strlcpy(config.monthColorDimmed,
+                doc["monthColorDimmed"] | "#575500",
+                sizeof(config.monthColorDimmed));
+        strlcpy(config.weekdayColorDimmed,
+                doc["weekdayColorDimmed"] | "#00755B",
+                sizeof(config.weekdayColorDimmed));
+
         strlcpy(config.nightTimeBegins,
                 doc["nightTimeBegins"] | "22:00",
                 sizeof(config.nightTimeBegins));
@@ -160,14 +187,14 @@ bool Config::JSONToConfig(StaticJsonDocument<2048> doc)
         config.ledPin = doc["ledPin"] | 4;
         config.ledCount = doc["ledCount"] | 60;
         config.ledRoot = doc["ledRoot"] | 1;
-        config.ledDayRoot = doc["ledDayRoot"] | 62;
-        config.ledMonthRoot = doc["ledMonthRoot"] | 93;
-        config.ledWeekdayRoot = doc["ledWeekdayRoot"] | 105;
+        config.dayOffset = doc["dayOffset"] | 62;
+        config.monthOffset = doc["monthOffset"] | 93;
+        config.weekdayOffset = doc["weekdayOffset"] | 105;
 
         config.ledRoot--;
-        config.ledDayRoot--;
-        config.ledMonthRoot--;
-        config.ledWeekdayRoot--;
+        config.dayOffset--;
+        config.monthOffset--;
+        config.weekdayOffset--;
 
         if (doc["saveData"] == true)
         {

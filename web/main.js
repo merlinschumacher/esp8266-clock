@@ -9,10 +9,19 @@ function showBgLightOptions() {
         optionBox.style.display = "none";
     }
 }
+function showDayMonthOptions() {
+    let optionBoxes = document.getElementsByClassName("daymonthconfig");
+    let checkbox = document.getElementById("daymonth");
+    if (checkbox.checked) {
+        Array.from(optionBoxes).forEach((el) => { el.style.display = "block"; });
+    } else {
+        Array.from(optionBoxes).forEach((el) => { el.style.display = "none"; });
+    }
+}
 
 function onChangedInput(saveData = false) {
     if (document.getElementById("configform").checkValidity()) {
-
+        console.log(configData.saveData);
         configData.hostname = document.getElementById("hostname").value;
         configData.timeserver = document.getElementById("timeserver").value;
         configData.timezone = document.getElementById("timezone").value;
@@ -33,6 +42,16 @@ function onChangedInput(saveData = false) {
         configData.hourSegmentColorDimmed = document.getElementById("hoursegmentcolordimmed").value;
         configData.hourQuarterColorDimmed = document.getElementById("hourquartercolordimmed").value;
 
+        configData.monthColor = document.getElementById("monthcolor").value;
+        configData.dayColor = document.getElementById("daycolor").value;
+        configData.weekdayColorDimmed = document.getElementById("weekdaycolor").value;
+        configData.monthColorDimmed = document.getElementById("monthcolordimmed").value;
+        configData.dayColorDimmed = document.getElementById("daycolordimmed").value;
+        configData.weekdayColor = document.getElementById("weekdaycolordimmed").value;
+        configData.dayOffset = parseInt(document.getElementById("dayoffset").value);
+        configData.monthOffset = parseInt(document.getElementById("monthoffset").value);
+        configData.weekdayOffset = parseInt(document.getElementById("weekdayoffset").value);
+
         configData.nightTimeBegins = document.getElementById("nighttimebegins").value;
         configData.nightTimeEnds = document.getElementById("nighttimeends").value;
 
@@ -43,9 +62,6 @@ function onChangedInput(saveData = false) {
         configData.ledPin = parseInt(document.getElementById("ledpin").value);
         configData.ledCount = parseInt(document.getElementById("ledcount").value);
         configData.ledRoot = parseInt(document.getElementById("ledroot").value);
-        configData.ledDayRoot = parseInt(document.getElementById("leddayroot").value);
-        configData.ledMonthRoot = parseInt(document.getElementById("ledmonthroot").value);
-        configData.ledWeekdayRoot = parseInt(document.getElementById("ledweekdayroot").value);
 
         configData.alarmActive = document.getElementById("alarmactive").checked;
         configData.alarmTime = document.getElementById("alarmtime").value;
@@ -70,7 +86,7 @@ function onChangedInput(saveData = false) {
                 console.log('Success:', data);
             })
             .catch((error) => {
-                console.error('Error:', error);
+                console.log('Error:', error);
                 alert("Failed to save settings!");
             });
     }
@@ -116,6 +132,16 @@ document.addEventListener('DOMContentLoaded', function (event) {
             document.getElementById("hourquartercolordimmed").value = configData.hourQuarterColorDimmed;
             document.getElementById("hoursegmentcolordimmed").value = configData.hourSegmentColorDimmed;
 
+            document.getElementById("monthcolor").value = configData.monthColor;
+            document.getElementById("daycolor").value = configData.hourDayColor;
+            document.getElementById("weekdaycolor").value = configData.weekdayColor;
+            document.getElementById("monthcolordimmed").value = configData.monthColorDimmed;
+            document.getElementById("daycolordimmed").value = configData.hourDayColorDimmed;
+            document.getElementById("weekdaycolordimmed").value = configData.weekdayColorDimmed;
+            document.getElementById("monthoffset").value = configData.monthOffset;
+            document.getElementById("dayoffset").value = configData.dayOffset;
+            document.getElementById("weekdayoffset").value = configData.weekdayOffset;
+
             document.getElementById("nighttimebegins").value = configData.nightTimeBegins;
             document.getElementById("nighttimeends").value = configData.nightTimeEnds;
 
@@ -126,9 +152,9 @@ document.addEventListener('DOMContentLoaded', function (event) {
             document.getElementById("ledpin").value = configData.ledPin;
             document.getElementById("ledcount").value = configData.ledCount;
             document.getElementById("ledroot").value = configData.ledRoot;
-            document.getElementById("leddayroot").value = configData.ledDayRoot;
-            document.getElementById("ledmonthroot").value = configData.ledMonthRoot;
-            document.getElementById("ledweekdayroot").value = configData.ledWeekdayRoot;
+            document.getElementById("dayoffset").value = configData.dayOffset;
+            document.getElementById("monthoffset").value = configData.monthOffset;
+            document.getElementById("weekdayoffset").value = configData.weekdayOffset;
 
             document.getElementById("alarmactive").checked = configData.alarmActive;
             document.getElementById("alarmtime").value = configData.alarmTime;
@@ -163,7 +189,9 @@ document.addEventListener('DOMContentLoaded', function (event) {
                     });
             });
             document.getElementById("bglight").addEventListener("click", function () { showBgLightOptions(); return false; });
+            document.getElementById("daymonth").addEventListener("click", function () { (showDayMonthOptions()); return false; });
             showBgLightOptions();
+            showDayMonthOptions();
         })
         .catch(function (err) {
             alert("Failed to load settings!");
