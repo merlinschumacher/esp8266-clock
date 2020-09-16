@@ -4,9 +4,9 @@ Config::Config()
 {
 }
 
-String Config::_getHostname()
+void Config::_getHostname(char *hostname)
 {
-        String hostname;
+        char hostn[64] = "ESPCLOCK-";
 #if defined(ESP8266)
         uint32_t chipid = ESP.getChipId();
 #elif defined(ESP32)
@@ -14,8 +14,8 @@ String Config::_getHostname()
 #endif
         char chipidS[16];
         snprintf(chipidS, 64, "%08X", chipid);
-        hostname = "ESPCLOCK-" + String(chipidS);
-        return hostname;
+        strncpy(hostn, chipidS, sizeof(hostname));
+        strncpy(hostname, hostn, sizeof(hostname));
 }
 
 StaticJsonDocument<2048> Config::configToJSON()
@@ -78,8 +78,10 @@ bool Config::JSONToConfig(StaticJsonDocument<2048> doc)
         }
         else
         {
+                char _host[64];
+                _getHostname(_host);
                 strlcpy(config.hostname,
-                        _getHostname().c_str(),
+                        _host,
                         sizeof(config.hostname));
         }
         strlcpy(config.timeserver,

@@ -116,6 +116,9 @@ void updateColors(bool isNight = false)
         hourQuarterString = config.config.hourQuarterColorDimmed;
         hourSegmentString = config.config.hourSegmentColorDimmed;
         bgColorString = config.config.bgColorDimmed;
+        monthColorString = config.config.monthColorDimmed;
+        dayColorString = config.config.dayColorDimmed;
+        weekdayColorString = config.config.weekdayColorDimmed;
     }
     else
     {
@@ -126,6 +129,9 @@ void updateColors(bool isNight = false)
         hourQuarterString = config.config.hourQuarterColor;
         hourSegmentString = config.config.hourSegmentColor;
         bgColorString = config.config.bgColor;
+        monthColorString = config.config.monthColor;
+        dayColorString = config.config.dayColor;
+        weekdayColorString = config.config.weekdayColor;
     }
     hourColor = htmlToColor(hourColorString);
     minuteColor = htmlToColor(minuteColorString);

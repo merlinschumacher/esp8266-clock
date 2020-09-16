@@ -66,7 +66,7 @@ public:
 
 private:
     void _loadFile();
-    String _getHostname();
+    void _getHostname(char *hostname);
 };
 
 #endif //config_h

@@ -148,18 +148,20 @@ void setup()
   SPIFFS.begin();
 #endif
   config.load();
-  String hostname = config.config.hostname;
-  String apname = "⏰" + hostname;
+  char hostname[64];
+  char apname[66] = "⏰";
+  strncpy(hostname, config.config.hostname, sizeof(hostname));
+  strncat(apname, hostname, sizeof(apname));
   Serial.print("Hostname: ");
   Serial.println(hostname);
 
 #if defined(ESP8266)
-  WiFi.hostname(hostname.c_str());
+  WiFi.hostname(hostname);
 #elif defined(ESP8266)
-  WiFi.setHostname(hostname.c_str());
+  WiFi.setHostname(hostname);
 #endif
 
-  wifiManager.autoConnect(apname.c_str());
+  wifiManager.autoConnect(apname);
 #ifdef DEBUG_BUILD
   setDebug(DEBUG);
 #endif
@@ -170,7 +172,7 @@ void setup()
   localTime.setLocation(config.config.timezone);
   localTime.setDefault();
   webserver.setup(config);
-  MDNS.begin(hostname.c_str());
+  MDNS.begin(hostname);
   MDNS.addService("http", "tcp", 80);
   initStrip();
   updateColors();
@@ -225,12 +227,12 @@ void loop()
     strip->Show();
     animationPos = 0;
   }
-  if (minuteChanged())
-  {
-    Serial.println(calculateDayHand());
-    Serial.println(calculateMonthHand());
-    Serial.println(calculateWeekdayHand());
-  }
+  // if (minuteChanged())
+  // {
+  //   Serial.println(calculateDayHand());
+  //   Serial.println(calculateMonthHand());
+  //   Serial.println(calculateWeekdayHand());
+  // }
 
   yield();
 }
