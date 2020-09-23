@@ -42,12 +42,13 @@ function onChangedInput(saveData = false) {
         configData.hourSegmentColorDimmed = document.getElementById("hoursegmentcolordimmed").value;
         configData.hourQuarterColorDimmed = document.getElementById("hourquartercolordimmed").value;
 
+        configData.dayMonth = document.getElementById("daymonth").checked;
         configData.monthColor = document.getElementById("monthcolor").value;
         configData.dayColor = document.getElementById("daycolor").value;
-        configData.weekdayColorDimmed = document.getElementById("weekdaycolor").value;
+        configData.weekdayColor = document.getElementById("weekdaycolor").value;
+        configData.weekdayColorDimmed = document.getElementById("weekdaycolordimmed").value;
         configData.monthColorDimmed = document.getElementById("monthcolordimmed").value;
         configData.dayColorDimmed = document.getElementById("daycolordimmed").value;
-        configData.weekdayColor = document.getElementById("weekdaycolordimmed").value;
         configData.dayOffset = parseInt(document.getElementById("dayoffset").value);
         configData.monthOffset = parseInt(document.getElementById("monthoffset").value);
         configData.weekdayOffset = parseInt(document.getElementById("weekdayoffset").value);
@@ -132,11 +133,12 @@ document.addEventListener('DOMContentLoaded', function (event) {
             document.getElementById("hourquartercolordimmed").value = configData.hourQuarterColorDimmed;
             document.getElementById("hoursegmentcolordimmed").value = configData.hourSegmentColorDimmed;
 
+            document.getElementById("daymonth").checked = configData.dayMonth;
             document.getElementById("monthcolor").value = configData.monthColor;
-            document.getElementById("daycolor").value = configData.hourDayColor;
+            document.getElementById("daycolor").value = configData.dayColor;
             document.getElementById("weekdaycolor").value = configData.weekdayColor;
             document.getElementById("monthcolordimmed").value = configData.monthColorDimmed;
-            document.getElementById("daycolordimmed").value = configData.hourDayColorDimmed;
+            document.getElementById("daycolordimmed").value = configData.dayColorDimmed;
             document.getElementById("weekdaycolordimmed").value = configData.weekdayColorDimmed;
             document.getElementById("monthoffset").value = configData.monthOffset;
             document.getElementById("dayoffset").value = configData.dayOffset;

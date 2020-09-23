@@ -21,8 +21,9 @@
 
 void renderSecondHand()
 {
-  uint8_t secondHand = floor((float)(config.config.ledCount / 60) * localTime.second());
-  secondHand = (secondHand + config.config.ledRoot) % config.config.ledCount;
+  // uint8_t secondHand = floor((float)(config.config.ledCount / 60) * localTime.second());
+  uint8_t secondHand = localTime.second();
+  secondHand = (secondHand + config.config.ledRoot) % 60;
   if (config.config.fluidMotion)
   {
     RgbColor currentPixelColor, upcomingPixelColor;
@@ -42,17 +43,21 @@ void renderSecondHand()
 
 uint8_t calculateMinuteHand()
 {
-  uint8_t minuteHand = floor((float)(config.config.ledCount / 60) * localTime.minute());
-  minuteHand = (minuteHand + config.config.ledRoot) % config.config.ledCount;
+  // uint8_t minuteHand = floor((float)(config.config.ledCount / 60) * localTime.minute());
+  uint8_t minuteHand = localTime.minute();
+  minuteHand = (minuteHand + config.config.ledRoot) % 60;
   return minuteHand;
 }
 
 uint8_t calculateHourHand()
 {
   uint8_t hour = localTime.hour() % 12;
-  uint8_t hourHand = floor((float)config.config.ledCount / 12 * hour);
-  uint8_t minuteOffset = floor((float)localTime.minute() * config.config.ledCount / 12 / 60);
-  hourHand = (hourHand + minuteOffset + config.config.ledRoot) % config.config.ledCount;
+  // uint8_t hourHand = floor((float)config.config.ledCount / 12 * hour);
+  uint8_t hourHand = floor((float)60 / 12 * hour);
+  // uint8_t minuteOffset = floor((float)localTime.minute() * config.config.ledCount / 12 / 60);
+  uint8_t minuteOffset = floor((float)localTime.minute() * 60 / 12 / 60);
+  // hourHand = (hourHand + minuteOffset + config.config.ledRoot) % config.config.ledCount;
+  hourHand = (hourHand + minuteOffset + config.config.ledRoot) % 60;
   return hourHand;
 }
 
@@ -80,11 +85,13 @@ uint8_t calculateWeekdayHand()
 
 void renderHourDots()
 {
-  float step = (float)config.config.ledCount / 12;
+  // float step = (float)config.config.ledCount / 12;
+  float step = (float)60 / 12;
   for (size_t i = 0; i < 12; i++)
   {
     uint8_t dotPos = (uint8_t)floor(step * i);
-    dotPos = (dotPos + config.config.ledRoot) % config.config.ledCount;
+    // dotPos = (dotPos + config.config.ledRoot) % config.config.ledCount;
+    dotPos = (dotPos + config.config.ledRoot) % 60;
     if (i % 3 == 0)
     {
       strip->SetPixelColor(dotPos, quarter);
@@ -100,9 +107,13 @@ void renderHourSegment()
 {
 
   uint8_t hour12 = localTime.hour() % 12;
-  uint8_t segmentLength = floor((float)config.config.ledCount / 12);
-  uint8_t segmentStart = floor((float)config.config.ledCount / 12 * hour12);
-  segmentStart = (segmentStart + config.config.ledRoot) % config.config.ledCount;
+  // uint8_t segmentLength = floor((float)config.config.ledCount / 12);
+  // uint8_t segmentStart = floor((float)config.config.ledCount / 12 * hour12);
+  // segmentStart = (segmentStart + config.config.ledRoot) % config.config.ledCount;
+
+  uint8_t segmentLength = floor((float)60 / 12);
+  uint8_t segmentStart = floor((float)60 / 12 * hour12);
+  segmentStart = (segmentStart + config.config.ledRoot) % 60;
   for (size_t i = 0; i < segmentLength; i++)
   {
     strip->SetPixelColor(segmentStart + i, segment);
@@ -229,9 +240,12 @@ void loop()
     setPixel(calculateHourHand(), hourColor, config.config.blendColors);
     setPixel(calculateMinuteHand(), minuteColor, config.config.blendColors);
     renderSecondHand();
-    setPixel(calculateMonthHand(), minuteColor, config.config.blendColors);
-    setPixel(calculateDayHand(), dayColor, config.config.blendColors);
-    setPixel(calculateWeekdayHand(), minuteColor, config.config.blendColors);
+    if (config.config.dayMonth)
+    {
+      setPixel(calculateMonthHand(), monthColor, config.config.blendColors);
+      setPixel(calculateDayHand(), dayColor, config.config.blendColors);
+      setPixel(calculateWeekdayHand(), weekdayColor, config.config.blendColors);
+    }
 
     strip->Show();
     animationPos = 0;

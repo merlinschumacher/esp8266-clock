@@ -140,6 +140,9 @@ void updateColors(bool isNight = false)
     quarter = htmlToColor(hourQuarterString);
     segment = htmlToColor(hourSegmentString);
     bgColor = htmlToColor(bgColorString);
+    dayColor = htmlToColor(dayColorString);
+    monthColor = htmlToColor(monthColorString);
+    weekdayColor = htmlToColor(weekdayColorString);
 }
 
 #endif //color_h

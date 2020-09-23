@@ -42,6 +42,7 @@ StaticJsonDocument<2048> Config::configToJSON()
         doc["hourSegmentColorDimmed"] = config.hourSegmentColorDimmed;
         doc["hourQuarterColorDimmed"] = config.hourQuarterColorDimmed;
 
+        doc["dayMonth"] = config.dayMonth;
         doc["dayColor"] = config.dayColor;
         doc["monthColor"] = config.monthColor;
         doc["weekdayColor"] = config.weekdayColor;
@@ -138,6 +139,7 @@ bool Config::JSONToConfig(StaticJsonDocument<2048> doc)
                 doc["hourQuarterColorDimmed"] | "#000000",
                 sizeof(config.hourQuarterColorDimmed));
 
+        config.dayMonth = doc["dayMonth"] | false;
         strlcpy(config.dayColor,
                 doc["dayColor"] | "#FF00CE",
                 sizeof(config.dayColor));

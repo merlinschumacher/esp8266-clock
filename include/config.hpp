@@ -28,6 +28,8 @@ struct ConfigData
     char hourDotColorDimmed[8];
     char hourSegmentColorDimmed[8];
     char hourQuarterColorDimmed[8];
+
+    bool dayMonth;
     uint32_t monthOffset;
     uint32_t dayOffset;
     uint32_t weekdayOffset;
