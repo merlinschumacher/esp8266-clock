@@ -1,0 +1,70 @@
+.tabbed figure {
+  display: block;
+  margin-left: 0;
+  border-bottom: 1px solid silver;
+  clear: both;
+}
+
+.tabbed > input,
+.tabbed figure > div {
+  display: none;
+}
+
+.tabbed figure > div {
+  padding: 20px;
+  width: 100%;
+  border: 1px solid silver;
+  background: #fff;
+  line-height: 1.5em;
+  letter-spacing: 0.3px;
+  color: #444;
+}
+
+#timeconfig:checked ~ figure .timeconfig,
+#dateconfig:checked ~ figure .dateconfig,
+#ledconfig:checked ~ figure .ledconfig {
+  display: block;
+}
+
+nav label {
+  float: left;
+  padding: 15px 15px;
+  border-top: 1px solid silver;
+  border-right: 1px solid silver;
+  background: #4080bf;
+  color: #eee;
+}
+
+nav label:nth-child(1) {
+  border-left: 1px solid silver;
+}
+
+nav label:hover {
+  background: #336699;
+}
+
+nav label:active {
+  background: #ffffff;
+}
+
+#timeconfig:checked ~ nav label[for=timeconfig],
+#dateconfig:checked ~ nav label[for=dateconfig],
+#ledconfig:checked ~ nav label[for=ledconfig] {
+  background: white;
+  color: #111;
+  position: relative;
+  border-bottom: none;
+}
+
+#timeconfig:checked ~ nav label[for=timeconfig]:after,
+#dateconfig:checked ~ nav label[for=dateconfig]:after,
+#ledconfig:checked ~ nav label[for=ledconfig]:after {
+  content: "";
+  display: block;
+  position: absolute;
+  height: 2px;
+  width: 100%;
+  background: white;
+  left: 0;
+  bottom: -1px;
+}

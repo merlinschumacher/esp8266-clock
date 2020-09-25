@@ -1,0 +1,16 @@
+.timeconfig
+    h2 #{$i18n.timeconfig.title}
+    div #{$i18n.timeconfig.description}
+
+    fieldset
+
+        legend #{$i18n.timeconfig.colorconfig.day}
+        
+        label(for='hourcolor') Hour color
+        input(type='color', id='hourcolor')
+        
+        label(for='minutecolor') Minute color
+        input(type='color', id='minutecolor')
+        
+        label(for='secondcolor') Second color
+        input(type='color', id='secondcolor')
