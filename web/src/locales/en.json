@@ -1,0 +1,32 @@
+{
+    "title": "⏰ESP-CLOCK",
+    "description": "This is a digital LED-Wallclock",
+    "savebutton": "Save",
+    "nav": {
+        "timeconfig": "Time",
+        "dateconfig": "Date",
+        "ledconfig": "LED",
+        "sysconfig": "System"
+    },
+    "timeconfig": {
+        "title": "Clock hand configuration",
+        "description": "Here you can setup the clock hands.",
+        "colorconfig": {
+            "day": "Colors in the day.",
+            "night": "Colors in the night.",
+            "hourhand": "Hour",
+            "minutehand": "Minute",
+            "secondhand": "Second"
+        },
+        "alarm": {
+            "description": "It's possible to set an alarm.",
+            "time": "Alarm time",
+            "active": "Alarm active"
+        },
+        "night": {
+            "description": "When does the night begin",
+            "begin": "Start",
+            "end": "End"
+        }
+    }
+}

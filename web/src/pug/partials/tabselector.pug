@@ -1,8 +1,9 @@
-input(name='tabs',checked='checked', id='timesettings', type='radio')
-input(name='tabs',id='datesettings', type='radio') 
-input(name='tabs',id='ledsettings', type='radio')
-
-nav
-    label(for='timesettings') #{$i18n.nav.timesettings}
-    label(for='datesettings') #{$i18n.nav.datesettings}
-    label(for='ledsettings') #{$i18n.nav.ledsettings} 
+ul.tab.tab-block
+    li.tab-item.active
+        a(href="#timeconfig") #{$i18n.nav.timeconfig}
+    li.tab-item
+        a(href="#dateconfig") #{$i18n.nav.dateconfig}
+    li.tab-item
+        a(href="#ledconfig") #{$i18n.nav.ledconfig}
+    li.tab-item
+        a(href="#sysconfig") #{$i18n.nav.sysconfig}

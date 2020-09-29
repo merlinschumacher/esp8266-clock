@@ -1,11 +1,6 @@
 extends ../layouts/default-layout.pug
 block content
-  span(id='jswarn') ENABLE JAVASCRIPT TO CONFIGURE THE CLOCK
-  div(id='main', style='display:block')
-      h1 #{title}
-      span #{$i18n.description}
-      form(id='configform', onsubmit='return false')
-        .tabbed
-          include ../partials/tabselector.pug
-          figure
-            include ../partials/timeconfig.pug
+  form.form-horizontal(onsubmit='return false')
+    include ../partials/tabselector.pug
+    include ../partials/timeconfig.pug
+    include ../partials/dateconfig.pug
