@@ -28,5 +28,56 @@
             "begin": "Start",
             "end": "End"
         }
+
+    },
+    "dateconfig": {
+        "title": "DAte hand configuration",
+        "description": "Here you can setup the clock hands.",
+        "colorconfig": {
+            "day": "Colors in the day.",
+            "night": "Colors in the night.",
+            "hourhand": "Hour",
+            "minutehand": "Minute",
+            "secondhand": "Second"
+        },
+        "alarm": {
+            "description": "It's possible to set an alarm.",
+            "time": "Alarm time",
+            "active": "Alarm active"
+        },
+        "night": {
+            "description": "When does the night begin",
+            "begin": "Start",
+            "end": "End"
+        }
+    },
+    "ledconfig": {
+        "description": "Set up LEDs",
+        "backlight": {
+            "enable": "Enable background light",
+            "day": "Day",
+            "night": "Night"
+        },
+        "blendcolors": "Blend overlapping colors into one.",
+        "fluidmotion": "Enable fluid fading between the pixels for the second hand."
+    },
+    "sysconfig": {
+        "description": "system settings",
+        "network": {
+            "description": "Network settings",
+            "timeserver": "NTP time server",
+            "hostname": "Hostname"
+        },
+        "timezone": "Timezone",
+        "firmware": {
+            "title": "Update the fw",
+            "description": "Update the fw",
+            "open": "Firmware update",
+            "update": "File",
+            "submit": "Upload update"
+        },
+        "reset": {
+            "open": "Reset settings"
+        }
     }
 }

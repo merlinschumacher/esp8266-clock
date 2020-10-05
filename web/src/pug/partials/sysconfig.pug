@@ -1,0 +1,64 @@
+.contenttab#sysconfig
+    h2 #{$i18n.sysconfig.title}
+    div #{$i18n.sysconfig.description}
+
+    fieldset.form-horizontal
+
+        .form-group
+            .col-2
+                label.form-label(for='ledpin') #{$i18n.sysconfig.ledpin} 
+            .col-3
+                input.form-input(type='number', min='1', step='1', id='ledpin')
+        
+        .form-group
+
+            .col-2
+                label.form-label(for='ledcount') #{$i18n.sysconfig.ledcount} 
+            .col-3
+                input.form-input(type='number', min='1', step='1', id='ledcount')
+    
+    .divider
+    
+    fieldset.form-horizontal
+        .h6 #{$i18n.sysconfig.network.description}
+
+        .form-group
+            .col-3
+                label.form-label(for='timeserver') #{$i18n.sysconfig.network.timeserver} 
+            .col-9
+                input.form-input(pattern='^([a-zA-Z0-9]([a-zA-Z0-9\-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,6}$', maxlength='64', size='64', required, id='timeserver')
+        
+        .form-group
+            .col-3
+                label.form-label(for='timeserver') #{$i18n.sysconfig.network.hostname} 
+            .col-9
+                input.form-input(pattern='^[a-zA-Z][a-zA-Z0-9-_\.]{1,64}$', maxlength='64', size='64', required, id='timeserver')
+    
+    .divider
+
+    fieldset.form-horizontal
+
+        .form-group
+            .col-2
+                label.form-label(for='timezone') #{$i18n.sysconfig.timezone} 
+            .col-10
+                select.form-input(id='timezone')
+
+    .divider
+
+    fieldset.form-horizontal
+
+        .form-group
+            .col-12
+                button.btn.btn-lg #{$i18n.sysconfig.firmware.open}
+
+    .divider
+
+    fieldset.form-horizontal
+
+        .form-group
+            .col-12
+                button.btn.btn-lg #{$i18n.sysconfig.reset.open}
+
+
+

@@ -1,4 +1,4 @@
-.timeconfig
+.contenttab#timeconfig
     h2 #{$i18n.timeconfig.title}
     div #{$i18n.timeconfig.description}
 
@@ -52,16 +52,17 @@
     fieldset.form-horizontal#alarmform
         .h6 #{$i18n.timeconfig.alarm.description}
         .form-group 
-            .col-3
+            .col-5
                 label.form-switch(for='alarmactive')
                     input(type="checkbox" id="alarmactive")
                     i.form-icon
                     span #{$i18n.timeconfig.alarm.active} 
-        .form-group.d-invisible#alarmtime
-            .col-3
-                label.form-label(for='alarm') #{$i18n.timeconfig.alarm.time} 
-            .col-9
-                input.form-input(type='time', id='alarm')
+
+            .divider-vert.alarmtime
+            .col-2.alarmtime
+                    label.form-label(for='alarm') #{$i18n.timeconfig.alarm.time} 
+            .col-3.alarmtime
+                    input.form-input(type='time', id='alarm')
     
     .divider
 
@@ -80,3 +81,4 @@
                 label.form-label(for='alarm') #{$i18n.timeconfig.night.end} 
             .col-3
                 input.form-input(type='time', id='alarm')
+    

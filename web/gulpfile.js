@@ -66,7 +66,7 @@ function views() {
 function watchTask(done) {
     gulp.watch('*.html', html);
     gulp.watch('src/sass/**/*.scss', styles);
-    gulp.watch('src/js/scripts.js', scripts);
+    gulp.watch('src/js/*.js', scripts);
     gulp.watch('src/pug/**/*.pug', views);
     gulp.watch('src/locales/**/*.json', views);
     done();
