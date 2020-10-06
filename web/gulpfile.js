@@ -47,23 +47,15 @@ function html() {
     );
 }
 
-// .pipe(pug({
-//     i18n: {
-//         dest: 'dist',
-//         locales: 'src/locales/*.json',
-//         localeExtension: true
-//     },
-//     pretty: false
-// }))
 function views() {
     return (
         gulp.src('src/pug/pages/*.pug')
             .pipe(plumber())
             .pipe(pug())
             .pipe(i18n({
-                langDir: 'src/locales',
-                delimiters: ['${', '}']
-
+                langDir: './src/locales',
+                defaultLang: 'en',
+                fallback: 'en',
             }))
             .pipe(gulp.dest('dist'))
             .pipe(connect.reload())

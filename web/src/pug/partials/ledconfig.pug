@@ -1,6 +1,6 @@
 .contenttab#ledconfig
-    h2 #{$i18n.ledconfig.title}
-    div #{$i18n.ledconfig.description}
+    h2 ${{ index.ledconfig.title }}$
+    div ${{ index.ledconfig.description }}$
 
     fieldset.form-horizontal
         .form-group 
@@ -8,7 +8,7 @@
                 label.form-switch(for='blendcolors')
                     input(type="checkbox" id="blendcolors")
                     i.form-icon
-                    span #{$i18n.ledconfig.blendcolors} 
+                    span ${{ index.ledconfig.blendcolors }}$ 
 
     fieldset.form-horizontal
         .form-group 
@@ -16,7 +16,7 @@
                 label.form-switch(for='fluidmotion')
                     input(type="checkbox" id="fluidmotion")
                     i.form-icon
-                    span #{$i18n.ledconfig.fluidmotion} 
+                    span ${{ index.ledconfig.fluidmotion }}$ 
 
     fieldset.form-horizontal
         .form-group 
@@ -24,13 +24,13 @@
                 label.form-switch(for='bglight')
                     input(type="checkbox" id="bglight")
                     i.form-icon
-                    span #{$i18n.ledconfig.backlight.enable} 
+                    span ${{ index.ledconfig.backlight.enable }}$ 
 
             .column.col-6.bglightsettings
 
                 .form-group 
                     .col-3
-                        label.form-label(for='bgcolor') #{$i18n.ledconfig.backlight.day} 
+                        label.form-label(for='bgcolor') ${{ index.ledconfig.backlight.day }}$ 
                     .col-9
                         input.form-input(type='color', id='bgcolor')
                 
@@ -38,6 +38,6 @@
 
                 .form-group 
                     .col-3
-                        label.form-label(for='bgcolor') #{$i18n.ledconfig.backlight.night} 
+                        label.form-label(for='bgcolor') ${{ index.ledconfig.backlight.night }}$ 
                     .col-9
                         input.form-input(type='color', id='bgcolor')

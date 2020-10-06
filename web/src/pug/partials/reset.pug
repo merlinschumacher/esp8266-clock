@@ -3,14 +3,14 @@
     .modal-container(role='document')
         .modal-header
             a.btn.btn-clear.float-right.modal-reset-toggle(href='#close', aria-label="Close")
-            .modal-title.h5 #{$i18n.sysconfig.reset.title}
+            .modal-title.h5 ${{ index.sysconfig.reset.title }}$
         .modal-body
             .content
-                div #{$i18n.sysconfig.reset.description}
+                div ${{ index.sysconfig.reset.description }}$
                     .columns
                         .col-6.column
-                            button.btn.btn-lg.mx-2.modal-reset-toggle #{$i18n.sysconfig.reset.cancel}
+                            button.btn.btn-lg.mx-2.modal-reset-toggle ${{ index.sysconfig.reset.cancel }}$
                         .col-6.column
-                            button.btn.btn-error.btn-lg.mx-2 #{$i18n.sysconfig.reset.confirm}
+                            button.btn.btn-error.btn-lg.mx-2 ${{ index.sysconfig.reset.confirm }}$
         .modal-footer
             #fwinfo

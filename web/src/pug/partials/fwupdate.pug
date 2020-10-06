@@ -3,17 +3,17 @@
     .modal-container
         .modal-header
             a.btn.btn-clear.float-right.modal-firmware-toggle(href='#close', aria-label="Close")
-            .modal-title.h5 #{$i18n.sysconfig.firmware.title}
+            .modal-title.h5 ${{ index.sysconfig.firmware.title }}$
         .modal-body
             .content
-                div #{$i18n.sysconfig.firmware.description}
+                div ${{ index.sysconfig.firmware.description }}$
                 form.form-horizontal(method='POST', action='/update', enctype='multipart/form-data')
                     .form-group
                         .col-2
-                            label.form-label(for='firmware') #{$i18n.sysconfig.firmware.update}
+                            label.form-label(for='firmware') ${{ index.sysconfig.firmware.update }}$
                         .col-7
                             input.form-input(type='file', accept='.bin', name='firmware') 
                         .col-3
-                            button.btn.btn-lg.mx-2(type='submit') #{$i18n.sysconfig.firmware.submit}
+                            button.btn.btn-lg.mx-2(type='submit') ${{ index.sysconfig.firmware.submit }}$
         .modal-footer
             #fwinfo

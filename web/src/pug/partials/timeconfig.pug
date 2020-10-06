@@ -1,84 +1,83 @@
 .contenttab#timeconfig
-    h2 #{$i18n.timeconfig.title}
-    div #{$i18n.timeconfig.description}
+    h2 ${{ index.timeconfig.title }}$
+    div ${{ index.timeconfig.description }}$
 
     fieldset.form-horizontal
         .columns
 
             .column.col-6
-                .h6 #{$i18n.timeconfig.colorconfig.day}
+                .h6 ${{ index.timeconfig.colorconfig.day }}$
 
                 .form-group 
                     .col-3
-                        label.form-label(for='hourcolor') #{$i18n.timeconfig.colorconfig.hourhand} 
+                        label.form-label(for='hourcolor') ${{ index.timeconfig.colorconfig.hourhand }}$ 
                     .col-9
                         input.form-input(type='color', id='hourcolor')
                 
                 .form-group 
                     .col-3
-                        label.form-label(for='minutecolor') #{$i18n.timeconfig.colorconfig.minutehand} 
+                        label.form-label(for='minutecolor') ${{ index.timeconfig.colorconfig.minutehand }}$ 
                     .col-9
                         input.form-input(type='color', id='minutecolor')
                 
                 .form-group
                     .col-3
-                        label.form-label(for='secondcolor') #{$i18n.timeconfig.colorconfig.secondhand} 
+                        label.form-label(for='secondcolor') ${{ index.timeconfig.colorconfig.secondhand }}$ 
                     .col-9
                         input.form-input(type='color', id='secondcolor')
 
             .column.col-6
-                .h6 #{$i18n.timeconfig.colorconfig.night}
+                .h6 ${{ index.timeconfig.colorconfig.night }}$
 
                 .form-group 
                     .col-3
-                        label.form-label(for='hourcolor') #{$i18n.timeconfig.colorconfig.hourhand} 
+                        label.form-label(for='hourcolor') ${{ index.timeconfig.colorconfig.hourhand }}$ 
                     .col-9
                         input.form-input(type='color', id='hourcolor')
                 
                 .form-group 
                     .col-3
-                        label.form-label(for='minutecolor') #{$i18n.timeconfig.colorconfig.minutehand} 
+                        label.form-label(for='minutecolor') ${{ index.timeconfig.colorconfig.minutehand }}$ 
                     .col-9
                         input.form-input(type='color', id='minutecolor')
                 
                 .form-group
                     .col-3
-                        label.form-label(for='secondcolor') #{$i18n.timeconfig.colorconfig.secondhand} 
+                        label.form-label(for='secondcolor') ${{ index.timeconfig.colorconfig.secondhand }}$ 
                     .col-9
                         input.form-input(type='color', id='secondcolor')
 
     .divider
 
     fieldset.form-horizontal#alarmform
-        .h6 #{$i18n.timeconfig.alarm.description}
+        .h6 ${{ index.timeconfig.alarm.description }}$
         .form-group 
             .col-5
                 label.form-switch(for='alarmactive')
                     input(type="checkbox" id="alarmactive")
                     i.form-icon
-                    span #{$i18n.timeconfig.alarm.active} 
+                    span ${{ index.timeconfig.alarm.active }}$ 
 
             .divider-vert.alarmtime
             .col-2.alarmtime
-                    label.form-label(for='alarm') #{$i18n.timeconfig.alarm.time} 
+                    label.form-label(for='alarm') ${{ index.timeconfig.alarm.time }}$ 
             .col-3.alarmtime
                     input.form-input(type='time', id='alarm')
     
     .divider
 
     fieldset.form-horizontal
-        .h6 #{$i18n.timeconfig.night.description}
+        .h6 ${{ index.timeconfig.night.description }}$
 
         .form-group
             .col-2
-                label.form-label(for='alarm') #{$i18n.timeconfig.night.begin} 
+                label.form-label(for='alarm') ${{ index.timeconfig.night.begin }}$ 
             .col-3
                 input.form-input(type='time', id='alarm')
         
             .divider-vert
 
             .col-2
-                label.form-label(for='alarm') #{$i18n.timeconfig.night.end} 
+                label.form-label(for='alarm') ${{ index.timeconfig.night.end }}$ 
             .col-3
                 input.form-input(type='time', id='alarm')
-    
