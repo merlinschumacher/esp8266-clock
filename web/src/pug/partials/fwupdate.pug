@@ -1,7 +1,8 @@
 .modal#modalfirmware
-    a.modal-overlay#mfwclose
+    a.modal-overlay.modal-firmware-toggle(href='#close', aria-label="Close")
     .modal-container
         .modal-header
+            a.btn.btn-clear.float-right.modal-firmware-toggle(href='#close', aria-label="Close")
             .modal-title.h5 #{$i18n.sysconfig.firmware.title}
         .modal-body
             .content

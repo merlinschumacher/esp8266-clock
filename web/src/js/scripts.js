@@ -22,5 +22,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
     document.getElementById("alarmactive").addEventListener('click', initCheckboxAlarmEnable, false);
     initCheckboxBacklightEnable();
     document.getElementById("bglight").addEventListener('click', initCheckboxBacklightEnable, false);
-
+    initResetModal();
+    initFirmwareModal();
+    sortable('.sortable');
 });

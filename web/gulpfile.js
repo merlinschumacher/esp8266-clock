@@ -5,7 +5,8 @@ var gulp = require('gulp'),
     rename = require('gulp-rename'),
     terser = require('gulp-terser'),
     concat = require('gulp-concat'),
-    pug = require('gulp-i18n-pug');
+    pug = require('gulp-pug'),
+    i18n = require('gulp-html-i18n');
 
 function reload(done) {
     connect.server({
@@ -46,17 +47,23 @@ function html() {
     );
 }
 
+// .pipe(pug({
+//     i18n: {
+//         dest: 'dist',
+//         locales: 'src/locales/*.json',
+//         localeExtension: true
+//     },
+//     pretty: false
+// }))
 function views() {
     return (
         gulp.src('src/pug/pages/*.pug')
             .pipe(plumber())
-            .pipe(pug({
-                i18n: {
-                    dest: 'dist',
-                    locales: 'src/locales/*.json',
-                    localeExtension: true
-                },
-                pretty: false
+            .pipe(pug())
+            .pipe(i18n({
+                langDir: 'src/locales',
+                delimiters: ['${', '}']
+
             }))
             .pipe(gulp.dest('dist'))
             .pipe(connect.reload())

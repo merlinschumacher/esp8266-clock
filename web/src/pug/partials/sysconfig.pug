@@ -4,6 +4,14 @@
 
     fieldset.form-horizontal
 
+        div #{$i18n.sysconfig.model.description}
+        .form-group
+            label.form-radio.form-inline
+                input(type='radio', name='model', checked, value=`${i18n.sysconfig.model.basicclock}`)
+            label.form-radio.form-inline
+                //- input(type='radio', name='model', checked) #{$i18n.sysconfig.model.dateclock}
+    fieldset.form-horizontal
+
         .form-group
             .col-2
                 label.form-label(for='ledpin') #{$i18n.sysconfig.ledpin} 
@@ -18,7 +26,7 @@
                 input.form-input(type='number', min='1', step='1', id='ledcount')
     
     .divider
-    
+      
     fieldset.form-horizontal
         .h6 #{$i18n.sysconfig.network.description}
 
@@ -50,7 +58,7 @@
 
         .form-group
             .col-12
-                button.btn.btn-lg #{$i18n.sysconfig.firmware.open}
+                button.btn.btn-lg.modal-firmware-toggle(onclick='return false;') #{$i18n.sysconfig.firmware.open}
 
     .divider
 
@@ -58,7 +66,7 @@
 
         .form-group
             .col-12
-                button.btn.btn-lg #{$i18n.sysconfig.reset.open}
+                button.btn.btn-lg.modal-reset-toggle(onclick='return false;')  #{$i18n.sysconfig.reset.open}
 
 
 

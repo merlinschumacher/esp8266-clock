@@ -13,6 +13,7 @@
     "gulp": "^4.0.2",
     "gulp-concat": "^2.6.1",
     "gulp-connect": "^5.7.0",
+    "gulp-html-i18n": "^0.16.0",
     "gulp-i18n-pug": "^1.1.0",
     "gulp-plumber": "^1.2.1",
     "gulp-pug": "^4.0.1",

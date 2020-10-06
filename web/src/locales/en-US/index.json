@@ -77,7 +77,15 @@
             "submit": "Upload update"
         },
         "reset": {
-            "open": "Reset settings"
+            "description": "This resets",
+            "open": "Reset settings",
+            "confirm": "RESET EVERYTHING!",
+            "cancel": "Cancel"
+        },
+        "model": {
+            "description": "Which model?",
+            "basicclock": "simple clock",
+            "dateclock": "clock with date"
         }
     }
 }
