@@ -1,12 +1,63 @@
 .bar
-    .bar-item.tooltip(data-tooltip='25%') 25%
-    .bar-item.tooltip(data-tooltip='25%') 25%
+    .bar-item(style='width:60%') 
+        span Time 
+        span#timelegthbar (60 LEDs)
+    .bar-item(style='width:10%') 
+        span Date 
+        span#timelegthbar (60 LEDs)
 
-fieldset.form-horizontal
+fieldset.form-horizontal#ledorder
     ul.sortable
 
-        li bla
-        li blubb
-        li bla
-        li bla
-        li bla
+        li.c-move.p-2.container
+            .columns
+                .column.col-2
+                    .h6 ${{ index.ledconfig.order.time }}$ 
+                .column.col-9
+                    .form-group
+                        .col-2
+                            label.form-label(for='timelength') ${{ index.ledconfig.order.length }}$ 
+                        .col-4
+                            input.form-input(type='number', min='1', step='1', id='timelength')
+                .column.col-1
+                    .btn.btn-primary.btn-action.btn-lg.c-move
+                        i.icon.icon-resize-vert
+        li.c-move.p-2.container
+            .columns
+                .column.col-2
+                    .h6 ${{ index.ledconfig.order.date }}$ 
+                .column.col-9
+                    .form-group
+                        .col-2
+                            label.form-label(for='datelength') ${{ index.ledconfig.order.length }}$ 
+                        .col-4
+                            input.form-input(type='number', min='1', step='1', id='datelength')
+                .column.col-1
+                    .btn.btn-primary.btn-action.btn-lg.c-move
+                        i.icon.icon-resize-vert
+        li.c-move.p-2.container
+            .columns
+                .column.col-2
+                    .h6 ${{ index.ledconfig.order.weekday }}$ 
+                .column.col-9
+                    .form-group
+                        .col-2
+                            label.form-label(for='weekdaylength') ${{ index.ledconfig.order.length }}$ 
+                        .col-4
+                            input.form-input(type='number', min='1', step='1', id='timelength')
+                .column.col-1
+                    .btn.btn-primary.btn-action.btn-lg.c-move
+                        i.icon.icon-resize-vert
+        li.c-move.p-2.container
+            .columns
+                .column.col-2
+                    .h6 ${{ index.ledconfig.order.month }}$ 
+                .column.col-9
+                    .form-group
+                        .col-2
+                            label.form-label(for='timelength') ${{ index.ledconfig.order.length }}$ 
+                        .col-4
+                            input.form-input(type='number', min='1', step='1', id='timelength')
+                .column.col-1
+                    .btn.btn-primary.btn-action.btn-lg.c-move
+                        i.icon.icon-resize-vert

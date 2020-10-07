@@ -59,7 +59,14 @@
             "night": "Night"
         },
         "blendcolors": "Blend overlapping colors into one.",
-        "fluidmotion": "Enable fluid fading between the pixels for the second hand."
+        "fluidmotion": "Enable fluid fading between the pixels for the second hand.",
+        "order": {
+            "length": "Length",
+            "time": "Time",
+            "date": "Date",
+            "weekday": "Weekday",
+            "month": "Month"
+        }
     },
     "sysconfig": {
         "description": "system settings",
