@@ -11,6 +11,6 @@ function initCheckboxBacklightEnable() {
             element.style.display = "none";
         });
     }
-}
+};
 
 

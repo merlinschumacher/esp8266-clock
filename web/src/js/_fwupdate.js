@@ -6,5 +6,5 @@ function initFirmwareModal() {
             resetModal.classList.toggle('active');
             return false;
         }, false);
-    }
-}
+    };
+};

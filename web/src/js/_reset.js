@@ -7,4 +7,4 @@ function initResetModal() {
             return false;
         }, false);
     }
-}
+};

@@ -10,5 +10,5 @@ function initCheckboxAlarmEnable() {
         Array.from(alarmTime).forEach((element) => {
             element.style.display = "none";
         });
-    }
-}
+    };
+};

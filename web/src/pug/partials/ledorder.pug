@@ -1,63 +1,42 @@
-.bar
-    .bar-item(style='width:60%') 
-        span Time 
-        span#timelegthbar (60 LEDs)
-    .bar-item(style='width:10%') 
-        span Date 
-        span#timelegthbar (60 LEDs)
+.h6 LED strip layout
+
+#led-layout-labels
+    span.chip 1
+    span.chip.float-right(rv-text='config.ledCount')
+
+#led-layout.p-relative.bg-gray
+    .bg-primary.led-layout-block 
+    .bg-success.led-layout-block 
+    .bg-error.led-layout-block 
+        
 
 fieldset.form-horizontal#ledorder
-    ul.sortable
+    .form-group
+        .col-1
+            label.form-label(for='time-pos-slider') ${{ index.ledconfig.order.time }}$
+        .col-10
+            input.col-12.slider.pos-slider.tooltip#time-pos-slider(type="range" min="0" rv-max="config.ledCount" value="1" rv-value='config.timePos')
+        .col-1
+            span.chip.mx-2.slider-chip(rv-text='config.timePos')
+    .form-group
+        .col-1
+            label.form-label(for='weekday-pos-slider') ${{ index.ledconfig.order.weekday }}$
+        .col-10
+            input.col-12.slider.pos-slider.tooltip#weekday-pos-slider(type="range" min="0" max="100" value="50")
+        .col-1
+            span.chip.mx-2.slider-chip(data-bind='config.weekdayPos')
+    .form-group
+        .col-1
+            label.form-label(for='date-pos-slider') ${{ index.ledconfig.order.date }}$
+        .col-10
+            input.col-12.slider.pos-slider.tooltip#date-pos-slider(type="range" min="0" max="100" value="50")
+        .col-1
+            span.chip.mx-2.slider-chip(data-bind='config.datePos')
+    .form-group
+        .col-1
+            label.form-label(for='month-pos-slider') ${{ index.ledconfig.order.month}}$
+        .col-10
+            input.col-12.slider.pos-slider.tooltip#month-pos-slider(type="range" min="0" max="100" value="50")
+        .col-1
+            span.chip.mx-2.slider-chip(data-bind='config.monthPos')
 
-        li.c-move.p-2.container
-            .columns
-                .column.col-2
-                    .h6 ${{ index.ledconfig.order.time }}$ 
-                .column.col-9
-                    .form-group
-                        .col-2
-                            label.form-label(for='timelength') ${{ index.ledconfig.order.length }}$ 
-                        .col-4
-                            input.form-input(type='number', min='1', step='1', id='timelength')
-                .column.col-1
-                    .btn.btn-primary.btn-action.btn-lg.c-move
-                        i.icon.icon-resize-vert
-        li.c-move.p-2.container
-            .columns
-                .column.col-2
-                    .h6 ${{ index.ledconfig.order.date }}$ 
-                .column.col-9
-                    .form-group
-                        .col-2
-                            label.form-label(for='datelength') ${{ index.ledconfig.order.length }}$ 
-                        .col-4
-                            input.form-input(type='number', min='1', step='1', id='datelength')
-                .column.col-1
-                    .btn.btn-primary.btn-action.btn-lg.c-move
-                        i.icon.icon-resize-vert
-        li.c-move.p-2.container
-            .columns
-                .column.col-2
-                    .h6 ${{ index.ledconfig.order.weekday }}$ 
-                .column.col-9
-                    .form-group
-                        .col-2
-                            label.form-label(for='weekdaylength') ${{ index.ledconfig.order.length }}$ 
-                        .col-4
-                            input.form-input(type='number', min='1', step='1', id='timelength')
-                .column.col-1
-                    .btn.btn-primary.btn-action.btn-lg.c-move
-                        i.icon.icon-resize-vert
-        li.c-move.p-2.container
-            .columns
-                .column.col-2
-                    .h6 ${{ index.ledconfig.order.month }}$ 
-                .column.col-9
-                    .form-group
-                        .col-2
-                            label.form-label(for='timelength') ${{ index.ledconfig.order.length }}$ 
-                        .col-4
-                            input.form-input(type='number', min='1', step='1', id='timelength')
-                .column.col-1
-                    .btn.btn-primary.btn-action.btn-lg.c-move
-                        i.icon.icon-resize-vert

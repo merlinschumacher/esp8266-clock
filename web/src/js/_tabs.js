@@ -8,7 +8,7 @@ function switchTab(element) {
         } else {
             element.classList.remove("active");
         }
-    })
+    });
 
     contentBlocks.forEach(element => {
         if (element.id == target) {
@@ -16,13 +16,13 @@ function switchTab(element) {
         } else {
             element.style.display = 'none';
         }
-    })
-}
+    });
+};
 
 function initTabs() {
-    document.getElementById("timeconfig").style.display = "unset"
+    document.getElementById("timeconfig").style.display = "unset";
     const tabButtons = document.querySelectorAll(".tab-item > a");
     tabButtons.forEach(element => {
         element.addEventListener('click', function (element) { switchTab(element.target) }, false);
     });
-}
+};

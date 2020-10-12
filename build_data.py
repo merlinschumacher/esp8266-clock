@@ -6,8 +6,8 @@ source_files = ["index.html", "main.js", "timezones.json", "main.css"]
 target_files = ["index_html.hpp", "main_js.hpp", "timezones_json.hpp", "main_css.hpp"]
 i = 0
 while i < len(source_files):
-    env.Execute("gzip -c -9 web/"+source_files[i]+"> web/"+source_files[i]+".gz")
-    env.Execute("xxd -i web/"+source_files[i]+".gz include/"+target_files[i])
+    env.Execute("gzip -c -9 web/dist/"+source_files[i]+"> web/dist/"+source_files[i]+".gz")
+    env.Execute("cd web/dist; xxd -i "+source_files[i]+".gz ../../include/"+target_files[i])
     with open("include/"+target_files[i], 'r+') as f:
         s = f.read()
         s = s.replace("unsigned char", "const char")
@@ -17,7 +17,7 @@ while i < len(source_files):
         f.seek(0)
         f.write(s)
         f.close()
-    env.Execute("rm web/"+source_files[i]+".gz")
+    env.Execute("rm web/dist/"+source_files[i]+".gz")
     i = i+1
 
 print("changing program filename ") 

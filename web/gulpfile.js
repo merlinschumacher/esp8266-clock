@@ -22,8 +22,8 @@ function styles() {
         gulp.src('src/sass/styles.scss')
             .pipe(plumber())
             .pipe(sass.sync({ outputStyle: 'compressed' }))
-            .pipe(rename('styles.min.css'))
-            .pipe(gulp.dest('dist/assets/css'))
+            .pipe(rename('styles.css'))
+            .pipe(gulp.dest('dist/'))
             .pipe(connect.reload())
     );
 }
@@ -32,9 +32,11 @@ function scripts() {
     return (
         gulp.src('src/js/*.js')
             .pipe(plumber())
-            .pipe(terser())
             .pipe(concat('scripts.js'))
-            .pipe(gulp.dest('dist/assets/js'))
+            .pipe(terser({
+                ecma: 2016
+            }))
+            .pipe(gulp.dest('dist/'))
             .pipe(connect.reload())
     );
 }

@@ -52,6 +52,7 @@
         }
     },
     "ledconfig": {
+        "title": "LED configuration",
         "description": "Set up LEDs",
         "backlight": {
             "enable": "Enable background light",
@@ -69,7 +70,12 @@
         }
     },
     "sysconfig": {
+        "title": "System configuration",
         "description": "system settings",
+        "led": {
+            "pin": "LED strip pin",
+            "count": "LED strip length"
+        },
         "network": {
             "description": "Network settings",
             "timeserver": "NTP time server",
@@ -84,6 +90,7 @@
             "submit": "Upload update"
         },
         "reset": {
+            "title": "Reset the clock",
             "description": "This resets",
             "open": "Reset settings",
             "confirm": "RESET EVERYTHING!",

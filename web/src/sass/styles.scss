@@ -1,7 +1,6 @@
 @import "spectre/spectre";
-@import "spectre/spectre-icons";
-@import "pickr";
-@import "_tabs";
+// @import "spectre/spectre-icons";
+@import "spectre/spectre-exp";
 
 header.p-sticky {
     top: 0;
@@ -12,14 +11,23 @@ header.p-sticky {
     display: none;
 }
 
-#ledorder {
-    ul {
-        margin-left: 0;
 
-        li {
-            list-style-type: none;
-            border: $border-width solid $border-color;
-            border-radius: $border-radius;
+#led-layout {
+    height: 2rem;
+    border: $border-width solid $border-color;
+    border-radius: $border-radius;
+    line-height: 1.2em;
+
+
+    @for $index from 2 through 3 {
+        &>div:nth-of-type(#{$index}) {
+            margin-top: .666rem * ($index - 1);
         }
+
+    }
+
+    .led-layout-block {
+        position: absolute;
+        height: .666em;
     }
 }

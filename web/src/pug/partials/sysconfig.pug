@@ -7,23 +7,23 @@
         div ${{ index.sysconfig.model.description }}$
         .form-group
             label.form-radio.form-inline
-                input(type='radio', name='model', checked, value='${{i18n.sysconfig.model.basicclock }}$')
+                input(type='radio', name='model', checked, value='${{ index.sysconfig.model.basicclock }}$')
             label.form-radio.form-inline
                 //- input(type='radio', name='model', checked) ${{ index.sysconfig.model.dateclock }}$
     fieldset.form-horizontal
 
         .form-group
-            .col-2
-                label.form-label(for='ledpin') ${{ index.sysconfig.ledpin }}$ 
             .col-3
-                input.form-input(type='number', min='1', step='1', id='ledpin')
+                label.form-label(for='ledpin') ${{ index.sysconfig.led.pin }}$ 
+            .col-5
+                input.form-input(type='number', min='1', step='1', rv-value='config.ledPin')
         
         .form-group
 
-            .col-2
-                label.form-label(for='ledcount') ${{ index.sysconfig.ledcount }}$ 
             .col-3
-                input.form-input(type='number', min='1', step='1', id='ledcount')
+                label.form-label(for='ledcount') ${{ index.sysconfig.led.count }}$ 
+            .col-5
+                input.form-input(type='number', min='1', step='1', rv-value='config.ledCount')
     
     .divider
       
@@ -34,13 +34,13 @@
             .col-3
                 label.form-label(for='timeserver') ${{ index.sysconfig.network.timeserver }}$ 
             .col-9
-                input.form-input(pattern='^([a-zA-Z0-9]([a-zA-Z0-9\-]{0,61 }}$[a-zA-Z0-9])?\.)+[a-zA-Z]{2,6 }}$$', maxlength='64', size='64', required, id='timeserver')
+                input.form-input(pattern='^([a-zA-Z0-9]([a-zA-Z0-9\-]{0,61 }}$[a-zA-Z0-9])?\.)+[a-zA-Z]{2,6 }}$$', maxlength='64', size='64', required)
         
         .form-group
             .col-3
                 label.form-label(for='timeserver') ${{ index.sysconfig.network.hostname }}$ 
             .col-9
-                input.form-input(pattern='^[a-zA-Z][a-zA-Z0-9-_\.]{1,64 }}$$', maxlength='64', size='64', required, id='timeserver')
+                input.form-input(pattern='^[a-zA-Z][a-zA-Z0-9-_\.]{1,64 }}$$', maxlength='64', size='64', required)
     
     .divider
 
