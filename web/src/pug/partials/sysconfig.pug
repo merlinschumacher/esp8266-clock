@@ -4,53 +4,45 @@
 
     fieldset.form-horizontal
 
-        div ${{ index.sysconfig.model.description }}$
         .form-group
-            label.form-radio.form-inline
-                input(type='radio', name='model', checked, value='${{ index.sysconfig.model.basicclock }}$')
-            label.form-radio.form-inline
-                //- input(type='radio', name='model', checked) ${{ index.sysconfig.model.dateclock }}$
-    fieldset.form-horizontal
-
-        .form-group
-            .col-3
+            .col-4
                 label.form-label(for='ledpin') ${{ index.sysconfig.led.pin }}$ 
-            .col-5
+            .col-8
                 input.form-input(type='number', min='1', step='1', rv-value='config.ledPin')
         
         .form-group
 
-            .col-3
+            .col-4
                 label.form-label(for='ledcount') ${{ index.sysconfig.led.count }}$ 
-            .col-5
+            .col-8
                 input.form-input(type='number', min='1', step='1', rv-value='config.ledCount')
     
+    include ../partials/ledorder.pug
     .divider
       
     fieldset.form-horizontal
         .h6 ${{ index.sysconfig.network.description }}$
 
         .form-group
-            .col-3
+            .col-4
                 label.form-label(for='timeserver') ${{ index.sysconfig.network.timeserver }}$ 
-            .col-9
-                input.form-input(pattern='^([a-zA-Z0-9]([a-zA-Z0-9\-]{0,61 }}$[a-zA-Z0-9])?\.)+[a-zA-Z]{2,6 }}$$', maxlength='64', size='64', required)
+            .col-8
+                input.form-input(pattern='^([a-zA-Z0-9]([a-zA-Z0-9\-]{0,61 }}$[a-zA-Z0-9])?\.)+[a-zA-Z]{2,6 }}$$', maxlength='64', size='64', required, rv-value='config.timeserver')
         
         .form-group
-            .col-3
+            .col-4
                 label.form-label(for='timeserver') ${{ index.sysconfig.network.hostname }}$ 
-            .col-9
-                input.form-input(pattern='^[a-zA-Z][a-zA-Z0-9-_\.]{1,64 }}$$', maxlength='64', size='64', required)
+            .col-8
+                input.form-input(pattern='^[a-zA-Z][a-zA-Z0-9-_\.]{1,64 }}$$', maxlength='64', size='64', required, rv-value='config.hostname')
     
     .divider
 
+
     fieldset.form-horizontal
 
         .form-group
-            .col-2
-                label.form-label(for='timezone') ${{ index.sysconfig.timezone }}$ 
-            .col-10
-                select.form-input(id='timezone')
+            .col-12
+                button.btn.btn-lg.modal-firmware-toggle(rv-on-click='toggleFirmwareModal') ${{ index.sysconfig.firmware.open }}$
 
     .divider
 
@@ -58,15 +50,7 @@
 
         .form-group
             .col-12
-                button.btn.btn-lg.modal-firmware-toggle(onclick='return false;') ${{ index.sysconfig.firmware.open }}$
-
-    .divider
-
-    fieldset.form-horizontal
-
-        .form-group
-            .col-12
-                button.btn.btn-lg.modal-reset-toggle(onclick='return false;')  ${{ index.sysconfig.reset.open }}$
+                button.btn.btn-lg.modal-reset-toggle(rv-on-click='toggleResetModal')  ${{ index.sysconfig.reset.open }}$
 
 
 

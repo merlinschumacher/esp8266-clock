@@ -1,12 +1,12 @@
 .modal#modalfirmware
-    a.modal-overlay.modal-firmware-toggle(href='#close', aria-label="Close")
+    a.modal-overlay(href='#close', aria-label="Close" rv-on-click='toggleFirmwareModal')
     .modal-container
         .modal-header
-            a.btn.btn-clear.float-right.modal-firmware-toggle(href='#close', aria-label="Close")
-            .modal-title.h5 ${{ index.sysconfig.firmware.title }}$
+            a.btn.btn-clear.float-right(href='#close', aria-label="Close" rv-on-click='toggleFirmwareModal')
+            .modal-title.h4 ${{ index.sysconfig.firmware.title }}$
         .modal-body
             .content
-                div ${{ index.sysconfig.firmware.description }}$
+                p ${{ index.sysconfig.firmware.description }}$
                 form.form-horizontal(method='POST', action='/update', enctype='multipart/form-data')
                     .form-group
                         .col-2

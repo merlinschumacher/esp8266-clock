@@ -2,10 +2,8 @@ extends ../layouts/default-layout.pug
 block content
   form.form-horizontal(onsubmit='return false')
     include ../partials/tabselector.pug
+    include ../partials/colorconfig.pug
     include ../partials/timeconfig.pug
-    include ../partials/dateconfig.pug
-    include ../partials/ledconfig.pug
     include ../partials/sysconfig.pug
   include ../partials/fwupdate.pug
   include ../partials/reset.pug
-  include ../partials/ledorder.pug

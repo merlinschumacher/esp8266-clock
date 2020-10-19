@@ -1,8 +1,11 @@
-//- .toast.toast-error.my-2
-//-     span ENABLE JAVASCRIPT TO CONFIGURE THE CLOCK
-header.navbar.col-12.p-sticky
-    section.navbar-section
-    section.navbar-section
-        button.btn.btn-lg.btn-primary.input-group-btn.my-2 ${{ index.savebutton }}$
+.toast.toast-error.my-2(rv-if='false')
+    span ENABLE JAVASCRIPT TO CONFIGURE THE CLOCK
 
-p ${{ index.description }}$
+h1.col-6.mt-2 { config.hostname }
+.col-4
+footer.col-2.col-sm-12.columns.col-gapless.float-right
+    button.col-12.btn.btn-lg.btn-primary.mt-2#save-button(rv-on-click="saveSettings") ${{ index.savebutton }}$
+.container
+    .columns
+        p.col-6.col-xs-12 ${{ index.description }}$
+        time.col-6.col-xs-12 Current time: { date | formatDate }

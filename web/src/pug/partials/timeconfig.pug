@@ -1,68 +1,32 @@
-.contenttab#timeconfig
+.contenttab#ledconfig
     h2 ${{ index.timeconfig.title }}$
     div ${{ index.timeconfig.description }}$
-
+    
     fieldset.form-horizontal
-        .columns
-
-            .column.col-6
-                .h6 ${{ index.timeconfig.colorconfig.day }}$
-
-                .form-group 
-                    .col-3
-                        label.form-label(for='hourcolor') ${{ index.timeconfig.colorconfig.hourhand }}$ 
-                    .col-9
-                        input.form-input(type='color', id='hourcolor' rv-bind='config.Colo')
-                
-                .form-group 
-                    .col-3
-                        label.form-label(for='minutecolor') ${{ index.timeconfig.colorconfig.minutehand }}$ 
-                    .col-9
-                        input.form-input(type='color', id='minutecolor')
-                
-                .form-group
-                    .col-3
-                        label.form-label(for='secondcolor') ${{ index.timeconfig.colorconfig.secondhand }}$ 
-                    .col-9
-                        input.form-input(type='color', id='secondcolor')
-
-            .column.col-6
-                .h6 ${{ index.timeconfig.colorconfig.night }}$
-
-                .form-group 
-                    .col-3
-                        label.form-label(for='hourcolor') ${{ index.timeconfig.colorconfig.hourhand }}$ 
-                    .col-9
-                        input.form-input(type='color', id='hourcolor')
-                
-                .form-group 
-                    .col-3
-                        label.form-label(for='minutecolor') ${{ index.timeconfig.colorconfig.minutehand }}$ 
-                    .col-9
-                        input.form-input(type='color', id='minutecolor')
-                
-                .form-group
-                    .col-3
-                        label.form-label(for='secondcolor') ${{ index.timeconfig.colorconfig.secondhand }}$ 
-                    .col-9
-                        input.form-input(type='color', id='secondcolor')
-
-    .divider
-
-    fieldset.form-horizontal#alarmform
-        .h6 ${{ index.timeconfig.alarm.description }}$
         .form-group 
-            .col-5
+            .col-12
+                label.form-switch(for='hourlight')
+                    input(type='checkbox' id='hourlight' rv-checked='config.hourLight')
+                    i.form-icon
+                    span ${{ index.timeconfig.hourlight }}$ 
+    
+    .divider
+   
+    fieldset.form-horizontal#alarmform
+        .h6 ${{ index.timeconfig.alarm.title }}$
+        p ${{ index.timeconfig.alarm.description }}$
+        .form-group 
+            .col-5.col-sm-12
                 label.form-switch(for='alarmactive')
-                    input(type="checkbox" id="alarmactive")
+                    input(type='checkbox' id='alarmactive' rv-checked='config.alarmActive')
                     i.form-icon
                     span ${{ index.timeconfig.alarm.active }}$ 
 
-            .divider-vert.alarmtime
-            .col-2.alarmtime
+            .divider-vert.col-2.hide-xs.alarmtime(rv-if='config.alarmActive')
+            .col-2.col-sm-4.alarmtime(rv-if='config.alarmActive')
                     label.form-label(for='alarm') ${{ index.timeconfig.alarm.time }}$ 
-            .col-3.alarmtime
-                    input.form-input(type='time', id='alarm')
+            .col-3.col-sm-8.alarmtime(rv-if='config.alarmActive')
+                    input.form-input(type='time', id='alarm' rv-value='config.alarmTime')
     
     .divider
 
@@ -70,14 +34,28 @@
         .h6 ${{ index.timeconfig.night.description }}$
 
         .form-group
-            .col-2
-                label.form-label(for='alarm') ${{ index.timeconfig.night.begin }}$ 
-            .col-3
-                input.form-input(type='time', id='alarm')
+            .col-2.col-xs-4
+                label.form-label(for='nightbegin') ${{ index.timeconfig.night.begin }}$ 
+            .col-3.col-xs-8
+                input.form-input(type='time', id='nightbegin' rv-value='config.nightTimeBegins')
         
-            .divider-vert
+            .divider-vert.col-2.hide-xs
+            .col-12.pt-2.show-xs
+            .col-2.col-xs-4
+                label.form-label(for='nightbegin') ${{ index.timeconfig.night.end }}$ 
+            .col-3.col-xs-8
+                input.form-input(type='time', id='nightend' rv-value='config.nightTimeEnds')
+     
+    .divider
 
-            .col-2
-                label.form-label(for='alarm') ${{ index.timeconfig.night.end }}$ 
-            .col-3
-                input.form-input(type='time', id='alarm')
+    fieldset.form-horizontal
+
+        .form-group
+            .col-4
+                label.form-label(for='timezone') ${{ index.sysconfig.timezone }}$ 
+            .col-8
+                select.form-input(id='timezone', rv-value='config.timezone')
+                    option(rv-each-timezone='timezones' rv-value='timezone') { timezone }
+
+
+    .divider

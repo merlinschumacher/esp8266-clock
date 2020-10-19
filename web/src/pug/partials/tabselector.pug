@@ -1,9 +1,8 @@
 ul.tab.tab-block
-    li.tab-item.active#timeconfig-tab
-        a(href="#timeconfig") ${{ index.nav.timeconfig }}$
-    li.tab-item#dateconfig-tab
-        a(href="#dateconfig") ${{ index.nav.dateconfig }}$
+    li.tab-item.active#colorconfig-tab
+        a(href="#colorconfig", onclick='return false;') ${{ index.nav.color }}$
     li.tab-item#ledconfig-tab
-        a(href="#ledconfig") ${{ index.nav.ledconfig }}$
+        a(href="#ledconfig", onclick='return false;') ${{ index.nav.time }}$
     li.tab-item#sysconfig-tab
-        a(href="#sysconfig") ${{ index.nav.sysconfig }}$
+        a(href="#sysconfig", onclick='return false;') ${{ index.nav.sys }}$
+

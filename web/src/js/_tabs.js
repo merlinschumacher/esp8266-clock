@@ -20,9 +20,11 @@ function switchTab(element) {
 };
 
 function initTabs() {
-    document.getElementById("timeconfig").style.display = "unset";
+    document.getElementById("colorconfig").style.display = "unset";
     const tabButtons = document.querySelectorAll(".tab-item > a");
     tabButtons.forEach(element => {
-        element.addEventListener('click', function (element) { switchTab(element.target) }, false);
+        element.addEventListener('click', function (element) {
+            switchTab(element.target); return false;
+        }, false);
     });
 };

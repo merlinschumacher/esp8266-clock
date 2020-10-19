@@ -1,0 +1,149 @@
+.contenttab#colorconfig
+    h2 ${{ index.colorconfig.title }}$
+    div ${{ index.colorconfig.description }}$
+    .divider
+
+    .h4 ${{ index.colorconfig.time.title }}$
+    fieldset.form-horizontal
+        div ${{ index.colorconfig.time.title }}$
+        .columns
+
+            .column.col-6.col-sm-12.mt-2
+                .h6 ${{ index.color_day }}$
+
+                .form-group 
+                    .col-3
+                        label.form-label(for='hourcolor') ${{ index.hour }}$ 
+                    .col-9
+                        input.form-input(type='color', id='hourcolor' rv-value='config.hourColor')
+                
+                .form-group 
+                    .col-3
+                        label.form-label(for='minutecolor') ${{ index.minute }}$ 
+                    .col-9
+                        input.form-input(type='color', id='minutecolor' rv-value='config.minuteColor')
+                
+                .form-group
+                    .col-3
+                        label.form-label(for='secondcolor') ${{ index.second }}$ 
+                    .col-9
+                        input.form-input(type='color', id='secondcolor' rv-value='config.secondColor')
+
+            .column.col-6.col-sm-12.mt-2
+                .h6 ${{ index.color_night }}$
+
+                .form-group 
+                    .col-3
+                        label.form-label(for='hourcolordimmed') ${{ index.hour }}$ 
+                    .col-9
+                        input.form-input(type='color', id='hourcolordimmed' rv-value='config.hourColorDimmed')
+                
+                .form-group 
+                    .col-3
+                        label.form-label(for='minutecolordimmed') ${{ index.minute }}$ 
+                    .col-9
+                        input.form-input(type='color', id='minutecolordimmed' rv-value='config.minuteColorDimmed')
+                
+                .form-group
+                    .col-3
+                        label.form-label(for='secondcolordimmed') ${{ index.second }}$ 
+                    .col-9
+                        input.form-input(type='color', id='secondcolordimmed' rv-value='config.secondColorDimmed')
+
+    .divider
+
+    
+    fieldset.form-horizontal
+        .form-group 
+            .col-12
+                label.form-switch(for='daymonth')
+                    input(type='checkbox' id='daymonth' rv-checked='config.dayMonth')
+                    i.form-icon
+                    span ${{ index.colorconfig.date.active }}$ 
+
+    .h4(rv-if='config.dayMonth') ${{ index.colorconfig.date.title }}$
+    fieldset.form-horizontal(rv-if='config.dayMonth')
+        div ${{ index.colorconfig.date.description }}$
+        .columns
+
+            .column.col-6.col-xs-12.mt-2
+                .h6 ${{ index.color_day }}$
+
+                .form-group 
+                    .col-3
+                        label.form-label(for='weekdaycolor') ${{ index.weekday }}$ 
+                    .col-9
+                        input.form-input(type='color', id='weekdaycolor' rv-value='config.weekdayColor')
+                
+                .form-group 
+                    .col-3
+                        label.form-label(for='daycolor') ${{ index.date }}$ 
+                    .col-9
+                        input.form-input(type='color', id='daycolor' rv-value='config.dayColor')
+                
+                .form-group
+                    .col-3
+                        label.form-label(for='monthcolor') ${{ index.month }}$ 
+                    .col-9
+                        input.form-input(type='color', id='monthcolor' rv-value='config.monthColor')
+
+            .column.col-6.col-xs-12.mt-2
+                .h6 ${{ index.color_night }}$
+
+                .form-group 
+                    .col-3
+                        label.form-label(for='weekdaycolordimmed') ${{ index.weekday }}$ 
+                    .col-9
+                        input.form-input(type='color', id='weekdaycolordimmed' rv-value='config.weekdayColorDimmed')
+                
+                .form-group 
+                    .col-3
+                        label.form-label(for='daycolordimmed') ${{ index.date }}$ 
+                    .col-9
+                        input.form-input(type='color', id='daycolordimmed' rv-value='config.dayColorDimmed')
+                
+                .form-group
+                    .col-3
+                        label.form-label(for='monthcolordimmed') ${{ index.month }}$ 
+                    .col-9
+                        input.form-input(type='color', id='monthcolordimmed' rv-value='config.monthColorDimmed')
+
+    fieldset.form-horizontal
+        .form-group 
+            .col-12
+                label.form-switch(for='bglight')
+                    input(type='checkbox' id='bglight' rv-checked='config.bgLight')
+                    i.form-icon
+                    span ${{ index.colorconfig.backlight.enable }}$ 
+
+            .column.col-6.bglightsettings(rv-if='config.bgLight')
+
+                .form-group 
+                    .col-3
+                        label.form-label(for='bgcolor') ${{ index.colorconfig.backlight.day }}$ 
+                    .col-9
+                        input.form-input(type='color', id='bgcolor' rv-value='config.bgColor')
+                
+            .column.col-6.bglightsettings(rv-if='config.bgLight')
+
+                .form-group 
+                    .col-3
+                        label.form-label(for='bgcolor') ${{ index.colorconfig.backlight.night }}$ 
+                    .col-9
+                        input.form-input(type='color', id='bgcolordimmed' rv-value='config.bgColorDimmed')
+
+    fieldset.form-horizontal
+        .form-group 
+            .col-12
+                label.form-switch(for='blendcolors')
+                    input(type='checkbox' id='blendcolors' rv-checked='config.blendColors')
+                    i.form-icon
+                    span ${{ index.colorconfig.blendcolors }}$ 
+
+    fieldset.form-horizontal
+        .form-group 
+            .col-12
+                label.form-switch(for='fluidmotion')
+                    input(type='checkbox' id='fluidmotion' rv-checked='config.fluidMotion')
+                    i.form-icon
+                    span ${{ index.colorconfig.fluidmotion }}$ 

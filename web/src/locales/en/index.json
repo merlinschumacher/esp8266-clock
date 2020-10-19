@@ -1,80 +1,86 @@
 {
-    "title": "⏰ESP-CLOCK",
+    "title": "ESP-CLOCK",
     "description": "This is a digital LED-Wallclock",
     "savebutton": "Save",
     "nav": {
-        "timeconfig": "Time",
-        "dateconfig": "Date",
-        "ledconfig": "LED",
-        "sysconfig": "System"
+        "color": "Color",
+        "time": "Time",
+        "sys": "System"
     },
-    "timeconfig": {
-        "title": "Clock hand configuration",
-        "description": "Here you can setup the clock hands.",
-        "colorconfig": {
-            "day": "Colors in the day.",
-            "night": "Colors in the night.",
-            "hourhand": "Hour",
-            "minutehand": "Minute",
-            "secondhand": "Second"
-        },
-        "alarm": {
-            "description": "It's possible to set an alarm.",
-            "time": "Alarm time",
-            "active": "Alarm active"
-        },
-        "night": {
-            "description": "When does the night begin",
-            "begin": "Start",
-            "end": "End"
-        }
-
-    },
-    "dateconfig": {
-        "title": "DAte hand configuration",
-        "description": "Here you can setup the clock hands.",
-        "colorconfig": {
-            "day": "Colors in the day.",
-            "night": "Colors in the night.",
-            "hourhand": "Hour",
-            "minutehand": "Minute",
-            "secondhand": "Second"
-        },
-        "alarm": {
-            "description": "It's possible to set an alarm.",
-            "time": "Alarm time",
-            "active": "Alarm active"
-        },
-        "night": {
-            "description": "When does the night begin",
-            "begin": "Start",
-            "end": "End"
-        }
-    },
-    "ledconfig": {
-        "title": "LED configuration",
-        "description": "Set up LEDs",
+    "color_day": "Colors in the day.",
+    "color_night": "Colors in the night.",
+    "hour": "Hour",
+    "minute": "Minute",
+    "second": "Second",
+    "weekday": "Weekday",
+    "month": "Month",
+    "date": "Date",
+    "restart_required": "Requires restart",
+    "colorconfig": {
+        "title": "Color configuration",
+        "description": "Here you can configure the color and behaviour of the LED clock hands.",
         "backlight": {
             "enable": "Enable background light",
             "day": "Day",
             "night": "Night"
         },
+        "time": {
+            "title": "Time configuration",
+            "description": "Here you can configure the time settings."
+        },
+        "date": {
+            "title": "Date configuration",
+            "description": "Here you can setup the clock hands.",
+            "active": "Display weekday, date and month",
+            "colorconfig": {
+                "day": "Colors in the day.",
+                "night": "Colors in the night."
+            },
+            "alarm": {
+                "description": "It's possible to set an alarm.",
+                "time": "Alarm time",
+                "active": "Alarm active"
+            },
+            "night": {
+                "description": "When does the night begin",
+                "begin": "Start",
+                "end": "End"
+            }
+        },
         "blendcolors": "Blend overlapping colors into one.",
-        "fluidmotion": "Enable fluid fading between the pixels for the second hand.",
-        "order": {
+        "fluidmotion": "Flowing motion for the second hand."
+    },
+    "timeconfig": {
+        "title": "Time configuration",
+        "description": "Here you can configure the time settings.",
+        "alarm": {
+            "title": "Alarm",
+            "description": "If you enable the alarm function a red ring will be shown at the given time.",
+            "time": "Alarm time",
+            "active": "Alarm active"
+        },
+        "night": {
+            "description": "When does the night begin",
+            "begin": "Start",
+            "end": "End"
+        },
+        "hourlight": "Show a rainbow on top of the hour."
+    },
+    "sysconfig": {
+        "title": "System configuration",
+        "description": "Here you can configure global system settings.",
+        "led": {
+            "pin": "LED strip pin",
+            "count": "LED strip length"
+        },
+        "ledorder": {
+            "title": "LED ordering",
+            "description": "You can define a custom position on the LED strip for the weekday, date and month. The time is always fixed to the first 60 LEDs.",
             "length": "Length",
             "time": "Time",
             "date": "Date",
             "weekday": "Weekday",
             "month": "Month"
-        }
-    },
-    "sysconfig": {
-        "title": "System configuration",
-        "description": "system settings",
-        "led": {
-            "pin": "LED strip pin",
-            "count": "LED strip length"
         },
         "network": {
             "description": "Network settings",
@@ -83,23 +89,18 @@
         },
         "timezone": "Timezone",
         "firmware": {
-            "title": "Update the fw",
-            "description": "Update the fw",
+            "title": "Firmware update",
+            "description": "Update the firmware of the clock by selecting an update file and click 'Start update'. After about a minute the clock should be updated.",
             "open": "Firmware update",
             "update": "File",
-            "submit": "Upload update"
+            "submit": "Start update"
         },
         "reset": {
             "title": "Reset the clock",
-            "description": "This resets",
-            "open": "Reset settings",
+            "description": "This resets all settings. You'll have to reconnect to the WiFi provided by the clock and reconfigure the clock.",
+            "open": "Reset clock",
             "confirm": "RESET EVERYTHING!",
             "cancel": "Cancel"
-        },
-        "model": {
-            "description": "Which model?",
-            "basicclock": "simple clock",
-            "dateclock": "clock with date"
         }
     }
 }

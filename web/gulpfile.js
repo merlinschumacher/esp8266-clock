@@ -21,7 +21,12 @@ function styles() {
     return (
         gulp.src('src/sass/styles.scss')
             .pipe(plumber())
-            .pipe(sass.sync({ outputStyle: 'compressed' }))
+            .pipe(sass.sync({
+                outputStyle: 'compressed',
+                includePaths: [
+                    'node_modules/spectre.css/src'
+                ]
+            }))
             .pipe(rename('styles.css'))
             .pipe(gulp.dest('dist/'))
             .pipe(connect.reload())

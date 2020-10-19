@@ -1,6 +1,45 @@
-@import "spectre/spectre";
+@import "spectre";
 // @import "spectre/spectre-icons";
-@import "spectre/spectre-exp";
+@import "spectre-exp";
+
+h1,
+.h1 {
+    font-size: 1.6rem;
+}
+
+h2,
+.h2 {
+    font-size: 1.4rem;
+}
+
+h3,
+.h3 {
+    font-size: 1.2rem;
+}
+
+h4,
+.h4 {
+    font-size: 1rem;
+}
+
+h5,
+.h5 {
+    font-size: .8rem;
+}
+
+h6,
+.h6 {
+    font-size: .8rem;
+}
+
+h1 {
+    margin-top: .5em;
+
+    &:before {
+        content: "⏰";
+        font-family: emoji;
+    }
+}
 
 header.p-sticky {
     top: 0;
@@ -11,15 +50,18 @@ header.p-sticky {
     display: none;
 }
 
+.justify-content-center {
+    justify-content: center;
+}
 
 #led-layout {
-    height: 2rem;
+    height: 2.666rem;
     border: $border-width solid $border-color;
     border-radius: $border-radius;
     line-height: 1.2em;
+    overflow: hidden;
 
-
-    @for $index from 2 through 3 {
+    @for $index from 2 through 4 {
         &>div:nth-of-type(#{$index}) {
             margin-top: .666rem * ($index - 1);
         }
@@ -28,6 +70,32 @@ header.p-sticky {
 
     .led-layout-block {
         position: absolute;
-        height: .666em;
+        height: .666rem;
+        font-size: 0.6rem;
+        overflow: hidden;
     }
+}
+
+time {
+    text-align: right;
+
+    @media (max-width: $size-xs) {
+        text-align: left;
+    }
+}
+
+
+footer {
+    @media (max-width: $size-sm) {
+        position: fixed;
+        bottom: 0px;
+        overflow: hide;
+        width: 100%;
+        z-index: 100;
+        margin: 0 auto;
+    }
+}
+
+form {
+    margin-bottom: 3rem;
 }
