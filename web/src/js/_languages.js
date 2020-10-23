@@ -13,5 +13,4 @@ const languages = [
 
 const loadLanguage = function () {
     saveConfig();
-    location.reload();
 }

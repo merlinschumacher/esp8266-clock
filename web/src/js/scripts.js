@@ -1,7 +1,10 @@
 
+let config = {}
+let time = 0;
+let version = 0;
+let app;
 document.addEventListener("DOMContentLoaded", function (event) {
     initTabs();
-
     tinybind.formatters.sub = function (target, val) {
         return (target - val);
     };
@@ -20,9 +23,12 @@ document.addEventListener("DOMContentLoaded", function (event) {
         return value.replace(/_/g, ' ');
     };
     tinybind.formatters.formatDate = function (value) {
-        console.log(value);
-        let date = new Date(value * 1000);
-        return date.toLocaleString();
+        if (value != 0) {
+            let date = new Date(value * 1000);
+            return date.toLocaleString();
+        } else {
+            return "";
+        }
     };
     tinybind.binders.baroverflow = function (el) {
         if (el.scrollHeight > el.clientHeight || el.scrollWidth > el.clientWidth) {
@@ -34,19 +40,26 @@ document.addEventListener("DOMContentLoaded", function (event) {
             // el.style.boxShadow = "";
         };
     };
+    getTime().then(function (data) {
+        time = data;
+    })
+    getVersion().then(function (data) {
+        version = data;
+    })
 
-    let config = {};
-    let time = 0;
-    let version = "";
-    let app = tinybind.bind(document.getElementById("app"), {
-        config: config, version: version, time: time, timezones, languages, toggleFirmwareModal, toggleResetModal, loadLanguage
-    });
-    app.models.config = loadConfig();
-    app.models.time = getTime();
-    app.models.version = getVersion();
+    loadConfig().then(function (data) {
+        config = data;
+    }).then(function () {
+        app = tinybind.bind(document.getElementById("app"), {
+            config: config, version: version, time: time, timezones, languages, toggleFirmwareModal, toggleResetModal, loadLanguage
+        });
+    })
 
     window.setInterval(function () {
-        app.models.time = getTime();
+        getTime().then(function (data) {
+            app.models.time = data;
+        });
     }, 1000);
 
 });
+

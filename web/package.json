@@ -11,6 +11,7 @@
   "license": "ISC",
   "dependencies": {
     "gulp": "^4.0.2",
+    "gulp-babel-minify": "^0.5.1",
     "gulp-concat": "^2.6.1",
     "gulp-connect": "^5.7.0",
     "gulp-html-i18n": "^0.16.0",

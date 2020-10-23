@@ -88,7 +88,7 @@ void Webserver::_resetConfig(Config &config)
 void Webserver::_handleIndex(Config &config)
 {
   _server.sendHeader("Content-Encoding", "gzip");
-  if (strcmp(config.config.language, "de"))
+  if (strcmp(config.config.language, "de") == 0)
   {
     _server.send_P(200, "text/html", index_de_html_gz, index_de_html_gz_len);
   }

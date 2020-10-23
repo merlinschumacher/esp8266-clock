@@ -1,7 +1,7 @@
 
 function saveConfig(saveData = false) {
     if (document.getElementById("configform").checkValidity()) {
-        conf = tinybind.config;
+        conf = app.models.config;
         conf.saveData = saveData;
 
         fetch('data.json', {
@@ -20,40 +20,49 @@ function saveConfig(saveData = false) {
                 alert("Failed to save settings!");
             });
     }
-}
+};
+async function loadConfig() {
+    // return await fetch('/data.json')
+    //     .then(function (response) {
+    //         if (response.ok) {
+    //             return response.json();
+    //         }
+    //         else {
+    //             throw new Error('Failed to load settings!');
+    //         }
+    //     }).then(function (json) {
+    //         return json;
+    //     });
+    const response = await fetch('/data.json');
 
-function loadConfig() {
-    fetch('/data.json')
-        .then(function (response) {
-            if (response.ok)
-                return response.json();
-            else
-                throw new Error('Failed to load settings!');
-        }).then(function (json) {
-            return json;
-        });
+    return response.json();
 };
 
-function getVersion() {
-    fetch('version')
+async function getVersion() {
+    return await fetch('version')
         .then(function (response) {
-            if (response.ok)
+            if (response.ok) {
                 return response.text();
-            else
+            }
+            else {
                 throw new Error('Failed to load version!');
+            }
         }).then(function (text) {
             return text;
         });
 }
 
-function getTime() {
-    fetch('time')
+async function getTime() {
+    return await fetch('time')
         .then(function (response) {
-            if (response.ok)
+            if (response.ok) {
                 return response.text();
-            else
+            }
+            else {
                 throw new Error('Failed to load current time!');
+            }
         }).then(function (text) {
             return text;
         });
 }
+
