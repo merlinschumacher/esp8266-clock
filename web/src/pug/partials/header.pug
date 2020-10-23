@@ -1,11 +1,14 @@
 .toast.toast-error.my-2(rv-if='false')
-    span ENABLE JAVASCRIPT TO CONFIGURE THE CLOCK
+    span ${{ index.enable_js }}$ 
 
-h1.col-6.mt-2 { config.hostname }
-.col-4
-footer.col-2.col-sm-12.columns.col-gapless.float-right
-    button.col-12.btn.btn-lg.btn-primary.mt-2#save-button(rv-on-click="saveSettings") ${{ index.savebutton }}$
-.container
-    .columns
-        p.col-6.col-xs-12 ${{ index.description }}$
-        time.col-6.col-xs-12 Current time: { date | formatDate }
+h1.column.col-6.mt-2.col-sm-12 { config.hostname }
+.column.col-2
+.bottombar.col-4.col-sm-12.columns.mt-2
+    button.col-8.btn.btn-lg.btn-primary#save-button(onclick="saveConfig(true); return false;") ${{ index.savebutton }}$
+    .col-1.hide-sm
+    select.col-2.form-input.bg-primary#language-selector.btn.btn-primary(rv-on-input='loadLanguage', rv-value='config.language', value="${{ index.langcode }}")
+        option(rv-each-language='languages' rv-value='language.code') { language.icon } { language.name } 
+
+.col-12.columns.column
+    p.col-6.col-xs-12.column ${{ index.description }}$
+    time.col-6.col-xs-12.column.pr-0 ${{ index.current_time }}$ { time | formatDate | watch time }

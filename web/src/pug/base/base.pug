@@ -1,12 +1,12 @@
 doctype html
-html(lang="en")#app
+html#app
   head
     meta(charset="utf-8")
     meta(http-equiv="X-UA-Compatible", content="IE=edge")
     meta(name="viewport", content="width=device-width, initial-scale=1.0, maximum-scale=1.0")
     title(rv-text='config.hostname | addEmoji "⏰"') ESP-CLOCK
     link(href="./styles.css", rel="stylesheet")
-  body
+  body(lang="${{ index.langcode }}")
     .container.grid-sm
       .columns
         block layout

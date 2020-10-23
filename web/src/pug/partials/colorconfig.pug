@@ -12,42 +12,42 @@
                 .h6 ${{ index.color_day }}$
 
                 .form-group 
-                    .col-3
+                    .col-4
                         label.form-label(for='hourcolor') ${{ index.hour }}$ 
-                    .col-9
+                    .col-8
                         input.form-input(type='color', id='hourcolor' rv-value='config.hourColor')
                 
                 .form-group 
-                    .col-3
+                    .col-4
                         label.form-label(for='minutecolor') ${{ index.minute }}$ 
-                    .col-9
+                    .col-8
                         input.form-input(type='color', id='minutecolor' rv-value='config.minuteColor')
                 
                 .form-group
-                    .col-3
+                    .col-4
                         label.form-label(for='secondcolor') ${{ index.second }}$ 
-                    .col-9
+                    .col-8
                         input.form-input(type='color', id='secondcolor' rv-value='config.secondColor')
 
             .column.col-6.col-sm-12.mt-2
                 .h6 ${{ index.color_night }}$
 
                 .form-group 
-                    .col-3
+                    .col-4
                         label.form-label(for='hourcolordimmed') ${{ index.hour }}$ 
-                    .col-9
+                    .col-8
                         input.form-input(type='color', id='hourcolordimmed' rv-value='config.hourColorDimmed')
                 
                 .form-group 
-                    .col-3
+                    .col-4
                         label.form-label(for='minutecolordimmed') ${{ index.minute }}$ 
-                    .col-9
+                    .col-8
                         input.form-input(type='color', id='minutecolordimmed' rv-value='config.minuteColorDimmed')
                 
                 .form-group
-                    .col-3
+                    .col-4
                         label.form-label(for='secondcolordimmed') ${{ index.second }}$ 
-                    .col-9
+                    .col-8
                         input.form-input(type='color', id='secondcolordimmed' rv-value='config.secondColorDimmed')
 
     .divider
@@ -70,42 +70,42 @@
                 .h6 ${{ index.color_day }}$
 
                 .form-group 
-                    .col-3
+                    .col-4
                         label.form-label(for='weekdaycolor') ${{ index.weekday }}$ 
-                    .col-9
+                    .col-8
                         input.form-input(type='color', id='weekdaycolor' rv-value='config.weekdayColor')
                 
                 .form-group 
-                    .col-3
+                    .col-4
                         label.form-label(for='daycolor') ${{ index.date }}$ 
-                    .col-9
+                    .col-8
                         input.form-input(type='color', id='daycolor' rv-value='config.dayColor')
                 
                 .form-group
-                    .col-3
+                    .col-4
                         label.form-label(for='monthcolor') ${{ index.month }}$ 
-                    .col-9
+                    .col-8
                         input.form-input(type='color', id='monthcolor' rv-value='config.monthColor')
 
             .column.col-6.col-xs-12.mt-2
                 .h6 ${{ index.color_night }}$
 
                 .form-group 
-                    .col-3
+                    .col-4
                         label.form-label(for='weekdaycolordimmed') ${{ index.weekday }}$ 
-                    .col-9
+                    .col-8
                         input.form-input(type='color', id='weekdaycolordimmed' rv-value='config.weekdayColorDimmed')
                 
                 .form-group 
-                    .col-3
+                    .col-4
                         label.form-label(for='daycolordimmed') ${{ index.date }}$ 
-                    .col-9
+                    .col-8
                         input.form-input(type='color', id='daycolordimmed' rv-value='config.dayColorDimmed')
                 
                 .form-group
-                    .col-3
+                    .col-4
                         label.form-label(for='monthcolordimmed') ${{ index.month }}$ 
-                    .col-9
+                    .col-8
                         input.form-input(type='color', id='monthcolordimmed' rv-value='config.monthColorDimmed')
 
     fieldset.form-horizontal
@@ -119,17 +119,17 @@
             .column.col-6.bglightsettings(rv-if='config.bgLight')
 
                 .form-group 
-                    .col-3
+                    .col-4
                         label.form-label(for='bgcolor') ${{ index.colorconfig.backlight.day }}$ 
-                    .col-9
+                    .col-8
                         input.form-input(type='color', id='bgcolor' rv-value='config.bgColor')
                 
             .column.col-6.bglightsettings(rv-if='config.bgLight')
 
                 .form-group 
-                    .col-3
+                    .col-4
                         label.form-label(for='bgcolor') ${{ index.colorconfig.backlight.night }}$ 
-                    .col-9
+                    .col-8
                         input.form-input(type='color', id='bgcolordimmed' rv-value='config.bgColorDimmed')
 
     fieldset.form-horizontal

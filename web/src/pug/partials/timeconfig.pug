@@ -55,7 +55,7 @@
                 label.form-label(for='timezone') ${{ index.sysconfig.timezone }}$ 
             .col-8
                 select.form-input(id='timezone', rv-value='config.timezone')
-                    option(rv-each-timezone='timezones' rv-value='timezone') { timezone }
+                    option(rv-each-timezone='timezones' rv-value='timezone') { timezone | replaceUnderscore }
 
 
     .divider

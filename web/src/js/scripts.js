@@ -1,17 +1,7 @@
 
-const toggleResetModal = function () {
-    let modal = document.getElementById("modalreset");
-    modal.classList.toggle('active');
-    return false;
-}
-const toggleFirmwareModal = function () {
-    let modal = document.getElementById("modalfirmware");
-    modal.classList.toggle('active');
-    return false;
-}
-
 document.addEventListener("DOMContentLoaded", function (event) {
     initTabs();
+
     tinybind.formatters.sub = function (target, val) {
         return (target - val);
     };
@@ -26,7 +16,11 @@ document.addEventListener("DOMContentLoaded", function (event) {
     tinybind.formatters.addEmoji = function (value, emoji) {
         return emoji + value;
     };
+    tinybind.formatters.replaceUnderscore = function (value) {
+        return value.replace(/_/g, ' ');
+    };
     tinybind.formatters.formatDate = function (value) {
+        console.log(value);
         let date = new Date(value * 1000);
         return date.toLocaleString();
     };
@@ -40,5 +34,19 @@ document.addEventListener("DOMContentLoaded", function (event) {
             // el.style.boxShadow = "";
         };
     };
-    tinybind.bind(document.getElementById('app'), { config, timezones, date, toggleFirmwareModal, toggleResetModal });
+
+    let config = {};
+    let time = 0;
+    let version = "";
+    let app = tinybind.bind(document.getElementById("app"), {
+        config: config, version: version, time: time, timezones, languages, toggleFirmwareModal, toggleResetModal, loadLanguage
+    });
+    app.models.config = loadConfig();
+    app.models.time = getTime();
+    app.models.version = getVersion();
+
+    window.setInterval(function () {
+        app.models.time = getTime();
+    }, 1000);
+
 });

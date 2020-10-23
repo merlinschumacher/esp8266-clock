@@ -27,6 +27,7 @@ private:
     void _handleDataGet(Config &config);
     void _handleDataPut(Config &config);
     void _resetConfig(Config &config);
+    void _handleIndex(Config &config);
     String _getContentType(String filename);
 };
 

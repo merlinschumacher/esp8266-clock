@@ -38,7 +38,9 @@ let config = {
     bgLedPin: 15,
     bgLedCount: 60,
     bgColor: "#ff0000",
-    bgColorDimmed: "#000000"
+    bgColorDimmed: "#000000",
+    language: "en"
 };
+
 
 let date = "1603129939"

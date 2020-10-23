@@ -1,8 +1,8 @@
 #include "webserver.hpp"
-#include "index_html.hpp"
-#include "main_js.hpp"
-#include "timezones_json.hpp"
-#include "main_css.hpp"
+#include "index_en_html.hpp"
+#include "index_de_html.hpp"
+#include "scripts_js.hpp"
+#include "styles_css.hpp"
 
 #if defined(ESP8266)
 ESP8266WebServer _server(80);
@@ -85,13 +85,25 @@ void Webserver::_resetConfig(Config &config)
   _server.send(200, "text/plain", "reset");
 }
 
+void Webserver::_handleIndex(Config &config)
+{
+  _server.sendHeader("Content-Encoding", "gzip");
+  if (strcmp(config.config.language, "de"))
+  {
+    _server.send_P(200, "text/html", index_de_html_gz, index_de_html_gz_len);
+  }
+  else
+  {
+    _server.send_P(200, "text/html", index_en_html_gz, index_en_html_gz_len);
+  }
+}
+
 void Webserver::setup(Config &config)
 {
-  _server.on("/", HTTP_GET, [this]() {_server.sendHeader("Content-Encoding", "gzip"); _server.send_P(200, "text/html", index_html_gz, index_html_gz_len); });
-  _server.on("/index.html", HTTP_GET, [this]() {_server.sendHeader("Content-Encoding", "gzip"); _server.send_P(200, "text/html", index_html_gz, index_html_gz_len); });
-  _server.on("/timezones.json", HTTP_GET, [this]() { _server.sendHeader("Content-Encoding", "gzip");_server.send_P(200, "text/json", timezones_json_gz, timezones_json_gz_len); });
-  _server.on("/main.css", HTTP_GET, [this]() { _server.sendHeader("Content-Encoding", "gzip");_server.send_P(200, "text/css", main_css_gz, main_css_gz_len); });
-  _server.on("/main.js", HTTP_GET, [this]() { _server.sendHeader("Content-Encoding", "gzip");_server.send_P(200, "application/javascript", main_js_gz, main_js_gz_len); });
+  _server.on("/", HTTP_GET, [this, &config]() { _handleIndex(config); });
+  _server.on("/index.html", HTTP_GET, [this, &config]() { _handleIndex(config); });
+  _server.on("/styles.css", HTTP_GET, [this]() { _server.sendHeader("Content-Encoding", "gzip");_server.send_P(200, "text/css", styles_css_gz, styles_css_gz_len); });
+  _server.on("/scripts.js", HTTP_GET, [this]() { _server.sendHeader("Content-Encoding", "gzip");_server.send_P(200, "application/javascript", scripts_js_gz, scripts_js_gz_len); });
 
   _server.on("/time", HTTP_GET, [this]() { _server.send(200, "text/plain", currentTime); });
   _server.on("/version", HTTP_GET, [this]() { _server.send(200, "text/plain", VERSION); });

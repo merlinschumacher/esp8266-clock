@@ -16,6 +16,8 @@ void initStrip()
     bgStrip = new NeoPixelBus<NeoGrbFeature, NeoEsp32BitBangWs2812xMethod>(config.config.bgLedCount, config.config.bgLedPin);
 #endif
     strip->Begin();
+    strip->ClearTo(off);
+    strip->Show();
 }
 
 void setPixel(uint8_t pos, RgbColor color, bool blend = true)

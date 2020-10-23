@@ -61,6 +61,8 @@ struct ConfigData
     uint32_t ledPin;
     uint32_t ledCount;
     uint32_t ledRoot;
+
+    char language[3];
 };
 
 class Config

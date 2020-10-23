@@ -218,7 +218,7 @@ void loop()
     currentMinute = minute();
     currentSecond = sec;
     updateColors(isNight());
-    strlcpy(webserver.currentTime, localTime.dateTime().c_str(), sizeof(webserver.currentTime));
+    String(UTC.now()).toCharArray(webserver.currentTime, sizeof(webserver.currentTime));
     setBacklight();
     printDebugInfo();
   }

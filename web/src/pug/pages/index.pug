@@ -1,6 +1,6 @@
 extends ../layouts/default-layout.pug
 block content
-  form.form-horizontal(onsubmit='return false')
+  form.form-horizontal#configform(onsubmit='return false')
     include ../partials/tabselector.pug
     include ../partials/colorconfig.pug
     include ../partials/timeconfig.pug

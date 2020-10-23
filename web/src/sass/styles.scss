@@ -85,7 +85,7 @@ time {
 }
 
 
-footer {
+.bottombar {
     @media (max-width: $size-sm) {
         position: fixed;
         bottom: 0px;
@@ -93,6 +93,25 @@ footer {
         width: 100%;
         z-index: 100;
         margin: 0 auto;
+        background-color: #fff;
+    }
+
+    #save-button {
+        @media (max-width: $size-sm) {
+            width: calc(100% - 2.5em);
+        }
+    }
+
+    #language-selector {
+        height: 2rem;
+        width: 2.2rem;
+        border: none;
+        font-family: sans-serif, emoji;
+
+        @media (max-width: $size-sm) {
+            margin-left: 1px;
+        }
+
     }
 }
 
