@@ -6,7 +6,9 @@ async function postConfig(saveData = false) {
     } else {
         return false;
     }
-    document.getElementById('save-button').classList.add("loading");
+    if (saveData) {
+        document.getElementById('save-button').classList.add("loading");
+    }
     return await fetch('data.json', {
         method: 'POST',
         headers: {
@@ -15,16 +17,20 @@ async function postConfig(saveData = false) {
         body: JSON.stringify(conf),
     })
         .then(function (response) {
-            document.getElementById('save-button').classList.remove("loading");
             return response.json();
         })
         .then(data => {
-            app.models.config = data;
-            showToast('toast-success', 2, true)
+            // app.models.config = data;
+            if (saveData) {
+                document.getElementById('save-button').classList.remove("loading");
+                document.getElementById('save-button').classList.remove("badge");
+                showToast('toast-success', 2, true)
+            }
         })
         .catch((error) => {
             console.error('Error:', error);
             showToast('toast-error', 1)
+            document.getElementById('save-button').classList.remove("loading");
             throw new Error('Failed to save settings!');
         });
 };
@@ -56,3 +62,4 @@ async function getData(url) {
             return text;
         });
 };
+

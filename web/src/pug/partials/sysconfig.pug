@@ -8,14 +8,14 @@
             .col-4
                 label.form-label(for='ledpin') ${{ index.sysconfig.led.pin }}$ 
             .col-8
-                input.form-input(type='number', min='1', step='1', rv-value='config.ledPin')
+                input.form-input(type='number', min='1', step='1', rv-value='config.ledPin | int')
         
         .form-group
 
             .col-4
                 label.form-label(for='ledcount') ${{ index.sysconfig.led.count }}$ 
             .col-8
-                input.form-input(type='number', min='60', step='1', rv-value='config.ledCount')
+                input.form-input(type='number', min='60', step='1', rv-value='config.ledCount | int')
     
     include ../partials/ledorder.pug
     .divider
@@ -54,5 +54,5 @@
 
     footer.text-gray ESP NeoPixel Clock 
         ins(rv-text='version') 
-        span  by Merlin Schumacher.
-        a(href='https://github.com/merlinschumacher/esp8266-clock',target='_blank')  Source and Info
+        span  ${{ index.sysconfig.by }}$ Merlin Schumacher.
+        a(href='https://github.com/merlinschumacher/esp8266-clock',target='_blank') ${{ index.sysconfig.source }}$

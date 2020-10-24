@@ -11,4 +11,4 @@
                         .col-6.column
                             button.btn.btn-lg.modal-reset-toggle(rv-on-click='toggleResetModal') ${{ index.sysconfig.reset.cancel }}$
                         .col-6.column
-                            button.btn.btn-error.btn-lg.float-right ${{ index.sysconfig.reset.confirm }}$
+                            button.btn.btn-error.btn-lg.float-right(onclick='getData("reset")') ${{ index.sysconfig.reset.confirm }}$

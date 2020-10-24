@@ -76,6 +76,8 @@
     "sysconfig": {
         "title": "System configuration",
         "description": "Here you can configure global system settings.",
+        "by": "by",
+        "source": "Source code and further information",
         "led": {
             "pin": "LED strip pin",
             "count": "LED strip length"
@@ -101,7 +103,8 @@
             "description": "Update the firmware of the clock by selecting an update file and click 'Start update'. After about a minute the clock should be updated.",
             "open": "Firmware update",
             "update": "File",
-            "submit": "Start update"
+            "submit": "Start update",
+            "version": "Version: "
         },
         "reset": {
             "title": "Reset the clock",

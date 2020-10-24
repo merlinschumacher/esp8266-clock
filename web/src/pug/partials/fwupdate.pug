@@ -16,4 +16,5 @@
                         .col-3
                             button.btn.btn-lg.mx-2(type='submit') ${{ index.sysconfig.firmware.submit }}$
         .modal-footer
-            #fwinfo(rv-text="version")
+            #fwinfo ${{ index.sysconfig.firmware.version }}$
+                span(rv-text="version")

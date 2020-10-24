@@ -3,7 +3,7 @@
 .h6(rv-if='config.dayMonth') ${{ index.sysconfig.ledorder.title }}$
 p(rv-if='config.dayMonth') ${{ index.sysconfig.ledorder.description }}$
 
-#led-layout-labels.columns.mb-1(rv-if='config.dayMonth')
+#led-layout-labels.columns.mb-1
     .column.col-1
         span.chip 1
     .column.col-10
@@ -14,13 +14,13 @@ p(rv-if='config.dayMonth') ${{ index.sysconfig.ledorder.description }}$
             span.chip.col-auto
                 span.avatar.avatar-sm.bg-primary 
                 span ${{ index.sysconfig.ledorder.time }}$
-            span.chip.col-auto 
+            span.chip.col-auto(rv-if='config.dayMonth')
                 span.avatar.avatar-sm.bg-warning
                 span ${{ index.sysconfig.ledorder.weekday}}$
-            span.chip.col-auto 
+            span.chip.col-auto(rv-if='config.dayMonth') 
                 span.avatar.avatar-sm.bg-success
                 span ${{ index.sysconfig.ledorder.date }}$
-            span.chip.col-auto 
+            span.chip.col-auto(rv-if='config.dayMonth') 
                 span.avatar.avatar-sm.bg-error
                 span ${{ index.sysconfig.ledorder.month }}$
     .column.col-1
@@ -34,33 +34,32 @@ p(rv-if='config.dayMonth') ${{ index.sysconfig.ledorder.description }}$
     .bg-error.led-layout-block(rv-barwidth='12 | watch config.ledCount', rv-barpos='config.monthOffset | watch config.ledCount' rv-if='config.dayMonth')
     #overflow-indicator
         
- 
 fieldset.form-horizontal#ledorder
     .form-group
         .col-3
             label.form-label(for='weekday-pos-slider') ${{ index.sysconfig.ledorder.twelveoclock }}$
         .col-8
-            input.col-12.slider.pos-slider.tooltip#weekday-pos-slider(type="range" min="1" rv-max="60" rv-value='config.ledRoot')
+            input.col-12.slider.pos-slider.tooltip#weekday-pos-slider(type="range" min="1" rv-max="60" rv-value='config.ledRoot | int')
         .col-1
             span.chip.mx-2.slider-chip(rv-text='config.ledRoot')
     .form-group(rv-if='config.dayMonth')
         .col-3
             label.form-label(for='weekday-pos-slider') ${{ index.sysconfig.ledorder.weekday }}$
         .col-8
-            input.col-12.slider.pos-slider.tooltip#weekday-pos-slider(type="range" min="1" rv-max="config.ledCount | sub 6" rv-value='config.weekdayOffset')
+            input.col-12.slider.pos-slider.tooltip#weekday-pos-slider(type="range" min="1" rv-max="config.ledCount | sub 6" rv-value='config.weekdayOffset | int')
         .col-1
             span.chip.mx-2.slider-chip(rv-text='config.weekdayOffset')
     .form-group(rv-if='config.dayMonth')
         .col-3
             label.form-label(for='date-pos-slider') ${{ index.sysconfig.ledorder.date }}$
         .col-8
-           input.col-12.slider.pos-slider.tooltip#date-pos-slider(type="range" min="0" rv-max="config.ledCount | sub 30" rv-value='config.dayOffset') 
+           input.col-12.slider.pos-slider.tooltip#date-pos-slider(type="range" min="1" rv-max="config.ledCount | sub 30" rv-value='config.dayOffset | int') 
         .col-1
             span.chip.mx-2.slider-chip(rv-text='config.dayOffset') 
     .form-group(rv-if='config.dayMonth')
         .col-3
             label.form-label(for='month-pos-slider') ${{ index.sysconfig.ledorder.month }}$
         .col-8
-            input.col-12.slider.pos-slider.tooltip#month-pos-slider(type="range" min="0" rv-max="config.ledCount | sub 11" rv-value='config.monthOffset')
+            input.col-12.slider.pos-slider.tooltip#month-pos-slider(type="range" min="1" rv-max="config.ledCount | sub 11" rv-value='config.monthOffset | int')
         .col-1
             span.chip.mx-2.slider-chip(rv-text='config.monthOffset')

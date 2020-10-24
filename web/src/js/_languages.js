@@ -12,7 +12,9 @@ const languages = [
 ]
 
 const loadLanguage = function () {
-    postConfig(true).then(function () {
-        location.reload();
-    })
+    setTimeout(function () {
+        postConfig(true).then(function () {
+            location.reload();
+        })
+    }, 250);
 }

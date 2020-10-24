@@ -32,7 +32,7 @@ function styles() {
                 content: ['dist/*.html'],
                 fontFace: true,
                 keyframes: true,
-                safelist: ['badge', 'fadeout']
+                safelist: ['badge', 'fadeout', 'loading']
 
             }))
             .pipe(rename('styles.css'))

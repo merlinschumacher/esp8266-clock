@@ -45,7 +45,14 @@ document.addEventListener("DOMContentLoaded", function () {
             return "";
         }
     };
-
+    tinybind.formatters.int = {
+        read: function (value) {
+            return value
+        },
+        publish: function (value) {
+            return parseInt(value)
+        }
+    };
     tinybind.binders.baroverflow = function (el) {
         let indicator = document.getElementById("overflow-indicator");
         if (el.scrollWidth > el.clientWidth) {
@@ -78,3 +85,4 @@ document.addEventListener("DOMContentLoaded", function () {
     }, 1000);
     initWatcher();
 });
+

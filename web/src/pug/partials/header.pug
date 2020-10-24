@@ -8,7 +8,7 @@ h1.column.col-6.mt-2.col-sm-12 { config.hostname }
 .bottombar.col-4.col-sm-12.columns.mt-2
     button.col-8.btn.btn-lg.btn-primary#save-button(onclick="postConfig(true); return false;") ${{ index.savebutton }}$
     .col-1.hide-sm
-    select.col-2.form-input.bg-primary#language-selector.btn.btn-primary(rv-on-input='loadLanguage', rv-value='config.language', value="${{ index.langcode }}")
+    select.col-2.form-input.bg-primary#language-selector.btn.btn-primary(rv-on-input='loadLanguage', rv-value='config.language', value='${{ index.langcode }}$')
         option(rv-each-language='languages' rv-value='language.code') { language.icon } { language.name } 
 
 .col-12.columns.column
