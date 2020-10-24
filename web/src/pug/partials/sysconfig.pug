@@ -15,7 +15,7 @@
             .col-4
                 label.form-label(for='ledcount') ${{ index.sysconfig.led.count }}$ 
             .col-8
-                input.form-input(type='number', min='1', step='1', rv-value='config.ledCount')
+                input.form-input(type='number', min='60', step='1', rv-value='config.ledCount')
     
     include ../partials/ledorder.pug
     .divider
@@ -52,5 +52,7 @@
             .col-12
                 button.btn.btn-lg.modal-reset-toggle(rv-on-click='toggleResetModal')  ${{ index.sysconfig.reset.open }}$
 
-
-
+    footer.text-gray ESP NeoPixel Clock 
+        ins(rv-text='version') 
+        span  by Merlin Schumacher.
+        a(href='https://github.com/merlinschumacher/esp8266-clock',target='_blank')  Source and Info

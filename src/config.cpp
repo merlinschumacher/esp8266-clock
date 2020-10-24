@@ -192,9 +192,9 @@ bool Config::JSONToConfig(StaticJsonDocument<2048> doc)
         config.ledPin = doc["ledPin"] | 4;
         config.ledCount = doc["ledCount"] | 60;
         config.ledRoot = doc["ledRoot"] | 1;
-        config.dayOffset = doc["dayOffset"] | 62;
-        config.monthOffset = doc["monthOffset"] | 93;
-        config.weekdayOffset = doc["weekdayOffset"] | 105;
+        config.dayOffset = doc["dayOffset"] | 1;
+        config.monthOffset = doc["monthOffset"] | 1;
+        config.weekdayOffset = doc["weekdayOffset"] | 1;
 
         strlcpy(config.language,
                 doc["language"] | "en",

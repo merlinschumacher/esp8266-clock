@@ -1,27 +1,42 @@
-
 let config = {}
 let time = 0;
 let version = 0;
+let toastVisible = false;
 let app;
-document.addEventListener("DOMContentLoaded", function (event) {
+document.addEventListener("DOMContentLoaded", function () {
+
     initTabs();
+
     tinybind.formatters.sub = function (target, val) {
         return (target - val);
     };
+
     tinybind.binders.barwidth = function (el, value) {
         let width = value / config.ledCount * 100;
         el.style.width = width + "%";
     }
+
+    tinybind.binders.height = function (el, value) {
+        if (value) {
+            el.style.height = "2.666rem";
+        } else {
+            el.style.height = "0.666rem";
+        }
+    }
+
     tinybind.binders.barpos = function (el, value) {
         let margin = (value - 1) / config.ledCount * 100;
         el.style.marginLeft = margin + "%";
     };
+
     tinybind.formatters.addEmoji = function (value, emoji) {
         return emoji + value;
     };
+
     tinybind.formatters.replaceUnderscore = function (value) {
         return value.replace(/_/g, ' ');
     };
+
     tinybind.formatters.formatDate = function (value) {
         if (value != 0) {
             let date = new Date(value * 1000);
@@ -30,36 +45,36 @@ document.addEventListener("DOMContentLoaded", function (event) {
             return "";
         }
     };
-    tinybind.binders.baroverflow = function (el) {
-        if (el.scrollHeight > el.clientHeight || el.scrollWidth > el.clientWidth) {
-            console.log("overflow");
-            // el.style.boxShadow = "-8px 0 4px -3px red inset";
-        } else {
 
-            console.log("no overflow");
-            // el.style.boxShadow = "";
+    tinybind.binders.baroverflow = function (el) {
+        let indicator = document.getElementById("overflow-indicator");
+        if (el.scrollWidth > el.clientWidth) {
+            indicator.style.boxShadow = "-8px 0 4px -3px red inset";
+        } else {
+            indicator.style.boxShadow = "";
         };
     };
-    getTime().then(function (data) {
+
+    getData('time').then(function (data) {
         time = data;
     })
-    getVersion().then(function (data) {
-        version = data;
+    getData('version').then(function (data) {
+        console.log(version);
+        version = data.toString();
     })
 
-    loadConfig().then(function (data) {
+    getConfig().then(function (data) {
         config = data;
     }).then(function () {
         app = tinybind.bind(document.getElementById("app"), {
-            config: config, version: version, time: time, timezones, languages, toggleFirmwareModal, toggleResetModal, loadLanguage
+            config, version, time, timezones, languages, toggleFirmwareModal, toggleResetModal, loadLanguage, toastVisible
         });
     })
 
     window.setInterval(function () {
-        getTime().then(function (data) {
+        getData('time').then(function (data) {
             app.models.time = data;
         });
     }, 1000);
-
+    initWatcher();
 });
-

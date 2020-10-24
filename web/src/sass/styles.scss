@@ -45,6 +45,12 @@ header.p-sticky {
     z-index: 1;
 }
 
+
+#header-toast {
+    opacity: 1;
+    transition: all 1s ease-in-out;
+}
+
 .contenttab {
     display: none;
 }
@@ -60,9 +66,9 @@ header.p-sticky {
     line-height: 1.2em;
     overflow: hidden;
 
-    @for $index from 2 through 4 {
+    @for $index from 3 through 5 {
         &>div:nth-of-type(#{$index}) {
-            margin-top: .666rem * ($index - 1);
+            margin-top: .666rem * ($index - 2);
         }
 
     }
@@ -73,6 +79,15 @@ header.p-sticky {
         font-size: 0.6rem;
         overflow: hidden;
     }
+
+    #overflow-indicator {
+        position: absolute;
+        right: 0;
+        top: 0;
+        height: 100%;
+        width: .5em;
+        z-index: 100;
+    }
 }
 
 time {
@@ -82,7 +97,6 @@ time {
         text-align: left;
     }
 }
-
 
 .bottombar {
     @media (max-width: $size-sm) {

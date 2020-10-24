@@ -6,6 +6,7 @@ var gulp = require('gulp'),
     terser = require('gulp-terser'),
     concat = require('gulp-concat'),
     pug = require('gulp-pug'),
+    purgecss = require('gulp-purgecss'),
     i18n = require('gulp-html-i18n');
 
 function reload(done) {
@@ -27,6 +28,13 @@ function styles() {
                     'node_modules/spectre.css/src'
                 ]
             }))
+            .pipe(purgecss({
+                content: ['dist/*.html'],
+                fontFace: true,
+                keyframes: true,
+                safelist: ['badge', 'fadeout']
+
+            }))
             .pipe(rename('styles.css'))
             .pipe(gulp.dest('dist/'))
             .pipe(connect.reload())
@@ -42,14 +50,6 @@ function scripts() {
                 ecma: 2016
             }))
             .pipe(gulp.dest('dist/'))
-            .pipe(connect.reload())
-    );
-}
-
-function html() {
-    return (
-        gulp.src('*.html')
-            .pipe(plumber())
             .pipe(connect.reload())
     );
 }
@@ -70,21 +70,20 @@ function views() {
 }
 
 function watchTask(done) {
-    gulp.watch('*.html', html);
     gulp.watch('src/sass/**/*.scss', styles);
     gulp.watch('src/js/*.js', scripts);
     gulp.watch('src/pug/**/*.pug', views);
+    gulp.watch('src/pug/**/*.pug', styles);
     gulp.watch('src/locales/**/*.json', views);
     done();
 }
 
 const watch = gulp.parallel(watchTask, reload);
-const build = gulp.series(gulp.parallel(styles, scripts, html, views));
+const build = gulp.series(gulp.parallel(views, scripts, styles));
 
 exports.reload = reload;
 exports.styles = styles;
 exports.scripts = scripts;
-exports.html = html;
 exports.views = views;
 exports.watch = watch;
 exports.build = build;

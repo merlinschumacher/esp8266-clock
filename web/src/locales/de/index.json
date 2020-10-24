@@ -4,7 +4,11 @@
     "description": "Dies ist eine digitale Wanduhr",
     "savebutton": "Speichern",
     "current_time": "Uhrzeit",
-    "enable_js": "AKTIVIEREN SIE JAVASCRIPT UM DIE UHR ZU KONFIGURIEREN",
+    "toasts": {
+        "enable_js": "Enabel Javascript to configure the clock.",
+        "save_error": "Saving the configuration failed.",
+        "save_success": "Saving the successful"
+    },
     "nav": {
         "color": "Farben",
         "time": "Zeit",
@@ -83,7 +87,8 @@
             "time": "Time",
             "date": "Date",
             "weekday": "Weekday",
-            "month": "Month"
+            "month": "Month",
+            "twelveoclock": "12 Uhr Position"
         },
         "network": {
             "description": "Network settings",

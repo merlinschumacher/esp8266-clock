@@ -1,10 +1,12 @@
-.toast.toast-error.my-2(rv-if='false')
-    span ${{ index.enable_js }}$ 
+.toast.toast-error.toast-primary.toast-success.toast-warning.my-2.fadeout#header-toast(rv-if='toastVisible')
+    span ${{ index.toasts.enable_js }}$
+    span.d-none ${{ index.toasts.save_error }}$
+    span.d-none ${{ index.toasts.save_success }}$
 
 h1.column.col-6.mt-2.col-sm-12 { config.hostname }
 .column.col-2
 .bottombar.col-4.col-sm-12.columns.mt-2
-    button.col-8.btn.btn-lg.btn-primary#save-button(onclick="saveConfig(true); return false;") ${{ index.savebutton }}$
+    button.col-8.btn.btn-lg.btn-primary#save-button(onclick="postConfig(true); return false;") ${{ index.savebutton }}$
     .col-1.hide-sm
     select.col-2.form-input.bg-primary#language-selector.btn.btn-primary(rv-on-input='loadLanguage', rv-value='config.language', value="${{ index.langcode }}")
         option(rv-each-language='languages' rv-value='language.code') { language.icon } { language.name } 

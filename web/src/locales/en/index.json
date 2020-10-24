@@ -4,7 +4,11 @@
     "description": "This is a digital LED-Wallclock",
     "savebutton": "Save",
     "current_time": "Current time",
-    "enable_js": "ENABLE JAVASCRIPT TO CONFIGURE THE CLOCK",
+    "toasts": {
+        "enable_js": "Enable Javascript to configure the clock.",
+        "save_error": "Saving the configuration failed.",
+        "save_success": "Saving successful."
+    },
     "nav": {
         "color": "Color",
         "time": "Time",
@@ -83,7 +87,8 @@
             "time": "Time",
             "date": "Date",
             "weekday": "Weekday",
-            "month": "Month"
+            "month": "Month",
+            "twelveoclock": "12 'o' Clock"
         },
         "network": {
             "description": "Network settings",
