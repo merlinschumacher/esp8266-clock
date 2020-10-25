@@ -5,13 +5,23 @@
     fieldset.form-horizontal
         .form-group 
             .col-12
+                label.form-switch(for='fluidmotion')
+                    input(type='checkbox' id='fluidmotion' rv-checked='config.fluidMotion')
+                    i.form-icon
+                    span ${{ index.colorconfig.fluidmotion }}$ 
+    
+    .divider
+    
+    fieldset.form-horizontal
+        .form-group 
+            .col-12
                 label.form-switch(for='hourlight')
                     input(type='checkbox' id='hourlight' rv-checked='config.hourLight')
                     i.form-icon
                     span ${{ index.timeconfig.hourlight }}$ 
     
     .divider
-   
+
     fieldset.form-horizontal#alarmform
         .h6 ${{ index.timeconfig.alarm.title }}$
         p ${{ index.timeconfig.alarm.description }}$
@@ -51,7 +61,7 @@
     fieldset.form-horizontal
         .form-group
             .col-4
-                label.form-label(for='timezone') ${{ index.sysconfig.timezone }}$ 
+                label.form-label(for='timezone') ${{ index.timeconfig.timezone }}$ 
             .col-8
                 select.form-select(id='timezone', rv-value='config.timezone')
                     option(rv-each-timezone='timezones' rv-value='timezone') { timezone | replaceUnderscore }

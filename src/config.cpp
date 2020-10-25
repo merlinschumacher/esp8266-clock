@@ -34,10 +34,15 @@ StaticJsonDocument<2048> Config::configToJSON()
         doc["minuteColorDimmed"] = config.minuteColorDimmed;
         doc["secondColorDimmed"] = config.secondColorDimmed;
 
+        doc["hourDot"] = config.hourDot;
+        doc["hourSegment"] = config.hourSegment;
+        doc["hourQuarter"] = config.hourQuarter;
+
         doc["hourDotColor"] = config.hourDotColor;
         doc["hourSegmentColor"] = config.hourSegmentColor;
         doc["hourQuarterColor"] = config.hourQuarterColor;
 
+        doc["hourDotColorDimmed"] = config.hourDotColorDimmed;
         doc["hourDotColorDimmed"] = config.hourDotColorDimmed;
         doc["hourSegmentColorDimmed"] = config.hourSegmentColorDimmed;
         doc["hourQuarterColorDimmed"] = config.hourQuarterColorDimmed;
@@ -121,6 +126,10 @@ bool Config::JSONToConfig(StaticJsonDocument<2048> doc)
         strlcpy(config.secondColorDimmed,
                 doc["secondColorDimmed"] | "#000077",
                 sizeof(config.secondColorDimmed));
+
+        config.hourDot = doc["hourDot"] | false;
+        config.hourSegment = doc["hourSegment"] | false;
+        config.hourQuarter = doc["hourQuarter"] | false;
 
         strlcpy(config.hourDotColor,
                 doc["hourDotColor"] | "#010101",

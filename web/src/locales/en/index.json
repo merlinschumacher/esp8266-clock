@@ -1,7 +1,7 @@
 {
     "langcode": "en",
     "title": "ESP-CLOCK",
-    "description": "This is a digital LED-Wallclock",
+    "description": "A digital LED wallclock.",
     "savebutton": "Save",
     "current_time": "Current time",
     "toasts": {
@@ -22,40 +22,28 @@
     "weekday": "Weekday",
     "month": "Month",
     "date": "Date",
+    "time": "Time",
+    "day": "Day",
+    "night": "Night",
     "restart_required": "Requires restart",
     "colorconfig": {
         "title": "Color configuration",
         "description": "Here you can configure the color and behaviour of the LED clock hands.",
-        "backlight": {
-            "enable": "Enable background light",
-            "day": "Day",
-            "night": "Night"
-        },
+        "backlight": "Enable background light",
         "time": {
-            "title": "Time configuration",
-            "description": "Here you can configure the time settings."
+            "title": "Time colors",
+            "description": "Here you can configure the colors for the hour, minute and second hands."
         },
         "date": {
-            "title": "Date configuration",
-            "description": "Here you can setup the clock hands.",
-            "active": "Display weekday, date and month",
-            "colorconfig": {
-                "day": "Colors in the day.",
-                "night": "Colors in the night."
-            },
-            "alarm": {
-                "description": "It's possible to set an alarm.",
-                "time": "Alarm time",
-                "active": "Alarm active"
-            },
-            "night": {
-                "description": "When does the night begin",
-                "begin": "Start",
-                "end": "End"
-            }
+            "title": "Date colors",
+            "description": "Here you can configure the colors for the weekday, date and month indicators.",
+            "active": "Display weekday, date and month"
         },
         "blendcolors": "Blend overlapping colors into one.",
-        "fluidmotion": "Flowing motion for the second hand."
+        "fluidmotion": "Flowing motion for the second hand.",
+        "hourdot": "Enable dots at every hour.",
+        "hourquarter": "Enable dots at every quarter.",
+        "hoursegment": "Light up current hour segment."
     },
     "timeconfig": {
         "title": "Time configuration",
@@ -67,41 +55,37 @@
             "active": "Alarm active"
         },
         "night": {
-            "description": "When does the night begin",
-            "begin": "Start",
+            "description": "Between what hours should the night mode be active?",
+            "begin": "Beginning",
             "end": "End"
         },
-        "hourlight": "Show a rainbow on top of the hour."
+        "hourlight": "Show a rainbow on top of the hour.",
+        "timezone": "Timezone"
     },
     "sysconfig": {
         "title": "System configuration",
-        "description": "Here you can configure global system settings.",
+        "description": "Here you can configure system settings.",
         "by": "by",
-        "source": "Source code and further information",
+        "source": "Source code and more.",
         "led": {
             "pin": "LED strip pin",
-            "count": "LED strip length"
+            "count": "LED strip length",
+            "bgpin": "Backlight strip pin",
+            "bgcount": "Backlight strip length"
         },
         "ledorder": {
-            "title": "LED ordering",
-            "description": "You can define a custom start position on the LED strip for the weekday, date and month. The time is always fixed to the first 60 LEDs.",
-            "length": "Length",
-            "time": "Time",
-            "date": "Date",
-            "weekday": "Weekday",
-            "month": "Month",
-            "twelveoclock": "12 'o' Clock"
+            "title": "Position of the hands",
+            "description": "You can define a custom start position on the LED strip for the weekday, date and month hands. The time is always fixed to the first 60 LEDs. The 12 'o' clock setting defines which LED is at the 12 o'clock position.",
+            "twelveoclock": "12 o'clock"
         },
         "network": {
             "description": "Network settings",
             "timeserver": "NTP time server",
             "hostname": "Hostname"
         },
-        "timezone": "Timezone",
         "firmware": {
             "title": "Firmware update",
             "description": "Update the firmware of the clock by selecting an update file and click 'Start update'. After about a minute the clock should be updated.",
-            "open": "Firmware update",
             "update": "File",
             "submit": "Start update",
             "version": "Version"

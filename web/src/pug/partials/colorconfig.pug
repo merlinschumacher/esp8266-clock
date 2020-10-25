@@ -5,7 +5,7 @@
 
     .h4 ${{ index.colorconfig.time.title }}$
     fieldset.form-horizontal
-        div ${{ index.colorconfig.time.title }}$
+        div ${{ index.colorconfig.time.description }}$
         .columns
 
             .column.col-6.col-sm-12.mt-2
@@ -108,19 +108,21 @@
                     .col-8
                         input.form-input(type='color', id='monthcolordimmed' rv-value='config.monthColorDimmed')
 
+    .divider
+
     fieldset.form-horizontal
         .form-group 
             .col-12
                 label.form-switch(for='bglight')
                     input(type='checkbox' id='bglight' rv-checked='config.bgLight')
                     i.form-icon
-                    span ${{ index.colorconfig.backlight.enable }}$ 
+                    span ${{ index.colorconfig.backlight }}$ 
 
             .column.col-6.bglightsettings(rv-if='config.bgLight')
 
                 .form-group 
                     .col-4
-                        label.form-label(for='bgcolor') ${{ index.colorconfig.backlight.day }}$ 
+                        label.form-label(for='bgcolor') ${{ index.day }}$ 
                     .col-8
                         input.form-input(type='color', id='bgcolor' rv-value='config.bgColor')
                 
@@ -128,10 +130,90 @@
 
                 .form-group 
                     .col-4
-                        label.form-label(for='bgcolor') ${{ index.colorconfig.backlight.night }}$ 
+                        label.form-label(for='bgcolordimmed') ${{ index.night }}$ 
                     .col-8
                         input.form-input(type='color', id='bgcolordimmed' rv-value='config.bgColorDimmed')
+    
+    .divider
 
+    fieldset.form-horizontal
+        .form-group 
+            .col-12
+                label.form-switch(for='hourdot')
+                    input(type='checkbox' id='hourdot' rv-checked='config.hourDot')
+                    i.form-icon
+                    span ${{ index.colorconfig.hourdot }}$ 
+
+            .column.col-6.bglightsettings(rv-if='config.hourDot')
+
+                .form-group 
+                    .col-4
+                        label.form-label(for='hourdotcolor') ${{ index.day }}$ 
+                    .col-8
+                        input.form-input(type='color', id='hourdotcolor' rv-value='config.hourDotColor')
+                
+            .column.col-6.bglightsettings(rv-if='config.hourDot')
+
+                .form-group 
+                    .col-4
+                        label.form-label(for='hourdotcolordimmed') ${{ index.night }}$ 
+                    .col-8
+                        input.form-input(type='color', id='hourdotcolordimmed' rv-value='config.hourDotColorDimmed')
+    
+    .divider
+    
+    fieldset.form-horizontal
+        .form-group 
+            .col-12
+                label.form-switch(for='hourquarter')
+                    input(type='checkbox' id='hourquarter' rv-checked='config.hourQuarter')
+                    i.form-icon
+                    span ${{ index.colorconfig.hourquarter }}$ 
+
+            .column.col-6.bglightsettings(rv-if='config.hourQuarter')
+
+                .form-group 
+                    .col-4
+                        label.form-label(for='hourquartercolor') ${{ index.day }}$ 
+                    .col-8
+                        input.form-input(type='color', id='hourquartercolor' rv-value='config.hourQuarterColor')
+                
+            .column.col-6.bglightsettings(rv-if='config.hourQuarter')
+
+                .form-group 
+                    .col-4
+                        label.form-label(for='hourquartercolordimmed') ${{ index.night }}$ 
+                    .col-8
+                        input.form-input(type='color', id='hourquartercolordimmed' rv-value='config.hourQuarterColorDimmed')
+
+    .divider
+    
+    fieldset.form-horizontal
+        .form-group 
+            .col-12
+                label.form-switch(for='hoursegment')
+                    input(type='checkbox' id='hoursegment' rv-checked='config.hourSegment')
+                    i.form-icon
+                    span ${{ index.colorconfig.hoursegment }}$ 
+
+            .column.col-6.bglightsettings(rv-if='config.hourSegment')
+
+                .form-group 
+                    .col-4
+                        label.form-label(for='hoursegmentcolor') ${{ index.day }}$ 
+                    .col-8
+                        input.form-input(type='color', id='hoursegmentcolor' rv-value='config.hourSegmentColor')
+                
+            .column.col-6.bglightsettings(rv-if='config.hourSegment')
+
+                .form-group 
+                    .col-4
+                        label.form-label(for='hoursegmentcolordimmed') ${{ index.night }}$ 
+                    .col-8
+                        input.form-input(type='color', id='hoursegmentcolordimmed' rv-value='config.hourSegmentColorDimmed')
+    
+    .divider
+    
     fieldset.form-horizontal
         .form-group 
             .col-12
@@ -139,11 +221,3 @@
                     input(type='checkbox' id='blendcolors' rv-checked='config.blendColors')
                     i.form-icon
                     span ${{ index.colorconfig.blendcolors }}$ 
-
-    fieldset.form-horizontal
-        .form-group 
-            .col-12
-                label.form-switch(for='fluidmotion')
-                    input(type='checkbox' id='fluidmotion' rv-checked='config.fluidMotion')
-                    i.form-icon
-                    span ${{ index.colorconfig.fluidmotion }}$ 

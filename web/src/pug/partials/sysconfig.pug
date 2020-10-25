@@ -17,6 +17,23 @@
             .col-8
                 input.form-input(type='number', min='60', step='1', rv-value='config.ledCount | int')
     
+    .divider
+
+    fieldset.form-horizontal(rv-if='config.bgLight')
+
+        .form-group
+            .col-4
+                label.form-label(for='ledpin') ${{ index.sysconfig.led.bgpin }}$ 
+            .col-8
+                input.form-input(type='number', min='1', step='1', rv-value='config.bgLedPin | int')
+        
+        .form-group
+
+            .col-4
+                label.form-label(for='ledcount') ${{ index.sysconfig.led.bgcount }}$ 
+            .col-8
+                input.form-input(type='number', min='1', step='1', rv-value='config.bgLedCount | int')
+    
     include ../partials/ledorder.pug
     .divider
       
@@ -42,7 +59,7 @@
 
         .form-group
             .col-12
-                button.btn.btn-lg.modal-firmware-toggle(rv-on-click='toggleFirmwareModal') ${{ index.sysconfig.firmware.open }}$
+                button.btn.btn-lg.modal-firmware-toggle(rv-on-click='toggleFirmwareModal') ${{ index.sysconfig.firmware.title }}$
 
     .divider
 

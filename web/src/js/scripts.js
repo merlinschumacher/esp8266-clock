@@ -64,18 +64,16 @@ document.addEventListener("DOMContentLoaded", function () {
 
     getData('time').then(function (data) {
         time = data;
-    })
-    getData('version').then(function (data) {
-        console.log(version);
-        version = data.toString();
-    })
-
-    getConfig().then(function (data) {
-        config = data;
-    }).then(function () {
-        app = tinybind.bind(document.getElementById("app"), {
-            config, version, time, timezones, languages, toggleFirmwareModal, toggleResetModal, loadLanguage, toastVisible
-        });
+        getData('version').then(function (data) {
+            version = data.toString();
+            getConfig().then(function (data) {
+                config = data;
+            }).then(function () {
+                app = tinybind.bind(document.getElementById("app"), {
+                    config, version, time, timezones, languages, toggleFirmwareModal, toggleResetModal, loadLanguage, toastVisible
+                });
+            })
+        })
     })
 
     window.setInterval(function () {

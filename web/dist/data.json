@@ -34,7 +34,7 @@
     "ledPin": 2,
     "ledCount": 60,
     "ledRoot": 31,
-    "bgLight": false,
+    "bgLight": true,
     "bgLedPin": 15,
     "bgLedCount": 60,
     "bgColor": "#000000",

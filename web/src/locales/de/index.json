@@ -1,13 +1,13 @@
 {
     "langcode": "de",
     "title": "ESP-UHR",
-    "description": "Dies ist eine digitale Wanduhr",
+    "description": "Eine digitale LED-Wanduhr.",
     "savebutton": "Speichern",
     "current_time": "Uhrzeit",
     "toasts": {
-        "enable_js": "Enabel Javascript to configure the clock.",
-        "save_error": "Saving the configuration failed.",
-        "save_success": "Saving the successful"
+        "enable_js": "Aktivieren Sie JavaSript, um die Uhr zu konfigurieren.",
+        "save_error": "Speichern der Konfiguration fehlgeschlagen.",
+        "save_success": "Speichern der Konfiguration erfolgreich."
     },
     "nav": {
         "color": "Farben",
@@ -22,96 +22,80 @@
     "weekday": "Wochentag",
     "month": "Monat",
     "date": "Datum",
+    "time": "Zeit",
+    "day": "Tag",
+    "night": "Nacht",
     "restart_required": "Neustart erforderlich",
     "colorconfig": {
         "title": "Farbeinstellungen",
-        "description": "Here you can configure the color and behaviour of the LED clock hands.",
-        "backlight": {
-            "enable": "Enable background light",
-            "day": "Day",
-            "night": "Night"
-        },
+        "description": "Hier können Sie das Vverhalten und die Farben der Zeiger konfigurieren.",
+        "backlight": "Hintergrundbeleuchtung aktivieren.",
         "time": {
-            "title": "Time configuration",
-            "description": "Here you can configure the time settings."
+            "title": "Zeitfarben",
+            "description": "Legen Sie hier die Farben der Zeiger für Stunde, Minute und Sekunde fest."
         },
         "date": {
-            "title": "Date configuration",
-            "description": "Here you can setup the clock hands.",
-            "active": "Display weekday, date and month",
-            "colorconfig": {
-                "day": "Colors in the day.",
-                "night": "Colors in the night."
-            },
-            "alarm": {
-                "description": "It's possible to set an alarm.",
-                "time": "Alarm time",
-                "active": "Alarm active"
-            },
-            "night": {
-                "description": "When does the night begin",
-                "begin": "Start",
-                "end": "End"
-            }
+            "title": "Datumsfarben",
+            "description": "Legen Sie hier die Farben für die Anzeige von Wochentag, Datum ud Monat fest.",
+            "active": "Wochentag, Datum und Monat anzeigen."
         },
-        "blendcolors": "Blend overlapping colors into one.",
-        "fluidmotion": "Flowing motion for the second hand."
+        "blendcolors": "Überlagernde Zeigerfarben miteinander vermischen.",
+        "fluidmotion": "Flüssige Bewegung des Sekundenzeigers einschalten.",
+        "hourdot": "Stunden mit einem Punkt markieren.",
+        "hourquarter": "Jedes Viertel mit einem Punkt markieren.",
+        "hoursegment": "Das akutelle Stundensegment beleuchten."
     },
     "timeconfig": {
-        "title": "Time configuration",
-        "description": "Here you can configure the time settings.",
+        "title": "Zeit-Einstellungen",
+        "description": "Hier können Sie unter anderem Einstellungen zu Zeitzonen und Alarm vornehmen.",
         "alarm": {
-            "title": "Alarm",
-            "description": "If you enable the alarm function a red ring will be shown at the given time.",
-            "time": "Alarm time",
-            "active": "Alarm active"
+            "title": "Alarm-Einstellungen",
+            "description": "Wenn Sie den Alarm anschalten zeigt die Uhr zur gewählten Zeit einen roten Ring an.",
+            "time": "Alarm-Zeit",
+            "active": "Alarm einschalten"
         },
         "night": {
-            "description": "When does the night begin",
-            "begin": "Start",
-            "end": "End"
+            "description": "Von wann bis wann, soll der Nachtmodus aktiv sein?",
+            "begin": "Anfang",
+            "end": "Ende"
         },
-        "hourlight": "Show a rainbow on top of the hour."
+        "hourlight": "Einen Regenbogen zur vollen Stunde anzeigen.",
+        "timezone": "Zeitzone"
     },
     "sysconfig": {
-        "title": "System configuration",
-        "description": "Here you can configure global system settings.",
-        "by": "by",
-        "source": "Source code and further information",
+        "title": "Systemeinstellungen",
+        "description": "Stellen Sie hier grundlegende Optionen wie LED-Positionen, Zeitserver und Hostnamen der Uhr fest.",
+        "by": "von",
+        "source": "Quellcode und mehr.",
         "led": {
-            "pin": "LED strip pin",
-            "count": "LED strip length"
+            "pin": "Pin des LED-Streifens",
+            "count": "Länge des LED-Streifens",
+            "bgpin": "Pin der Hintergrundbeleuchtung",
+            "bgcount": "Länge der Hintergrundbeleuchtung"
         },
         "ledorder": {
-            "title": "LED ordering",
-            "description": "You can define a custom start position on the LED strip for the weekday, date and month. The time is always fixed to the first 60 LEDs.",
-            "length": "Length",
-            "time": "Time",
-            "date": "Date",
-            "weekday": "Weekday",
-            "month": "Month",
+            "title": "Positionierung der Zeiger",
+            "description": "Sie können hier die Zeigerposition für den Wochentag, das Datum und den Monat festlegen. Die Uhrzeit ist auf die ersten 60 Pixel festgelegt. Mit der '12 Uhr Position' definieren Sie, welcher Pixel die 12 Uhr Position definiert",
             "twelveoclock": "12 Uhr Position"
         },
         "network": {
-            "description": "Network settings",
-            "timeserver": "NTP time server",
+            "description": "Netzwerkeinstellungen",
+            "timeserver": "NTP-Zeitserver",
             "hostname": "Hostname"
         },
-        "timezone": "Timezone",
         "firmware": {
-            "title": "Firmware update",
-            "description": "Update the firmware of the clock by selecting an update file and click 'Start update'. After about a minute the clock should be updated.",
-            "open": "Firmware update",
-            "update": "File",
-            "submit": "Start update",
+            "title": "Firmware-Update",
+            "description": "Aktualisieren Sie die Firmware der Uhr, in dem Sie eine Datei auswählen und auf 'Update starten' klicken. Das Update dauert üblicherweise etwa eine Minute.",
+            "update": "Datei",
+            "submit": "Hochladen",
             "version": "Version: "
         },
         "reset": {
-            "title": "Reset the clock",
-            "description": "This resets all settings. You'll have to reconnect to the WiFi provided by the clock and reconfigure the clock.",
-            "open": "Reset clock",
-            "confirm": "RESET EVERYTHING!",
-            "cancel": "Cancel"
+            "title": "Zurücksetzen der Uhr",
+            "description": "Die Funktion setzt alle Einstellungen der Uhr zurück. Sie müssen Sie anschließend vollständig neu einrichten. Das betrifft auch die WLAN-Einstellungen.",
+            "open": "Uhr zurücksetzen",
+            "confirm": "ALLES ZURÜCKSETZEN!",
+            "cancel": "Abbruch"
         }
     }
 }

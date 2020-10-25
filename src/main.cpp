@@ -92,11 +92,11 @@ void renderHourDots()
     uint8_t dotPos = (uint8_t)floor(step * i);
     // dotPos = (dotPos + config.config.ledRoot) % config.config.ledCount;
     dotPos = (dotPos + config.config.ledRoot) % 60;
-    if (i % 3 == 0)
+    if (i % 3 == 0 && config.config.hourQuarter)
     {
       strip->SetPixelColor(dotPos, quarter);
     }
-    else
+    else if (config.config.hourDot)
     {
       strip->SetPixelColor(dotPos, dot);
     }
@@ -235,7 +235,8 @@ void loop()
   {
     currentSecond = sec;
     renderHourDots();
-    renderHourSegment();
+    if (config.config.hourSegment)
+      renderHourSegment();
 
     setPixel(calculateHourHand(), hourColor, config.config.blendColors);
     setPixel(calculateMinuteHand(), minuteColor, config.config.blendColors);

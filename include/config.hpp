@@ -22,6 +22,10 @@ struct ConfigData
     char minuteColorDimmed[8];
     char secondColorDimmed[8];
 
+    bool hourDot;
+    bool hourSegment;
+    bool hourQuarter;
+
     char hourDotColor[8];
     char hourSegmentColor[8];
     char hourQuarterColor[8];
