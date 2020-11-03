@@ -76,8 +76,8 @@ public:
     ConfigData config;
     void save();
     void load();
-    StaticJsonDocument<2048> configToJSON();
-    bool JSONToConfig(StaticJsonDocument<2048> doc);
+    DynamicJsonDocument configToJSON();
+    bool JSONToConfig(DynamicJsonDocument doc);
 
 private:
     void _loadFile();
