@@ -29,6 +29,21 @@ document.addEventListener("DOMContentLoaded", function () {
         el.style.marginLeft = margin + "%";
     };
 
+    tinybind.formatters.time = {
+        read: function (value) {
+            let h = Math.floor(value / 60);
+            h = String(h).padStart(2, '0');
+            let m = value % 60;
+            m = String(m).padStart(2, '0');
+            const s = h + ":" + m;
+            return s;
+        },
+        publish: function (value) {
+            const t = value.split(':');
+            m = (+t[0]) * 60 + (+t[1]);
+            return m;
+        }
+    }
     tinybind.formatters.addEmoji = function (value, emoji) {
         return emoji + value;
     };

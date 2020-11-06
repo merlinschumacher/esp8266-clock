@@ -19,7 +19,7 @@ if build_type  == "debug":
     )
     dt_string = datetime.now().strftime("_%d-%m-%Y_%H-%M-%S")
     version = revision + dt_string; 
-    flags = "-fexceptions -DDEBUG_BUILD -O0 -ggdb3 -g3 "
+    flags = "-fexceptions -DDEBUG_BUILD -O0 -ggdb2 -g2 -DCONT_STACKSIZE=10240"
 else:
     version = "v" + (
         subprocess.check_output(["git", "describe", "--abbrev=0", "--tags"])
@@ -29,7 +29,7 @@ else:
     flags = "-O3 "
 
 if sys.argv[2] == "esp8266":
-    common_flags = "-DCONT_STACKSIZE=20480 "
+    common_flags = " "
     print(common_flags + flags + "-DVERSION='\"%s\"'" % version)
 elif sys.argv[2] == "esp32":
     print(flags + " -DVERSION='\"%s\"'" % version)

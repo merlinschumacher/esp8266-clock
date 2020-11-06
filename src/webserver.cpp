@@ -20,40 +20,22 @@ void Webserver::handleRequest()
   _server.handleClient();
 }
 
-void Webserver::_handleNotFound()
-{
-  String message = "File Not Found\n\n";
-  message += "URI: ";
-  message += _server.uri();
-  message += "\nMethod: ";
-  message += (_server.method() == HTTP_GET) ? "GET" : "POST";
-  message += "\nArguments: ";
-  message += _server.args();
-  message += "\n";
-
-  for (uint8_t i = 0; i < _server.args(); i++)
-  {
-    message += " " + _server.argName(i) + ": " + _server.arg(i) + "\n";
-  }
-
-  _server.send(404, "text/plain", message);
-}
-
 void Webserver::_handleDataGet(Config &config)
 {
   Serial.println("Loading config data");
-  char message[2048];
+  char message[1280];
   config.load();
-  StaticJsonDocument<2048> doc = config.configToJSON();
+  DynamicJsonDocument doc(1600);
+  config.configToJSON(doc);
   serializeJson(doc, message);
   _server.send(200, "text/json", message);
 }
 
 void Webserver::_handleDataPut(Config &config)
 {
-  char message[2048];
+  char message[1280];
   strlcpy(message, _server.arg(0).c_str(), sizeof(message));
-  StaticJsonDocument<2048> doc;
+  DynamicJsonDocument doc(1600);
   deserializeJson(doc, message);
   bool save = config.JSONToConfig(doc);
   if (save == true)
@@ -62,8 +44,9 @@ void Webserver::_handleDataPut(Config &config)
   };
 
   doc.clear();
+  doc.garbageCollect();
   memset(&message[0], 0, sizeof(message));
-  doc = config.configToJSON();
+  config.configToJSON(doc);
   serializeJson(doc, message);
   _server.send(200, "text/json", message);
 }
@@ -71,10 +54,6 @@ void Webserver::_handleDataPut(Config &config)
 void Webserver::_resetConfig(Config &config)
 {
   Serial.println("Resetting config file and rebooting.");
-  StaticJsonDocument<1> doc;
-  deserializeJson(doc, "");
-  config.save();
-
   WiFi.disconnect(true);
 #if defined(ESP8266)
   LittleFS.format();
@@ -85,10 +64,10 @@ void Webserver::_resetConfig(Config &config)
   _server.send(200, "text/plain", "reset");
 }
 
-void Webserver::_handleIndex(Config &config)
+void Webserver::_handleIndex(char *lang)
 {
   _server.sendHeader("Content-Encoding", "gzip");
-  if (strcmp(config.config.language, "de") == 0)
+  if (strcmp(lang, "de") == 0)
   {
     _server.send_P(200, "text/html", index_de_html_gz, index_de_html_gz_len);
   }
@@ -98,14 +77,21 @@ void Webserver::_handleIndex(Config &config)
   }
 }
 
+void Webserver::_handleTime()
+{
+  char buf[16];
+  itoa(UTC.now(), buf, 10);
+  _server.send(200, "text/plain", buf);
+}
+
 void Webserver::setup(Config &config)
 {
-  _server.on("/", HTTP_GET, [this, &config]() { _handleIndex(config); });
-  _server.on("/index.html", HTTP_GET, [this, &config]() { _handleIndex(config); });
+  _server.on("/", HTTP_GET, [this, &config]() { _handleIndex(config.config.language); });
+  _server.on("/index.html", HTTP_GET, [this, &config]() { _handleIndex(config.config.language); });
   _server.on("/styles.css", HTTP_GET, [this]() { _server.sendHeader("Content-Encoding", "gzip");_server.send_P(200, "text/css", styles_css_gz, styles_css_gz_len); });
   _server.on("/scripts.js", HTTP_GET, [this]() { _server.sendHeader("Content-Encoding", "gzip");_server.send_P(200, "application/javascript", scripts_js_gz, scripts_js_gz_len); });
 
-  _server.on("/time", HTTP_GET, [this]() { _server.send(200, "text/plain", currentTime); });
+  _server.on("/time", HTTP_GET, [this]() { _handleTime(); });
   _server.on("/version", HTTP_GET, [this]() { _server.send(200, "text/plain", VERSION); });
 
   _server.on("/reset", HTTP_GET, [this, &config]() { _resetConfig(config); _server.send(200, "text/plain", ""); });

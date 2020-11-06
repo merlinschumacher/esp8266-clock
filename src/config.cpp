@@ -6,21 +6,30 @@ Config::Config()
 
 void Config::_getHostname(char *hostname)
 {
-        char hostn[64] = "ESPCLOCK-";
+        // char hostn[64] = "ESPCLOCK-";
 #if defined(ESP8266)
         uint32_t chipid = ESP.getChipId();
 #elif defined(ESP32)
         uint64_t chipid = ESP.getEfuseMac();
 #endif
         char chipidS[16];
-        snprintf(chipidS, 64, "%08X", chipid);
-        strlcpy(hostn, chipidS, sizeof(hostname));
-        strlcpy(hostname, hostn, sizeof(hostname));
+        // snprintf(chipidS, 64, "%08X", chipid);
+        ultoa(chipid, chipidS, HEX);
+        strlcat(hostname, "ESPCLOCK-", sizeof(hostname));
+        strlcat(hostname, chipidS, sizeof(hostname));
+        // strlcpy(hostn, chipidS, sizeof(hostname));
+        // strlcpy(hostname, hostn, sizeof(hostname));
 }
 
+<<<<<<< HEAD
 StaticJsonDocument<2048> Config::configToJSON()
 {
         StaticJsonDocument<2048> doc;
+=======
+void Config::configToJSON(JsonDocument &doc)
+{
+        // StaticJsonDocument<2048> doc;
+>>>>>>> 32de301 (multiple changes to reduce mem usage; fix build order for web;)
         // Set the values in the document
         doc["hostname"] = config.hostname;
         doc["timeserver"] = config.timeserver;
@@ -42,7 +51,6 @@ StaticJsonDocument<2048> Config::configToJSON()
         doc["hourSegmentColor"] = config.hourSegmentColor;
         doc["hourQuarterColor"] = config.hourQuarterColor;
 
-        doc["hourDotColorDimmed"] = config.hourDotColorDimmed;
         doc["hourDotColorDimmed"] = config.hourDotColorDimmed;
         doc["hourSegmentColorDimmed"] = config.hourSegmentColorDimmed;
         doc["hourQuarterColorDimmed"] = config.hourQuarterColorDimmed;
@@ -79,11 +87,13 @@ StaticJsonDocument<2048> Config::configToJSON()
         doc["bgColorDimmed"] = config.bgColorDimmed;
 
         doc["language"] = config.language;
-
-        return doc;
 }
 
+<<<<<<< HEAD
 bool Config::JSONToConfig(StaticJsonDocument<2048> doc)
+=======
+bool Config::JSONToConfig(JsonDocument &doc)
+>>>>>>> 32de301 (multiple changes to reduce mem usage; fix build order for web;)
 {
 
         if (doc.containsKey("hostname"))
@@ -172,21 +182,15 @@ bool Config::JSONToConfig(StaticJsonDocument<2048> doc)
                 doc["weekdayColorDimmed"] | "#00755B",
                 sizeof(config.weekdayColorDimmed));
 
-        strlcpy(config.nightTimeBegins,
-                doc["nightTimeBegins"] | "22:00",
-                sizeof(config.nightTimeBegins));
-        strlcpy(config.nightTimeEnds,
-                doc["nightTimeEnds"] | "08:00",
-                sizeof(config.nightTimeEnds));
+        config.nightTimeBegins = doc["nightTimeBegins"] | 1320;
+        config.nightTimeEnds = doc["nightTimeEnds"] | 480;
 
         config.hourLight = doc["hourLight"] | false;
         config.blendColors = doc["blendColors"] | true;
         config.fluidMotion = doc["fluidMotion"] | true;
 
         config.alarmActive = doc["alarmActive"] | false;
-        strlcpy(config.alarmTime,
-                doc["alarmTime"] | "08:00",
-                sizeof(config.alarmTime));
+        config.alarmTime = doc["alarmTime"] | 480;
 
         config.bgLight = doc["bgLight"] | false;
         strlcpy(config.bgColor,
@@ -236,12 +240,15 @@ void Config::load()
         // Allocate a temporary JsonDocument
         // Don't forget to change the capacity to match your requirements.
         // Use arduinojson.org/v6/assistant to compute the capacity.
+<<<<<<< HEAD
         StaticJsonDocument<2048> doc;
+=======
+        DynamicJsonDocument doc(1600);
+>>>>>>> 32de301 (multiple changes to reduce mem usage; fix build order for web;)
 
         // Deserialize the JSON document
         DeserializationError error = deserializeJson(doc, sourcefile);
         Config::JSONToConfig(doc);
-
         if (error)
         {
                 sourcefile.close();
@@ -271,8 +278,13 @@ void Config::save()
                 return;
         }
 
+<<<<<<< HEAD
         StaticJsonDocument<2048> doc;
         doc = Config::configToJSON();
+=======
+        DynamicJsonDocument doc(1600);
+        Config::configToJSON(doc);
+>>>>>>> 32de301 (multiple changes to reduce mem usage; fix build order for web;)
         // Serialize JSON to file
         if (serializeJson(doc, targetfile) == 0)
         {

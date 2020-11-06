@@ -12,6 +12,7 @@
 #include <Update.h>
 #include <SPIFFS.h>
 #endif
+#include <ezTime.h>
 #include "config.hpp"
 
 class Webserver
@@ -20,15 +21,14 @@ public:
     Webserver();
     void setup(Config &config);
     void handleRequest();
-    char currentTime[64];
 
 private:
     void _handleNotFound();
     void _handleDataGet(Config &config);
     void _handleDataPut(Config &config);
     void _resetConfig(Config &config);
-    void _handleIndex(Config &config);
-    String _getContentType(String filename);
+    void _handleIndex(char *lang);
+    void _handleTime();
 };
 
 #endif //webserver_h

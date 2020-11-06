@@ -46,15 +46,15 @@ struct ConfigData
     char dayColorDimmed[8];
     char weekdayColorDimmed[8];
 
-    char nightTimeBegins[6];
-    char nightTimeEnds[6];
+    uint16_t nightTimeBegins;
+    uint16_t nightTimeEnds;
 
     bool hourLight;
     bool blendColors;
     bool fluidMotion;
 
     bool alarmActive;
-    char alarmTime[6];
+    uint32_t alarmTime;
 
     bool bgLight;
     char bgColor[8];
@@ -73,11 +73,11 @@ class Config
 {
 public:
     Config();
-    ConfigData config;
+    ConfigData config = {};
     void save();
     void load();
-    StaticJsonDocument<2048> configToJSON();
-    bool JSONToConfig(StaticJsonDocument<2048> doc);
+    void configToJSON(JsonDocument &doc);
+    bool JSONToConfig(JsonDocument &doc);
 
 private:
     void _loadFile();

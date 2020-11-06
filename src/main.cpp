@@ -143,7 +143,7 @@ void printDebugInfo()
   Serial.println(ESP.getHeapFragmentation());
   Serial.print("MaxFreeBlockSize: ");
   Serial.println(ESP.getMaxFreeBlockSize());
-#else if defined(ESP32)
+#elif defined(ESP32)
   Serial.print(xPortGetFreeHeapSize());
 #endif
   Serial.print("Uptime: ");
@@ -162,8 +162,7 @@ void setup()
 #if defined(ESP8266)
   LittleFS.begin();
 #elif defined(ESP32)
-  SPIFFS.format();
-  SPIFFS.begin();
+  SPIFFS.begin(true);
 #endif
   config.load();
   char hostname[64];
@@ -218,7 +217,6 @@ void loop()
     currentMinute = minute();
     currentSecond = sec;
     updateColors(isNight());
-    String(UTC.now()).toCharArray(webserver.currentTime, sizeof(webserver.currentTime));
     setBacklight();
     printDebugInfo();
   }

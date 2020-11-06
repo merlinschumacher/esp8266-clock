@@ -1,6 +1,7 @@
 Import("env")
 
 build_tag = env['PIOENV']
+env.Execute("cd web; gulp build; cd ..")
 print("converting web files to headers");
 source_files = ["index-en.html", "index-de.html", "scripts.js", "styles.css"]
 target_files = ["index_en_html.hpp", "index_de_html.hpp", "scripts_js.hpp", "styles_css.hpp"]
@@ -20,7 +21,6 @@ while i < len(source_files):
     env.Execute("rm web/dist/"+source_files[i]+".gz")
     i = i+1
 
-env.Execute("cd web; gulp build")
 
 print("changing program filename ") 
 env.Replace(PROGNAME="firmware_%s" % build_tag)

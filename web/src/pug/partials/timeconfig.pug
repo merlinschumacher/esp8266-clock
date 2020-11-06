@@ -36,7 +36,7 @@
             .col-2.col-sm-4.alarmtime(rv-if='config.alarmActive')
                     label.form-label(for='alarm') ${{ index.timeconfig.alarm.time }}$ 
             .col-3.col-sm-8.alarmtime(rv-if='config.alarmActive')
-                    input.form-input(type='time', id='alarm' rv-value='config.alarmTime')
+                    input.form-input(type='time', id='alarm' rv-value='config.alarmTime | time')
     
     .divider
 
@@ -47,14 +47,14 @@
             .col-2.col-xs-4
                 label.form-label(for='nightbegin') ${{ index.timeconfig.night.begin }}$ 
             .col-3.col-xs-8
-                input.form-input(type='time', id='nightbegin' rv-value='config.nightTimeBegins')
+                input.form-input(type='time', id='nightbegin' rv-value='config.nightTimeBegins | time')
         
             .divider-vert.col-2.hide-xs
             .col-12.pt-2.show-xs
             .col-2.col-xs-4
                 label.form-label(for='nightbegin') ${{ index.timeconfig.night.end }}$ 
             .col-3.col-xs-8
-                input.form-input(type='time', id='nightend' rv-value='config.nightTimeEnds')
+                input.form-input(type='time', id='nightend' rv-value='config.nightTimeEnds | time')
      
     .divider
 
