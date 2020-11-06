@@ -18,9 +18,9 @@ void Config::_getHostname(char *hostname)
         strlcpy(hostname, hostn, sizeof(hostname));
 }
 
-DynamicJsonDocument Config::configToJSON()
+StaticJsonDocument<2048> Config::configToJSON()
 {
-        DynamicJsonDocument doc(2048);
+        StaticJsonDocument<2048> doc;
         // Set the values in the document
         doc["hostname"] = config.hostname;
         doc["timeserver"] = config.timeserver;
@@ -83,7 +83,7 @@ DynamicJsonDocument Config::configToJSON()
         return doc;
 }
 
-bool Config::JSONToConfig(DynamicJsonDocument doc)
+bool Config::JSONToConfig(StaticJsonDocument<2048> doc)
 {
 
         if (doc.containsKey("hostname"))
@@ -236,7 +236,7 @@ void Config::load()
         // Allocate a temporary JsonDocument
         // Don't forget to change the capacity to match your requirements.
         // Use arduinojson.org/v6/assistant to compute the capacity.
-        DynamicJsonDocument doc(2048);
+        StaticJsonDocument<2048> doc;
 
         // Deserialize the JSON document
         DeserializationError error = deserializeJson(doc, sourcefile);
@@ -271,7 +271,7 @@ void Config::save()
                 return;
         }
 
-        DynamicJsonDocument doc(2048);
+        StaticJsonDocument<2048> doc;
         doc = Config::configToJSON();
         // Serialize JSON to file
         if (serializeJson(doc, targetfile) == 0)
