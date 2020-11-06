@@ -21,15 +21,9 @@ void Config::_getHostname(char *hostname)
         // strlcpy(hostname, hostn, sizeof(hostname));
 }
 
-<<<<<<< HEAD
-StaticJsonDocument<2048> Config::configToJSON()
-{
-        StaticJsonDocument<2048> doc;
-=======
 void Config::configToJSON(JsonDocument &doc)
 {
         // StaticJsonDocument<2048> doc;
->>>>>>> 32de301 (multiple changes to reduce mem usage; fix build order for web;)
         // Set the values in the document
         doc["hostname"] = config.hostname;
         doc["timeserver"] = config.timeserver;
@@ -89,11 +83,7 @@ void Config::configToJSON(JsonDocument &doc)
         doc["language"] = config.language;
 }
 
-<<<<<<< HEAD
-bool Config::JSONToConfig(StaticJsonDocument<2048> doc)
-=======
 bool Config::JSONToConfig(JsonDocument &doc)
->>>>>>> 32de301 (multiple changes to reduce mem usage; fix build order for web;)
 {
 
         if (doc.containsKey("hostname"))
@@ -240,11 +230,7 @@ void Config::load()
         // Allocate a temporary JsonDocument
         // Don't forget to change the capacity to match your requirements.
         // Use arduinojson.org/v6/assistant to compute the capacity.
-<<<<<<< HEAD
-        StaticJsonDocument<2048> doc;
-=======
         DynamicJsonDocument doc(1600);
->>>>>>> 32de301 (multiple changes to reduce mem usage; fix build order for web;)
 
         // Deserialize the JSON document
         DeserializationError error = deserializeJson(doc, sourcefile);
@@ -278,13 +264,8 @@ void Config::save()
                 return;
         }
 
-<<<<<<< HEAD
-        StaticJsonDocument<2048> doc;
-        doc = Config::configToJSON();
-=======
         DynamicJsonDocument doc(1600);
         Config::configToJSON(doc);
->>>>>>> 32de301 (multiple changes to reduce mem usage; fix build order for web;)
         // Serialize JSON to file
         if (serializeJson(doc, targetfile) == 0)
         {
