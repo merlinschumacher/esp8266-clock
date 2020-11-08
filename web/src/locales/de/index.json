@@ -28,7 +28,7 @@
     "restart_required": "Neustart erforderlich",
     "colorconfig": {
         "title": "Farbeinstellungen",
-        "description": "Hier können Sie das Vverhalten und die Farben der Zeiger konfigurieren.",
+        "description": "Hier können Sie das Verhalten und die Farben der Zeiger konfigurieren.",
         "backlight": "Hintergrundbeleuchtung aktivieren.",
         "time": {
             "title": "Zeitfarben",
@@ -50,7 +50,7 @@
         "description": "Hier können Sie unter anderem Einstellungen zu Zeitzonen und Alarm vornehmen.",
         "alarm": {
             "title": "Alarm-Einstellungen",
-            "description": "Wenn Sie den Alarm anschalten zeigt die Uhr zur gewählten Zeit einen roten Ring an.",
+            "description": "Wenn Sie den Alarm anschalten, zeigt die Uhr zur gewählten Zeit einen roten Ring an.",
             "time": "Alarm-Zeit",
             "active": "Alarm einschalten"
         },

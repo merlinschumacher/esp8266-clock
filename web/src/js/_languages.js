@@ -2,7 +2,7 @@ const languages = [
     {
         code: "en",
         name: "English",
-        icon: "🇬🇧"
+        icon: "🇺🇸"
     },
     {
         code: "de",

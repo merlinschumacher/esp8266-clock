@@ -50,12 +50,12 @@
         "description": "Here you can configure the time settings.",
         "alarm": {
             "title": "Alarm",
-            "description": "If you enable the alarm function a red ring will be shown at the given time.",
+            "description": "If you enable the alarm function, a red ring will be shown at the given time.",
             "time": "Alarm time",
             "active": "Alarm active"
         },
         "night": {
-            "description": "Between what hours should the night mode be active?",
+            "description": "From when to when should the night mode be active?",
             "begin": "Beginning",
             "end": "End"
         },
