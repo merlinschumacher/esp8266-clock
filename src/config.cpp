@@ -4,23 +4,6 @@ Config::Config()
 {
 }
 
-void Config::_getHostname(char *hostname)
-{
-        // char hostn[64] = "ESPCLOCK-";
-#if defined(ESP8266)
-        uint32_t chipid = ESP.getChipId();
-#elif defined(ESP32)
-        uint64_t chipid = ESP.getEfuseMac();
-#endif
-        char chipidS[16];
-        // snprintf(chipidS, 64, "%08X", chipid);
-        ultoa(chipid, chipidS, HEX);
-        strlcat(hostname, "ESPCLOCK-", sizeof(hostname));
-        strlcat(hostname, chipidS, sizeof(hostname));
-        // strlcpy(hostn, chipidS, sizeof(hostname));
-        // strlcpy(hostname, hostn, sizeof(hostname));
-}
-
 void Config::configToJSON(JsonDocument &doc)
 {
         // StaticJsonDocument<2048> doc;
@@ -94,12 +77,14 @@ bool Config::JSONToConfig(JsonDocument &doc)
         }
         else
         {
-                char _host[64];
-                _getHostname(_host);
-                strlcpy(config.hostname,
-                        _host,
-                        sizeof(config.hostname));
+#if defined(ESP8266)
+                uint32_t chipid = ESP.getChipId();
+#elif defined(ESP32)
+                uint64_t chipid = ESP.getEfuseMac();
+#endif
+                snprintf(config.hostname, sizeof(config.hostname), "ESPCLOCK-%06X", chipid);
         }
+
         strlcpy(config.timeserver,
                 doc["timeserver"] | "pool.ntp.org",
                 sizeof(config.timeserver));

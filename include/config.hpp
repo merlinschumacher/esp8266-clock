@@ -81,7 +81,6 @@ public:
 
 private:
     void _loadFile();
-    void _getHostname(char *hostname);
 };
 
 #endif //config_h
