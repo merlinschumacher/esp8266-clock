@@ -178,20 +178,22 @@ void setup()
   WiFi.setHostname(hostname);
 #endif
 
+  initStrip();
+  strip->ClearTo(off);
   wifiManager.autoConnect(apname);
 #ifdef DEBUG_BUILD
   setDebug(DEBUG);
 #endif
   setServer(config.config.timeserver);
-  waitForSync();
+  waitForSync(30);
 
   Serial.println("UTC: " + UTC.dateTime());
   localTime.setLocation(config.config.timezone);
   localTime.setDefault();
   webserver.setup(config);
   MDNS.begin(hostname);
+  MDNS.addService("ESPCLOCK", "tcp", 80);
   MDNS.addService("http", "tcp", 80);
-  initStrip();
   updateColors();
   currentMinute = minute();
   currentSecond = second();
