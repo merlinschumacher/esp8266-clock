@@ -66,7 +66,7 @@ function views() {
             }))
             .pipe(gulp.dest('dist'))
             .pipe(connect.reload())
-    )
+    );
 }
 
 function watchTask(done) {
