@@ -76,6 +76,49 @@ void alarmAnimation(bool isNight = false)
     }
 }
 
+void renderRainbow(bool isNight = false, bool bg = false)
+{
+    int length = 0;
+    RgbColor rainbow = Rainbow(0);
+
+    if (bg)
+    {
+        length = config.config.bgLedCount;
+    }
+    else
+    {
+        length = config.config.ledCount;
+    }
+
+    for (uint16_t j = 0; j < 256; j++)
+    {
+        for (uint16_t i = 0; i < length; i++)
+        {
+            animationPos = ((i * 256 / length) + j) & 0xFF;
+            rainbow = Rainbow(animationPos);
+            if (isNight)
+            {
+                rainbow = DimColor(90, rainbow);
+            }
+            strip->SetPixelColor(i, rainbow);
+            if (config.config.bgLight)
+            {
+                bgStrip->SetPixelColor(i, rainbow);
+            }
+        }
+        animationColor.Darken(100);
+        if (bg)
+        {
+            animationColorBg = rainbow;
+        }
+        else
+        {
+            animationColor = rainbow;
+        }
+        yield();
+    }
+}
+
 void hourRainbow(bool isNight = false)
 {
     for (uint16_t j = 0; j < 256; j++)
@@ -96,14 +139,40 @@ void hourRainbow(bool isNight = false)
             }
         }
         strip->Show();
-        if (config.config.bgLight)
-        {
-            bgStrip->Show();
-        }
         animationColor.Darken(100);
         yield();
     }
 }
+
+void hourRainbowBg(bool isNight = false)
+{
+    for (uint16_t j = 0; j < 256; j++)
+    {
+        for (uint16_t i = 0; i < config.config.bgLedCount; i++)
+        {
+            animationPos = ((i * 256 / config.config.bgLedCount) + j) & 0xFF;
+            RgbColor rainbow = Rainbow(animationPos);
+            animationColorBg = rainbow;
+            if (isNight)
+            {
+                rainbow = DimColor(90, rainbow);
+            }
+            strip->SetPixelColor(i, rainbow);
+            if (config.config.bgLight)
+            {
+                bgStrip->SetPixelColor(i, rainbow);
+            }
+        }
+        strip->Show();
+        if (config.config.bgLight)
+        {
+            bgStrip->Show();
+        }
+        animationColorBg.Darken(100);
+        yield();
+    }
+}
+
 void updateColors(bool isNight = false)
 {
 

@@ -14,6 +14,7 @@ uint8_t animationPos = 0;
 
 String hourColorString, minuteColorString, secondColorString, hourDotString, hourQuarterString, hourSegmentString, bgColorString, dayColorString, monthColorString, weekdayColorString;
 RgbColor animationColor;
+RgbColor animationColorBg;
 RgbColor off(0, 0, 0);
 RgbColor hourColor(0, 0, 0);
 RgbColor minuteColor(0, 0, 0);

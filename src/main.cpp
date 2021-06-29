@@ -165,6 +165,9 @@ void setup()
   SPIFFS.begin(true);
 #endif
   config.load();
+  initStrip();
+  strip->ClearTo(off);
+  bgStrip->ClearTo(off);
   char hostname[64];
   char apname[66] = "⏰";
   strlcpy(hostname, config.config.hostname, sizeof(hostname));
@@ -178,8 +181,6 @@ void setup()
   WiFi.setHostname(hostname);
 #endif
 
-  initStrip();
-  strip->ClearTo(off);
   wifiManager.autoConnect(apname);
 #ifdef DEBUG_BUILD
   setDebug(DEBUG);
@@ -228,8 +229,13 @@ void loop()
     alarmAnimation(isNight());
   }
   else if (config.config.hourLight && currentMinute == 0 && tick())
+
   {
     hourRainbow(isNight());
+    if (config.config.bgLight)
+    {
+      hourRainbowBg(isNight());
+    }
   }
   else if (tick())
   {
@@ -247,8 +253,8 @@ void loop()
       setPixel(calculateDayHand(), dayColor, config.config.blendColors);
       setPixel(calculateWeekdayHand(), weekdayColor, config.config.blendColors);
     }
-
-    strip->Show();
+    if (strip->CanShow())
+      strip->Show();
     animationPos = 0;
   }
 

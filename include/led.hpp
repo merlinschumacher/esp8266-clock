@@ -18,6 +18,9 @@ void initStrip()
     strip->Begin();
     strip->ClearTo(off);
     strip->Show();
+    bgStrip->Begin();
+    bgStrip->ClearTo(off);
+    bgStrip->Show();
 }
 
 void setPixel(uint8_t pos, RgbColor color, bool blend = true)
