@@ -44,7 +44,6 @@ Enabling the hour dots, quarter hour dots and the option to light up the current
 
 If you want the colors of two elements to blend when they overlap enable "Blend colors when lights overlap". For example a red hour hand and a blue seconds hand overlapping will create a purple light.
 
-
 ### Time settings
 
 To enable a fluid progression of brightness between seconds set the fluid motion option. It is a little buggy.
