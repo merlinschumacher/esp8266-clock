@@ -1,30 +1,30 @@
-function switchTab(element) {
-    const target = element.getAttribute("href").substring(1);
+function switchTab(el) {
+    const target = el.getAttribute("href").substring(1);
     const contentBlocks = document.querySelectorAll(".contenttab");
     const contentTabs = document.querySelectorAll("li.tab-item");
-    contentTabs.forEach(element => {
-        if (element.id.includes(target)) {
-            element.classList.add("active");
+    contentTabs.forEach(tab => {
+        if (tab.id.includes(target)) {
+            tab.classList.add("active");
         } else {
-            element.classList.remove("active");
+            tab.classList.remove("active");
         }
     });
 
-    contentBlocks.forEach(element => {
-        if (element.id == target) {
-            element.style.display = 'unset';
+    contentBlocks.forEach(block => {
+        if (block.id == target) {
+            block.style.display = 'unset';
         } else {
-            element.style.display = 'none';
+            block.style.display = 'none';
         }
     });
-};
+}
 
 function initTabs() {
     document.getElementById("colorconfig").style.display = "unset";
     const tabButtons = document.querySelectorAll(".tab-item > a");
-    tabButtons.forEach(element => {
-        element.addEventListener('click', function (element) {
-            switchTab(element.target); return false;
+    tabButtons.forEach(button => {
+        button.addEventListener('click', function (b) {
+            switchTab(b.target); return false;
         }, false);
     });
-};
+}

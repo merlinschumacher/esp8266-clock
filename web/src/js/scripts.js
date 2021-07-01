@@ -35,13 +35,11 @@ document.addEventListener("DOMContentLoaded", function () {
             h = String(h).padStart(2, '0');
             let m = value % 60;
             m = String(m).padStart(2, '0');
-            const s = h + ":" + m;
-            return s;
+            return h + ":" + m;
         },
         publish: function (value) {
             const t = value.split(':');
-            m = (+t[0]) * 60 + (+t[1]);
-            return m;
+            return (+t[0]) * 60 + (+t[1]);
         }
     }
     tinybind.formatters.addEmoji = function (value, emoji) {
@@ -74,15 +72,15 @@ document.addEventListener("DOMContentLoaded", function () {
             indicator.style.boxShadow = "-8px 0 4px -3px red inset";
         } else {
             indicator.style.boxShadow = "";
-        };
+        }
     };
 
-    getData('time').then(function (data) {
-        time = data;
-        getData('version').then(function (data) {
-            version = data.toString();
-            getConfig().then(function (data) {
-                config = data;
+    getData('time').then(function (t) {
+        time = t;
+        getData('version').then(function (d) {
+            version = d.toString();
+            getConfig().then(function (c) {
+                config = c;
             }).then(function () {
                 app = tinybind.bind(document.getElementById("app"), {
                     config, version, time, timezones, languages, toggleFirmwareModal, toggleResetModal, loadLanguage, toastVisible

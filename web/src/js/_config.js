@@ -9,7 +9,7 @@ async function postConfig(saveData = false) {
     if (saveData) {
         document.getElementById('save-button').classList.add("loading");
     }
-    return await fetch('data.json', {
+    return fetch('data.json', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -20,7 +20,6 @@ async function postConfig(saveData = false) {
             return response.json();
         })
         .then(data => {
-            // app.models.config = data;
             if (saveData) {
                 document.getElementById('save-button').classList.remove("loading");
                 document.getElementById('save-button').classList.remove("badge");
@@ -33,10 +32,10 @@ async function postConfig(saveData = false) {
             document.getElementById('save-button').classList.remove("loading");
             throw new Error('Failed to save settings!');
         });
-};
+}
 
 async function getConfig() {
-    return await fetch('/data.json')
+    return fetch('/data.json')
         .then(function (response) {
             if (response.ok) {
                 return response.json();
@@ -47,10 +46,10 @@ async function getConfig() {
         }).then(function (json) {
             return json;
         });
-};
+}
 
 async function getData(url) {
-    return await fetch(url)
+    return fetch(url)
         .then(function (response) {
             if (response.ok) {
                 return response.text();
@@ -61,5 +60,5 @@ async function getData(url) {
         }).then(function (text) {
             return text;
         });
-};
+}
 
