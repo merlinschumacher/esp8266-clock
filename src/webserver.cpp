@@ -28,6 +28,8 @@ void Webserver::_handleDataGet(Config &config)
   DynamicJsonDocument doc(1600);
   config.configToJSON(doc);
   serializeJson(doc, message);
+  doc.clear();
+  doc.garbageCollect();
   _server.send(200, "text/json", message);
 }
 

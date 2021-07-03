@@ -1,5 +1,10 @@
 {
     "python.pythonPath": "/home/merlin/.platformio/penv/bin/python",
     "python.formatting.provider": "black",
-    "compile-hero.disable-compile-files-on-did-save-code": false
+    "compile-hero.disable-compile-files-on-did-save-code": false,
+    "files.associations": {
+        "string_view": "cpp",
+        "random": "cpp"
+    },
+    "C_Cpp.intelliSenseEngineFallback": "Disabled"
 }

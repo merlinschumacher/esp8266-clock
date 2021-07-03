@@ -6,6 +6,7 @@ Config::Config()
 
 void Config::configToJSON(JsonDocument &doc)
 {
+        Config::locked = true;
         // StaticJsonDocument<2048> doc;
         // Set the values in the document
         doc["hostname"] = config.hostname;
@@ -64,11 +65,13 @@ void Config::configToJSON(JsonDocument &doc)
         doc["bgColorDimmed"] = config.bgColorDimmed;
 
         doc["language"] = config.language;
+        Config::locked = false;
 }
 
 bool Config::JSONToConfig(JsonDocument &doc)
 {
 
+        Config::locked = true;
         if (doc.containsKey("hostname"))
         {
                 strlcpy(config.hostname,
@@ -201,11 +204,14 @@ bool Config::JSONToConfig(JsonDocument &doc)
         {
                 return false;
         };
+        Config::locked = false;
 }
 
 void Config::load()
 {
         // Open file for reading
+        Config::locked = true;
+
 #if defined(ESP8266)
         File sourcefile = LittleFS.open("data.json", "r");
 #elif defined(ESP32)
@@ -231,11 +237,13 @@ void Config::load()
         // Close the file (Curiously, File's destructor doesn't close the file)
         sourcefile.close();
         Serial.println("Loaded configuration file from flash.");
+        Config::locked = false;
 }
 
 void Config::save()
 {
         // Delete existing file, otherwise the configuration is appended to the file
+        Config::locked = true;
 #if defined(ESP8266)
         File targetfile = LittleFS.open("data.json", "w");
 #elif defined(ESP32)
@@ -260,4 +268,5 @@ void Config::save()
         // Close the file
         targetfile.close();
         Serial.println("Saved configuration file to flash.");
+        Config::locked = false;
 }

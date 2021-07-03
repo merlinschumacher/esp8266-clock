@@ -11,6 +11,8 @@
 #endif
 #include <WiFiManager.h>
 #include <NeoPixelBus.h>
+#include <NeoPixelAnimator.h>
+
 #include <ezTime.h>
 #include "webserver.hpp"
 #include "config.hpp"
@@ -19,56 +21,63 @@
 #include "color.hpp"
 #include "led.hpp"
 
-void renderSecondHand()
+extern "C"
 {
-  // uint8_t secondHand = floor((float)(config.config.ledCount / 60) * localTime.second());
-  uint8_t secondHand = localTime.second();
-  secondHand = (secondHand + config.config.ledRoot) % 60;
+#include <cont.h>
+  extern cont_t *g_pcont;
+  void DebugFreeStack()
+  {
+    register uint32_t *sp asm("a1");
+    int freestack = 4 * (sp - g_pcont->stack);
+    Serial.printf("current free stack = %d\n", freestack);
+  }
+}
+
+void renderSecondsHand(int s)
+{
+  uint8_t secondsHand = (s + config.config.ledRoot) % 60;
   if (config.config.fluidMotion)
   {
-    RgbColor currentPixelColor, upcomingPixelColor;
-    float percent = (localTime.ms() % 1000) / 10;
-    currentPixelColor = DimColor(percent, secondColor);
-    upcomingPixelColor = DimColor(100 - percent, secondColor);
+    HsbColor currentPixelColor, upcomingPixelColor;
+    currentPixelColor = upcomingPixelColor = HsbColor(secondColor);
+    float brightness = min(frame * 0.0166666, 255.0);
+    currentPixelColor.B = 1.0 - brightness;
+    upcomingPixelColor.B = brightness;
 
-    uint8_t nextPixel = (secondHand + 1) % 60;
-    setPixel(secondHand, currentPixelColor, config.config.blendColors);
+    uint8_t nextPixel = (secondsHand + 1) % 60;
+    setPixel(secondsHand, currentPixelColor, config.config.blendColors);
     setPixel(nextPixel, upcomingPixelColor, config.config.blendColors);
   }
   else
   {
-    setPixel(secondHand, secondColor, config.config.blendColors);
+    setPixel(secondsHand, secondColor, config.config.blendColors);
   }
 }
 
-uint8_t calculateMinuteHand()
+uint8_t calculateMinuteHand(int m)
 {
-  // uint8_t minuteHand = floor((float)(config.config.ledCount / 60) * localTime.minute());
-  uint8_t minuteHand = localTime.minute();
+  uint8_t minuteHand = m;
   minuteHand = (minuteHand + config.config.ledRoot) % 60;
   return minuteHand;
 }
 
-uint8_t calculateHourHand()
+uint8_t calculateHourHand(int h, int m)
 {
-  uint8_t hour = localTime.hour() % 12;
-  // uint8_t hourHand = floor((float)config.config.ledCount / 12 * hour);
+  uint8_t hour = h % 12;
   uint8_t hourHand = floor((float)60 / 12 * hour);
-  // uint8_t minuteOffset = floor((float)localTime.minute() * config.config.ledCount / 12 / 60);
-  uint8_t minuteOffset = floor((float)localTime.minute() * 60 / 12 / 60);
-  // hourHand = (hourHand + minuteOffset + config.config.ledRoot) % config.config.ledCount;
+  uint8_t minuteOffset = floor((float)m * 60 / 12 / 60);
   hourHand = (hourHand + minuteOffset + config.config.ledRoot) % 60;
   return hourHand;
 }
 
 uint8_t calculateDayHand()
 {
-  return config.config.dayOffset + localTime.day() - 1;
+  return config.config.dayOffset + day() - 1;
 }
 
 uint8_t calculateMonthHand()
 {
-  return config.config.monthOffset + localTime.month() - 1;
+  return config.config.monthOffset + month() - 1;
 }
 
 uint8_t calculateWeekdayHand()
@@ -85,12 +94,10 @@ uint8_t calculateWeekdayHand()
 
 void renderHourDots()
 {
-  // float step = (float)config.config.ledCount / 12;
   float step = (float)60 / 12;
   for (size_t i = 0; i < 12; i++)
   {
     uint8_t dotPos = (uint8_t)floor(step * i);
-    // dotPos = (dotPos + config.config.ledRoot) % config.config.ledCount;
     dotPos = (dotPos + config.config.ledRoot) % 60;
     if (i % 3 == 0 && config.config.hourQuarter)
     {
@@ -103,14 +110,10 @@ void renderHourDots()
   }
 }
 
-void renderHourSegment()
+void renderHourSegment(uint8_t h)
 {
 
-  uint8_t hour12 = localTime.hour() % 12;
-  // uint8_t segmentLength = floor((float)config.config.ledCount / 12);
-  // uint8_t segmentStart = floor((float)config.config.ledCount / 12 * hour12);
-  // segmentStart = (segmentStart + config.config.ledRoot) % config.config.ledCount;
-
+  uint8_t hour12 = h % 12;
   uint8_t segmentLength = floor((float)60 / 12);
   uint8_t segmentStart = floor((float)60 / 12 * hour12);
   segmentStart = (segmentStart + config.config.ledRoot) % 60;
@@ -122,14 +125,11 @@ void renderHourSegment()
 
 void setBacklight()
 {
-  if (config.config.bgLight && !isAlarm() && currentMinute != 0)
+  for (size_t i = 0; i < config.config.bgLedCount; i++)
   {
-    for (size_t i = 0; i < config.config.bgLedCount; i++)
-    {
-      bgStrip->SetPixelColor(i, bgColor);
-    }
-    bgStrip->Show();
+    bgStrip->SetPixelColor(i, bgColor);
   }
+  bgStrip->Show();
 }
 
 void printDebugInfo()
@@ -138,6 +138,8 @@ void printDebugInfo()
   Serial.println("====");
   Serial.print("FreeHeap: ");
   Serial.println(ESP.getFreeHeap());
+  DebugFreeStack();
+
 #if defined(ESP8266)
   Serial.print("HeapFragmentation: ");
   Serial.println(ESP.getHeapFragmentation());
@@ -150,6 +152,57 @@ void printDebugInfo()
   Serial.println(int(millis() / 1000));
   Serial.println("====");
 #endif
+}
+
+void showStrip()
+{
+  if (strip->CanShow())
+    strip->Show();
+  if (bgStrip->CanShow())
+    bgStrip->Show();
+}
+
+void CircleAnimUpdate(const AnimationParam &param)
+{
+  // wait for this animation to complete,
+  // we are using it as a timer of sorts
+  if (param.state == AnimationState_Completed)
+  {
+    // done, time to restart this position tracking animation/timer
+    animations.RestartAnimation(param.index);
+
+    // rotate the complete strip one pixel to the right on every update
+    strip->RotateRight(1);
+    if (config.config.bgLight)
+      bgStrip->RotateRight(1);
+  }
+  showStrip();
+}
+void TimeAnimUpdate(const AnimationParam &param)
+{
+  // wait for this animation to complete,
+  // we are using it as a timer of sorts
+  if (param.state == AnimationState_Completed)
+  {
+    // done, time to restart this position tracking animation/timer
+    animations.RestartAnimation(param.index);
+  }
+  strip->ClearTo(off);
+  if (config.config.hourDot)
+    renderHourDots();
+  if (config.config.hourSegment)
+    renderHourSegment(currentHour);
+
+  setPixel(calculateHourHand(currentHour, currentMinute), hourColor, config.config.blendColors);
+  setPixel(calculateMinuteHand(currentMinute), minuteColor, config.config.blendColors);
+  renderSecondsHand(currentSecond);
+  if (config.config.dayMonth)
+  {
+    setPixel(currentDayPos, dayColor, config.config.blendColors);
+    setPixel(currentMonthPos, monthColor, config.config.blendColors);
+    setPixel(currentWeekdayPos, weekdayColor, config.config.blendColors);
+  }
+  showStrip();
 }
 
 void setup()
@@ -169,7 +222,7 @@ void setup()
   strip->ClearTo(off);
   bgStrip->ClearTo(off);
   char hostname[64];
-  char apname[66] = "⏰";
+  char apname[68] = "⏰";
   strlcpy(hostname, config.config.hostname, sizeof(hostname));
   strncat(apname, hostname, sizeof(apname));
   Serial.print("Hostname: ");
@@ -186,6 +239,7 @@ void setup()
   setDebug(DEBUG);
 #endif
   setServer(config.config.timeserver);
+  setInterval(20000);
   waitForSync(30);
 
   Serial.println("UTC: " + UTC.dateTime());
@@ -195,68 +249,79 @@ void setup()
   MDNS.begin(hostname);
   MDNS.addService("ESPCLOCK", "tcp", 80);
   MDNS.addService("http", "tcp", 80);
-  updateColors();
-  currentMinute = minute();
-  currentSecond = second();
+  updateColors(isNight(hour(), minute()));
 }
 
 void loop()
 {
-#if defined(ESP8266)
-  MDNS.update();
-#endif
   webserver.handleRequest();
-  if (timeStatus() != timeSet)
+  if (!config.locked)
   {
-    return;
-  }
-  events();
-
-  uint8_t sec = second();
-
-  strip->ClearTo(off);
-  if (currentSecond != sec)
-  {
-    currentMinute = minute();
-    currentSecond = sec;
-    updateColors(isNight());
-    setBacklight();
-    printDebugInfo();
-  }
-
-  if (isAlarm() && tick())
-  {
-    alarmAnimation(isNight());
-  }
-  else if (config.config.hourLight && currentMinute == 0 && tick())
-
-  {
-    hourRainbow(isNight());
-    if (config.config.bgLight)
+    uint8_t s = second();
+    if (currentSecond != s)
     {
-      hourRainbowBg(isNight());
+      currentSecond = s;
+      frame = 0;
+      uint8_t m = minute();
+      if (currentMinute != m)
+      {
+        currentMinute = m;
+        uint8_t h = hour();
+
+        night = isNight(h, m);
+        updateColors(night);
+
+        setBacklight();
+        printDebugInfo();
+        if (currentHour != h)
+        {
+          currentHour = h;
+          currentDayPos = calculateDayHand();
+          currentMonthPos = calculateMonthHand();
+          currentWeekdayPos = calculateWeekdayHand();
+        }
+      }
+    }
+
+    if (tick())
+    {
+      if (isAlarm())
+      {
+        animations.StopAnimation(1);
+        animations.StopAnimation(2);
+        if (!animations.IsAnimating())
+        {
+          renderAlarm(night);
+          if (config.config.bgLight)
+            renderAlarm(night, true);
+          animations.StartAnimation(0, 32, CircleAnimUpdate);
+        }
+      }
+
+      else if (config.config.hourLight && currentMinute == 0)
+      {
+        animations.StopAnimation(0);
+        animations.StopAnimation(2);
+        if (!animations.IsAnimating())
+        {
+          renderRainbow(night);
+          if (config.config.bgLight)
+            renderRainbow(night, true);
+          animations.StartAnimation(1, 32, CircleAnimUpdate);
+        }
+      }
+
+      else
+      {
+        animations.StopAnimation(0);
+        animations.StopAnimation(1);
+        if (!animations.IsAnimating())
+        {
+          animations.StartAnimation(2, 100, TimeAnimUpdate);
+        }
+      }
+      animations.UpdateAnimations();
+      events();
     }
   }
-  else if (tick())
-  {
-    currentSecond = sec;
-    renderHourDots();
-    if (config.config.hourSegment)
-      renderHourSegment();
-
-    setPixel(calculateHourHand(), hourColor, config.config.blendColors);
-    setPixel(calculateMinuteHand(), minuteColor, config.config.blendColors);
-    renderSecondHand();
-    if (config.config.dayMonth)
-    {
-      setPixel(calculateMonthHand(), monthColor, config.config.blendColors);
-      setPixel(calculateDayHand(), dayColor, config.config.blendColors);
-      setPixel(calculateWeekdayHand(), weekdayColor, config.config.blendColors);
-    }
-    if (strip->CanShow())
-      strip->Show();
-    animationPos = 0;
-  }
-
-  yield();
 }

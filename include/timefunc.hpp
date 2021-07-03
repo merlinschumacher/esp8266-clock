@@ -5,26 +5,20 @@ uint64_t lasttime = 0;
 
 bool tick()
 {
-    int64_t diff = ms() - lasttime;
+    unsigned long diff = micros() - lasttime;
 
-    if (diff >= 16 || diff < 0)
+    if (diff >= 16666 || diff < 0)
     {
-        lasttime = ms();
+        lasttime = micros();
+        frame++;
         return true;
     }
     return false;
 }
 
-uint16_t timeFromString(char *str)
+bool isNight(uint8_t h, uint8_t m)
 {
-    int hour, minute;
-    sscanf(str, "%i:%i", &hour, &minute);
-    return hour * 60 + minute;
-}
-
-bool isNight()
-{
-    uint16_t currentMinutes = localTime.hour() * 60 + localTime.minute();
+    uint16_t currentMinutes = h * 60 + m;
     if (config.config.nightTimeBegins > config.config.nightTimeEnds)
     {
         if (config.config.nightTimeBegins <= currentMinutes || currentMinutes <= config.config.nightTimeEnds)
@@ -51,7 +45,7 @@ bool isNight()
 
 bool isAlarm()
 {
-    uint16_t currentMinutes = localTime.hour() * 60 + localTime.minute();
+    uint16_t currentMinutes = currentHour * 60 + currentMinute;
     if (currentMinutes == config.config.alarmTime && config.config.alarmActive)
     {
         return true;

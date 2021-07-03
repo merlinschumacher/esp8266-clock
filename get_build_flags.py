@@ -18,7 +18,7 @@ if build_type  == "debug":
     )
     dt_string = datetime.now().strftime("_%d-%m-%Y_%H-%M-%S")
     version = revision + dt_string; 
-    flags = "-fexceptions -DDEBUG_BUILD -O0 -ggdb2 -g2 -DCONT_STACKSIZE=20480"
+    flags = "-fexceptions -DDEBUG_BUILD -O0 -ggdb2 -g2 -DDEBUG_ESP_HWDT"
 else:
     version = "v" + (
         subprocess.check_output(["git", "describe", "--abbrev=0", "--tags"])
@@ -27,4 +27,4 @@ else:
     )
     flags = "-O3 "
 
-print(flags + " -DVERSION='\"%s\"'" % version)
+print(flags + " -DVERSION='\"%s\"'" % version + " -DPIO_FRAMEWORK_ARDUINO_LWIP_HIGHER_BANDWIDTH")

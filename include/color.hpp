@@ -9,167 +9,83 @@ HtmlColor htmlToColor(String color)
     return rgb;
 }
 
-RgbColor DimColor(float percent, RgbColor sourceColor)
-{
-    RgbColor targetColor(0, 0, 0);
-    percent = 100 - percent;
-    targetColor.R = (sourceColor.R * percent) / 100;
-    targetColor.G = (sourceColor.G * percent) / 100;
-    targetColor.B = (sourceColor.B * percent) / 100;
-    return targetColor;
-}
-
-RgbColor Rainbow(uint8_t WheelPos)
-{
-    WheelPos = 255 - WheelPos;
-    if (WheelPos < 85)
-    {
-        return RgbColor(255 - WheelPos * 3, 0, WheelPos * 3);
-    }
-    else if (WheelPos < 170)
-    {
-        WheelPos -= 85;
-        return RgbColor(0, WheelPos * 3, 255 - WheelPos * 3);
-    }
-    else
-    {
-        WheelPos -= 170;
-        return RgbColor(WheelPos * 3, 255 - WheelPos * 3, 0);
-    }
-}
-
-RgbColor Alarm(uint8_t WheelPos)
-{
-    if (WheelPos % 4 == 0)
-    {
-        return RgbColor(htmlToColor("#ff0000"));
-    }
-    else
-    {
-        return RgbColor(0, 0, 0);
-    }
-}
-
-void alarmAnimation(bool isNight = false)
-{
-
-    for (uint16_t i = 0; i < config.config.ledCount; i++)
-    {
-        animationPos++;
-        animationColor = Alarm(animationPos);
-
-        if (isNight)
-        {
-            animationColor = DimColor(90, animationColor);
-        }
-        uint8_t pixelPos = (i + second()) % 60;
-        strip->SetPixelColor(pixelPos, animationColor);
-        if (config.config.bgLight)
-        {
-            bgStrip->SetPixelColor(pixelPos, animationColor);
-        }
-    }
-    strip->Show();
-    if (config.config.bgLight)
-    {
-        bgStrip->Show();
-    }
-}
-
-void renderRainbow(bool isNight = false, bool bg = false)
+void renderAlarm(bool night = false, bool bg = false)
 {
     int length = 0;
-    RgbColor rainbow = Rainbow(0);
+
+    float brightness = 1.0;
+    if (night)
+    {
+        brightness = 0.1;
+    }
+    HsbColor animationColor(1, 1, brightness);
 
     if (bg)
     {
+        bgStrip->ClearTo(off);
         length = config.config.bgLedCount;
     }
     else
     {
+
+        strip->ClearTo(off);
         length = config.config.ledCount;
     }
 
-    for (uint16_t j = 0; j < 256; j++)
+    for (uint16_t i = 0; i < length; i++)
     {
-        for (uint16_t i = 0; i < length; i++)
+        if (i % 4 == 0)
         {
-            animationPos = ((i * 256 / length) + j) & 0xFF;
-            rainbow = Rainbow(animationPos);
-            if (isNight)
+            if (bg)
             {
-                rainbow = DimColor(90, rainbow);
+                bgStrip->SetPixelColor(i, animationColor);
             }
-            strip->SetPixelColor(i, rainbow);
-            if (config.config.bgLight)
+            else
             {
-                bgStrip->SetPixelColor(i, rainbow);
+                strip->SetPixelColor(i, animationColor);
             }
         }
-        animationColor.Darken(100);
+    }
+}
+
+void renderRainbow(bool night = false, bool bg = false)
+{
+    int length = 0;
+    HslColor animationColor(0, 0, 0);
+
+    float lightness = 1.0;
+    if (night)
+    {
+        lightness = 0.1;
+    }
+
+    if (bg)
+    {
+        bgStrip->ClearTo(off);
+        length = config.config.bgLedCount;
+    }
+    else
+    {
+
+        strip->ClearTo(off);
+        length = config.config.ledCount;
+    }
+
+    float hueStep = 1.0 / (float)length;
+
+    for (uint16_t i = 0; i < length; i++)
+    {
+        float hue = hueStep * i;
+        animationColor = HslColor(hue, 1.00, lightness);
+
         if (bg)
         {
-            animationColorBg = rainbow;
+            bgStrip->SetPixelColor(i, animationColor);
         }
         else
         {
-            animationColor = rainbow;
+            strip->SetPixelColor(i, animationColor);
         }
-        yield();
-    }
-}
-
-void hourRainbow(bool isNight = false)
-{
-    for (uint16_t j = 0; j < 256; j++)
-    {
-        for (uint16_t i = 0; i < config.config.ledCount; i++)
-        {
-            animationPos = ((i * 256 / config.config.ledCount) + j) & 0xFF;
-            RgbColor rainbow = Rainbow(animationPos);
-            animationColor = rainbow;
-            if (isNight)
-            {
-                rainbow = DimColor(90, rainbow);
-            }
-            strip->SetPixelColor(i, rainbow);
-            if (config.config.bgLight)
-            {
-                bgStrip->SetPixelColor(i, rainbow);
-            }
-        }
-        strip->Show();
-        animationColor.Darken(100);
-        yield();
-    }
-}
-
-void hourRainbowBg(bool isNight = false)
-{
-    for (uint16_t j = 0; j < 256; j++)
-    {
-        for (uint16_t i = 0; i < config.config.bgLedCount; i++)
-        {
-            animationPos = ((i * 256 / config.config.bgLedCount) + j) & 0xFF;
-            RgbColor rainbow = Rainbow(animationPos);
-            animationColorBg = rainbow;
-            if (isNight)
-            {
-                rainbow = DimColor(90, rainbow);
-            }
-            strip->SetPixelColor(i, rainbow);
-            if (config.config.bgLight)
-            {
-                bgStrip->SetPixelColor(i, rainbow);
-            }
-        }
-        strip->Show();
-        if (config.config.bgLight)
-        {
-            bgStrip->Show();
-        }
-        animationColorBg.Darken(100);
-        yield();
     }
 }
 

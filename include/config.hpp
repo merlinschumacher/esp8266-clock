@@ -78,9 +78,7 @@ public:
     void load();
     void configToJSON(JsonDocument &doc);
     bool JSONToConfig(JsonDocument &doc);
-
-private:
-    void _loadFile();
+    bool locked = false;
 };
 
 #endif //config_h
