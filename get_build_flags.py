@@ -16,15 +16,15 @@ if build_type  == "debug":
         .strip()
         .decode("utf-8")
     )
-    dt_string = datetime.now().strftime("_%d-%m-%Y_%H-%M-%S")
+    dt_string = datetime.now().strftime("_%d-%m-%Y")
     version = revision + dt_string; 
-    flags = "-fexceptions -DDEBUG_BUILD -O0 -ggdb2 -g2 -DDEBUG_ESP_HWDT"
+    flags = "-fexceptions -DDEBUG_BUILD -O0 -ggdb2 -g2 -DDEBUG_ESP_HWDT -DDEBUG_MODE"
 else:
     version = "v" + (
         subprocess.check_output(["git", "describe", "--abbrev=0", "--tags"])
         .strip()
         .decode("utf-8")
     )
-    flags = "-O3 "
+    flags = "-O3 -D"+sys.argv[3]
 
 print(flags + " -DVERSION='\"%s\"'" % version + " -DPIO_FRAMEWORK_ARDUINO_LWIP_HIGHER_BANDWIDTH")

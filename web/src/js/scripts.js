@@ -89,11 +89,11 @@ document.addEventListener("DOMContentLoaded", function () {
         })
     })
 
-    window.setInterval(function () {
-        getData('time').then(function (data) {
-            app.models.time = data;
-        });
-    }, 1000);
+    // window.setInterval(function () {
+    //     getData('time').then(function (data) {
+    //         app.models.time = data;
+    //     });
+    // }, 1000);
     initWatcher();
 });
 

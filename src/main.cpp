@@ -11,8 +11,6 @@
 #endif
 #include <WiFiManager.h>
 #include <NeoPixelBus.h>
-#include <NeoPixelAnimator.h>
-
 #include <ezTime.h>
 #include "webserver.hpp"
 #include "config.hpp"
@@ -21,6 +19,7 @@
 #include "color.hpp"
 #include "led.hpp"
 
+#if defined(ESP8266)
 extern "C"
 {
 #include <cont.h>
@@ -32,6 +31,7 @@ extern "C"
     Serial.printf("current free stack = %d\n", freestack);
   }
 }
+#endif
 
 void renderSecondsHand(int s)
 {
@@ -129,7 +129,6 @@ void setBacklight()
   {
     bgStrip->SetPixelColor(i, bgColor);
   }
-  bgStrip->Show();
 }
 
 void printDebugInfo()
@@ -154,39 +153,31 @@ void printDebugInfo()
 #endif
 }
 
-void showStrip()
+void showStrips()
 {
   if (strip->CanShow())
     strip->Show();
   if (bgStrip->CanShow())
     bgStrip->Show();
 }
-
-void CircleAnimUpdate(const AnimationParam &param)
+void clearStrips()
 {
-  // wait for this animation to complete,
-  // we are using it as a timer of sorts
-  if (param.state == AnimationState_Completed)
-  {
-    // done, time to restart this position tracking animation/timer
-    animations.RestartAnimation(param.index);
+  strip->ClearTo(off);
+  bgStrip->ClearTo(off);
+}
 
-    // rotate the complete strip one pixel to the right on every update
+void shiftStrips(uint8_t frameskip = 1)
+{
+  if (frame % frameskip == 0)
+  {
     strip->RotateRight(1);
     if (config.config.bgLight)
       bgStrip->RotateRight(1);
   }
-  showStrip();
 }
-void TimeAnimUpdate(const AnimationParam &param)
+
+void renderTime()
 {
-  // wait for this animation to complete,
-  // we are using it as a timer of sorts
-  if (param.state == AnimationState_Completed)
-  {
-    // done, time to restart this position tracking animation/timer
-    animations.RestartAnimation(param.index);
-  }
   strip->ClearTo(off);
   if (config.config.hourDot)
     renderHourDots();
@@ -202,7 +193,8 @@ void TimeAnimUpdate(const AnimationParam &param)
     setPixel(currentMonthPos, monthColor, config.config.blendColors);
     setPixel(currentWeekdayPos, weekdayColor, config.config.blendColors);
   }
-  showStrip();
+  if (strip->CanShow())
+    strip->Show();
 }
 
 void setup()
@@ -219,8 +211,7 @@ void setup()
 #endif
   config.load();
   initStrip();
-  strip->ClearTo(off);
-  bgStrip->ClearTo(off);
+  clearStrips();
   char hostname[64];
   char apname[68] = "⏰";
   strlcpy(hostname, config.config.hostname, sizeof(hostname));
@@ -240,7 +231,7 @@ void setup()
 #endif
   setServer(config.config.timeserver);
   setInterval(20000);
-  waitForSync(30);
+  waitForSync(10);
 
   Serial.println("UTC: " + UTC.dateTime());
   localTime.setLocation(config.config.timezone);
@@ -261,6 +252,7 @@ void loop()
     if (currentSecond != s)
     {
       currentSecond = s;
+      alarm = isAlarm();
       frame = 0;
       uint8_t m = minute();
       if (currentMinute != m)
@@ -269,9 +261,10 @@ void loop()
         uint8_t h = hour();
 
         night = isNight(h, m);
+        topHour = (config.config.hourLight && currentMinute == 36);
         updateColors(night);
-
-        setBacklight();
+        if (!alarm && !topHour)
+          setBacklight();
         printDebugInfo();
         if (currentHour != h)
         {
@@ -282,46 +275,44 @@ void loop()
         }
       }
     }
-
     if (tick())
     {
-      if (isAlarm())
+      if (alarm)
       {
-        animations.StopAnimation(1);
-        animations.StopAnimation(2);
-        if (!animations.IsAnimating())
+        if (!animationRendered)
         {
           renderAlarm(night);
           if (config.config.bgLight)
             renderAlarm(night, true);
-          animations.StartAnimation(0, 32, CircleAnimUpdate);
+          animationRendered = true;
+          showStrips();
+          return;
         }
+        shiftStrips(2);
+        showStrips();
       }
 
-      else if (config.config.hourLight && currentMinute == 0)
+      else if (topHour)
       {
-        animations.StopAnimation(0);
-        animations.StopAnimation(2);
-        if (!animations.IsAnimating())
+        if (!animationRendered)
         {
           renderRainbow(night);
           if (config.config.bgLight)
             renderRainbow(night, true);
-          animations.StartAnimation(1, 32, CircleAnimUpdate);
+          animationRendered = true;
+          showStrips();
+          return;
         }
+        shiftStrips(2);
+        showStrips();
       }
 
       else
       {
-        animations.StopAnimation(0);
-        animations.StopAnimation(1);
-        if (!animations.IsAnimating())
-        {
-          animations.StartAnimation(2, 100, TimeAnimUpdate);
-        }
+        animationRendered = false;
+        renderTime();
       }
-      animations.UpdateAnimations();
-      events();
     }
   }
+  events();
 }

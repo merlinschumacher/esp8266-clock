@@ -1,14 +1,25 @@
 #include "config.hpp"
 
+#if defined(ESP8266)
+#define MAXPINS 16
+#elif definded(ESP32)
+#define MAXPINS 35
+#endif
+#define MAXLEDS 360
 Config::Config()
 {
+}
+
+uint32_t _clampInt(uint32_t val, uint32_t min, uint32_t max)
+{
+        const uint32_t t = val < min ? min : val;
+        return t > max ? max : t;
 }
 
 void Config::configToJSON(JsonDocument &doc)
 {
         Config::locked = true;
-        // StaticJsonDocument<2048> doc;
-        // Set the values in the document
+
         doc["hostname"] = config.hostname;
         doc["timeserver"] = config.timeserver;
         doc["timezone"] = config.timezone;
@@ -161,7 +172,10 @@ bool Config::JSONToConfig(JsonDocument &doc)
                 sizeof(config.weekdayColorDimmed));
 
         config.nightTimeBegins = doc["nightTimeBegins"] | 1320;
-        config.nightTimeEnds = doc["nightTimeEnds"] | 480;
+        config.nightTimeBegins = _clampInt(config.nightTimeBegins, 0, 1440);
+
+        config.nightTimeEnds = doc["nightTimeEnds "] | 1320;
+        config.nightTimeBegins = _clampInt(config.nightTimeEnds, 0, 1440);
 
         config.hourLight = doc["hourLight"] | false;
         config.blendColors = doc["blendColors"] | true;
@@ -177,15 +191,30 @@ bool Config::JSONToConfig(JsonDocument &doc)
         strlcpy(config.bgColorDimmed,
                 doc["bgColorDimmed"] | "#000000",
                 sizeof(config.bgColorDimmed));
+
         config.bgLedPin = doc["bgLedPin"] | 15;
+        config.bgLedPin = _clampInt(config.bgLedPin, 0, MAXPINS);
+
         config.bgLedCount = doc["bgLedCount"] | 60;
+        config.bgLedCount = _clampInt(config.bgLedCount, 0, MAXLEDS);
 
         config.ledPin = doc["ledPin"] | 4;
+        config.ledPin = _clampInt(config.ledPin, 0, MAXPINS);
+
         config.ledCount = doc["ledCount"] | 60;
+        config.ledCount = _clampInt(config.ledCount, 0, MAXLEDS);
+
         config.ledRoot = doc["ledRoot"] | 1;
+        config.ledRoot = _clampInt(config.ledRoot, 0, MAXLEDS);
+
         config.dayOffset = doc["dayOffset"] | 1;
+        config.dayOffset = _clampInt(config.dayOffset, 0, MAXLEDS);
+
         config.monthOffset = doc["monthOffset"] | 1;
+        config.monthOffset = _clampInt(config.monthOffset, 0, MAXLEDS);
+
         config.weekdayOffset = doc["weekdayOffset"] | 1;
+        config.weekdayOffset = _clampInt(config.weekdayOffset, 0, MAXLEDS);
 
         strlcpy(config.language,
                 doc["language"] | "en",
@@ -229,7 +258,7 @@ void Config::load()
         if (error)
         {
                 sourcefile.close();
-                Serial.println(F("Failed to read file, using default configuration"));
+                Serial.println("Failed to read file, using default configuration");
                 Config::save();
                 return;
         }
@@ -253,7 +282,7 @@ void Config::save()
         // Open file for writing
         if (!targetfile)
         {
-                Serial.println(F("Failed to create file"));
+                Serial.println("Failed to create file");
                 return;
         }
 
@@ -262,7 +291,7 @@ void Config::save()
         // Serialize JSON to file
         if (serializeJson(doc, targetfile) == 0)
         {
-                Serial.println(F("Failed to write to file"));
+                Serial.println("Failed to write to file");
         }
 
         // Close the file
