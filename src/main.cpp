@@ -261,7 +261,7 @@ void loop()
         uint8_t h = hour();
 
         night = isNight(h, m);
-        topHour = (config.config.hourLight && currentMinute == 36);
+        topHour = (config.config.hourLight && currentMinute == 0);
         updateColors(night);
         if (!alarm && !topHour)
           setBacklight();
