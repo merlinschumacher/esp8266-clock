@@ -22,35 +22,27 @@ void Webserver::handleRequest()
 
 void Webserver::_handleDataGet(Config &config)
 {
-  Serial.println("Loading config data");
-  char message[1280];
+  String response;
   config.load();
-  DynamicJsonDocument doc(1600);
+  DynamicJsonDocument doc(2048);
   config.configToJSON(doc);
-  serializeJson(doc, message);
-  doc.clear();
-  doc.garbageCollect();
-  _server.send(200, "text/json", message);
+  serializeJson(doc, response);
+  _server.send(200, "text/json", response);
 }
 
 void Webserver::_handleDataPut(Config &config)
 {
-  char message[1280];
-  strlcpy(message, _server.arg(0).c_str(), sizeof(message));
-  DynamicJsonDocument doc(1600);
-  deserializeJson(doc, message);
+  String response;
+  DynamicJsonDocument doc(2048);
+  deserializeJson(doc, _server.arg(0));
   bool save = config.JSONToConfig(doc);
   if (save == true)
   {
     config.save();
   };
-
-  doc.clear();
-  doc.garbageCollect();
-  memset(&message[0], 0, sizeof(message));
   config.configToJSON(doc);
-  serializeJson(doc, message);
-  _server.send(200, "text/json", message);
+  serializeJson(doc, response);
+  _server.send(200, "text/json", response);
 }
 
 void Webserver::_resetConfig(Config &config)
