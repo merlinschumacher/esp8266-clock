@@ -1,4 +1,4 @@
-# ESP NeoPixel clock
+# ESP8266 WS2812/NeoPixel wall clock
 
 <img align="right" width="200" src="clock.gif" alt="A NeoPixel clock ticking away" style="margin-left: 1em"/>
 
@@ -12,16 +12,24 @@ The colors of the clock are entirely configurable. The "hands" can have differen
 
 To build a clock like that you'll need an ESP8266 microcontroller. It should have one freely usable GPIO pin. You'll also need a WS2812/WS2813/NeoPixel LED strip with 60 or more LEDs. The time is always displayed in the first 60 LEDs. You can also let the clock display the current weekday, date an month. It's recommended to use a strip with more than 60 LEDs to show the date.
 
-Connect the strip to the ESP with +5V going to +5V on the ESP, GND to GND and the data line of the strip to the GPIO. Optimally select GPIO3 or GPIO2 or GPIO1. If none of those are available select any other unused pin.
+Connect the strip to the ESP with +5V going to +5V on the ESP, GND to GND and the data line of the strip to the GPIO.
 
 You can also add a second strip as a backlight.
+
+The firmware comes in three variants. The DMA variant that uses GPIO 3 for the time strip and GPIO 2 for the optional backlight strip.
+
+The UART variant useses GPIO 2 for the time strip and GPIO 1 for the backlight strip. The bitbanging variant enables you to freely select the pin, but it might be unstable and is not recommended. For more details see the [NeoPixelBus Wiki](https://github.com/Makuna/NeoPixelBus/wiki/ESP8266-NeoMethods).
+
+To flash the DMA and UART firmware make sure to disconnect the LED strips from the ESP, because they will turn on randomly and might turn out and burn out your power suppy or ESP.
+
+![Wiring examples showing the different variants.](sketch.jpg)
 
 ## Setup
 
 To use the firmware flash the `firmware_esp8266.bin` found in the releases list with the [esptool](https://github.com/espressif/esptool). The build for the ESP32 is experimental and unsupported.
 
 ```plaintext
-$ esptool.py --port PORT write_flash 0x0 firmware.bin
+esptool.py --port PORT write_flash 0x0 firmware.bin
 ```
 
 After the flashing is done connect to the WiFi access point starting with "⏰ESPCLOCK-...". Connect to it and open the URL [http://192.168.4.1](http://192.168.4.1). Configure your WiFi credentials and check the IP address of the clock in the web interface of your router. Open the address of the clock in your browser to change the settings according to your needs.
