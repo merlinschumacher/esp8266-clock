@@ -80,6 +80,7 @@ public:
     bool JSONToConfig(JsonDocument &doc);
     bool locked = false;
     bool forceReset = false;
+    bool tainted = false;
 
 private:
     bool _resetRequest = false;

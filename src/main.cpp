@@ -258,7 +258,20 @@ void loop()
 
   if (!config.locked)
   {
+
     uint8_t s = second();
+
+    if (config.tainted)
+    {
+      alarm = isAlarm();
+      uint8_t m = minute();
+      uint8_t h = hour();
+      night = isNight(h, m);
+      updateColors(night);
+      setBacklight();
+      config.tainted = false;
+    };
+
     if (currentSecond != s)
     {
       currentSecond = s;
