@@ -71,6 +71,11 @@ void Webserver::_handleIndex(char *lang)
   }
 }
 
+void Webserver::_handleWifiConf()
+{
+  Webserver::triggerWifiConf = true;
+  _server.send(200, "text/plain", "success");
+}
 void Webserver::_handleTime()
 {
   char buf[16];
@@ -86,6 +91,8 @@ void Webserver::setup(Config &config)
   _server.on("/scripts.js", HTTP_GET, [this]() { _server.sendHeader("Content-Encoding", "gzip");_server.send_P(200, "application/javascript", scripts_js_gz, scripts_js_gz_len); });
 
   _server.on("/time", HTTP_GET, [this]() { _handleTime(); });
+  _server.on("/wificonf", HTTP_GET, [this]()
+             { _handleWifiConf(); });
   _server.on("/version", HTTP_GET, [this]() { _server.send(200, "text/plain", VERSION); });
 
   _server.on("/reset", HTTP_GET, [this, &config]() { _resetConfig(config); _server.send(200, "text/plain", ""); });

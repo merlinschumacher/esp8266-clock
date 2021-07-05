@@ -98,6 +98,13 @@
             "open": "Uhr zurücksetzen",
             "confirm": "ALLES ZURÜCKSETZEN!",
             "cancel": "Abbruch"
+        },
+        "wificonf": {
+            "title": "Zurücksetzen der WLAN-Einstellungen",
+            "description": "Die Funktion setzt die WLAN-instellungen der Uhr zurück. Sie müssen diese anschließend neu einrichten.",
+            "open": "WLAN zurücksetzen",
+            "confirm": "WLAN ZURÜCKSETZEN!",
+            "cancel": "Abbruch"
         }
     }
 }

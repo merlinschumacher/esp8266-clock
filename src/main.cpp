@@ -246,6 +246,16 @@ void setup()
 void loop()
 {
   webserver.handleRequest();
+  if (webserver.triggerWifiConf)
+  {
+    clearStrips();
+    WiFiManager wifiManager;
+    wifiManager.resetSettings();
+    char apname[68] = "⏰";
+    strncat(apname, config.config.hostname, sizeof(apname));
+    wifiManager.startConfigPortal(apname);
+  }
+
   if (!config.locked)
   {
     uint8_t s = second();

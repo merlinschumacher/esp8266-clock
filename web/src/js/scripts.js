@@ -83,7 +83,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 config = c;
             }).then(function () {
                 app = tinybind.bind(document.getElementById("app"), {
-                    config, version, time, timezones, languages, toggleFirmwareModal, toggleResetModal, loadLanguage, toastVisible
+                    config, version, time, timezones, languages, toggleFirmwareModal, toggleResetModal, toggleWifiModal, loadLanguage, toastVisible
                 });
             })
         })

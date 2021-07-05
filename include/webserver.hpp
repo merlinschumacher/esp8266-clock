@@ -21,6 +21,7 @@ public:
     Webserver();
     void setup(Config &config);
     void handleRequest();
+    bool triggerWifiConf = false;
 
 private:
     void _handleNotFound();
@@ -29,6 +30,7 @@ private:
     void _resetConfig(Config &config);
     void _handleIndex(char *lang);
     void _handleTime();
+    void _handleWifiConf();
 };
 
 #endif //webserver_h

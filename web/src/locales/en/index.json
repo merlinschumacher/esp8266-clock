@@ -98,6 +98,13 @@
             "open": "Reset clock",
             "confirm": "RESET EVERYTHING!",
             "cancel": "Cancel"
+        },
+        "wificonf": {
+            "title": "Reset the WiFi configuration",
+            "description": "This resets the wifi configuration. You'll have to reconnect to the WiFi provided by the clock and reconfigure the WiFi connection.",
+            "open": "Reset WiFi",
+            "confirm": "RESET WIFI!",
+            "cancel": "Cancel"
         }
     }
 }

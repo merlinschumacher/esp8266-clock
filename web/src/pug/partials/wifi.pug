@@ -1,0 +1,14 @@
+.modal#modalwifi
+    a.modal-overlay(href='#close', aria-label="Close" rv-on-click='toggleWifiModal')
+    .modal-container(role='document')
+        .modal-header
+            a.btn.btn-clear.float-right(href='#close', aria-label="Close" rv-on-click='toggleWifiModal')
+            .modal-title.h4 ${{ index.sysconfig.wificonf.title }}$
+        .modal-body
+            .content
+                p ${{ index.sysconfig.wificonf.description }}$
+                    .columns
+                        .col-6.column
+                            button.btn.btn-lg.modal-reset-toggle(rv-on-click='toggleWifiModal') ${{ index.sysconfig.wificonf.cancel }}$
+                        .col-6.column
+                            button.btn.btn-error.btn-lg.float-right(onclick='getData("wificonf")') ${{ index.sysconfig.wificonf.confirm }}$

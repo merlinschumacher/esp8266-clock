@@ -64,6 +64,14 @@
                 button.btn.btn-lg.modal-firmware-toggle(rv-on-click='toggleFirmwareModal') ${{ index.sysconfig.firmware.title }}$
 
     .divider
+    
+    fieldset.form-horizontal
+
+        .form-group
+            .col-12
+                button.btn.btn-lg.modal-wifi-toggle(rv-on-click='toggleWifiModal')  ${{ index.sysconfig.wificonf.open }}$
+    
+    .divider
 
     fieldset.form-horizontal
 
