@@ -18,7 +18,7 @@ if build_type  == "debug":
     )
     dt_string = datetime.now().strftime("_%d-%m-%Y")
     version = revision + dt_string; 
-    flags = "-fexceptions -DDEBUG_BUILD -O0 -ggdb2 -g2 -DDEBUG_ESP_HWDT -DDEBUG_MODE"
+    flags = "-fexceptions -DDEBUG_BUILD -Og -ggdb2 -g2 -DDEBUG_ESP_HWDT"
 else:
     version = "v" + (
         subprocess.check_output(["git", "describe", "--abbrev=0", "--tags"])
