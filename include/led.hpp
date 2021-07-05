@@ -18,7 +18,7 @@ void initStrip()
 #elif defined(DMA_MODE)
     strip = new NeoPixelBus<NeoGrbFeature, NeoEsp8266Dma800KbpsMethod>(config.config.ledCount, config.config.ledPin);
     bgStrip = new NeoPixelBus<NeoGrbFeature, NeoEsp8266Uart1800KbpsMethod>(config.config.bgLedCount, config.config.bgLedPin);
-#elif defined(DEBUG_MODE)
+#elif defined(DEBUG_BUILD)
     strip = new NeoPixelBus<NeoGrbFeature, NeoEsp8266Uart1800KbpsMethod>(config.config.ledCount, config.config.ledPin);
     bgStrip = new NeoPixelBus<NeoGrbFeature, NeoEsp8266BitBangWs2812xMethod>(config.config.bgLedCount, config.config.bgLedPin);
 #endif

@@ -42,7 +42,7 @@ NeoPixelBus<NeoGrbFeature, NeoEsp8266BitBangWs2812xMethod> *bgStrip = NULL;
 #elif defined(DMA_MODE)
 NeoPixelBus<NeoGrbFeature, NeoEsp8266Dma800KbpsMethod> *strip = NULL;
 NeoPixelBus<NeoGrbFeature, NeoEsp8266Uart1800KbpsMethod> *bgStrip = NULL;
-#elif defined(DEBUG_MODE)
+#elif defined(DEBUG_BUILD)
 NeoPixelBus<NeoGrbFeature, NeoEsp8266Uart1800KbpsMethod> *strip = NULL;
 NeoPixelBus<NeoGrbFeature, NeoEsp8266BitBangWs2812xMethod> *bgStrip = NULL;
 #endif

@@ -19,7 +19,6 @@ uint32_t _clampInt(uint32_t val, uint32_t min, uint32_t max)
 void Config::configToJSON(JsonDocument &doc)
 {
         Config::locked = true;
-
         doc["hostname"] = config.hostname;
         doc["timeserver"] = config.timeserver;
         doc["timezone"] = config.timezone;
@@ -76,6 +75,13 @@ void Config::configToJSON(JsonDocument &doc)
         doc["bgColorDimmed"] = config.bgColorDimmed;
 
         doc["language"] = config.language;
+        
+
+#if defined(UART_MODE) || defined(DMA_MODE)
+        doc["pinsLocked"] = true;
+#else
+        doc["pinsLocked"] = false;
+#endif
         Config::locked = false;
 }
 
@@ -192,14 +198,26 @@ bool Config::JSONToConfig(JsonDocument &doc)
                 doc["bgColorDimmed"] | "#000000",
                 sizeof(config.bgColorDimmed));
 
+#if defined(BITBANG_MODE) || defined(DEBUG_BUILD) || defined(ESP32)
         config.bgLedPin = doc["bgLedPin"] | 15;
         config.bgLedPin = _clampInt(config.bgLedPin, 0, MAXPINS);
+#elif defined(UART_MODE)
+        config.bgLedPin = 1;
+#elif defined(DMA_MODE)
+        config.bgLedPin = 2;
+#endif
 
         config.bgLedCount = doc["bgLedCount"] | 60;
         config.bgLedCount = _clampInt(config.bgLedCount, 0, MAXLEDS);
 
+#if defined(BITBANG_MODE) || defined(DEBUG_BUILD) || defined(ESP32)
         config.ledPin = doc["ledPin"] | 4;
         config.ledPin = _clampInt(config.ledPin, 0, MAXPINS);
+#elif defined(UART_MODE)
+        config.ledPin = 2;
+#elif defined(DMA_MODE)
+        config.ledPin = 3;
+#endif
 
         config.ledCount = doc["ledCount"] | 60;
         config.ledCount = _clampInt(config.ledCount, 0, MAXLEDS);
@@ -250,7 +268,7 @@ void Config::load()
         // Allocate a temporary JsonDocument
         // Don't forget to change the capacity to match your requirements.
         // Use arduinojson.org/v6/assistant to compute the capacity.
-        DynamicJsonDocument doc(1600);
+        DynamicJsonDocument doc(2048);
 
         // Deserialize the JSON document
         DeserializationError error = deserializeJson(doc, sourcefile);
@@ -258,14 +276,13 @@ void Config::load()
         if (error)
         {
                 sourcefile.close();
-                Serial.println("Failed to read file, using default configuration");
+                Serial.println(F("Failed to read file, using default configuration"));
                 Config::save();
                 return;
         }
         // Copy values from the JsonDocument to the Config
         // Close the file (Curiously, File's destructor doesn't close the file)
         sourcefile.close();
-        Serial.println("Loaded configuration file from flash.");
         Config::locked = false;
 }
 
@@ -282,20 +299,27 @@ void Config::save()
         // Open file for writing
         if (!targetfile)
         {
-                Serial.println("Failed to create file");
+                Serial.println(F("Failed to create config file"));
                 return;
         }
 
-        DynamicJsonDocument doc(1600);
+        DynamicJsonDocument doc(2048);
         Config::configToJSON(doc);
         // Serialize JSON to file
         if (serializeJson(doc, targetfile) == 0)
         {
-                Serial.println("Failed to write to file");
+                Serial.println(F("Failed to write to config file. Reformatting FS and rebooting."));
+
+#if defined(ESP8266)
+                LittleFS.format();
+                ESP.restart();
+#elif defined(ESP32)
+                SPIFFS.format();
+                ESP.restart();
+#endif
         }
 
         // Close the file
         targetfile.close();
-        Serial.println("Saved configuration file to flash.");
         Config::locked = false;
 }
