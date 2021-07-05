@@ -71,7 +71,9 @@
             "pin": "Pin des LED-Streifens",
             "count": "Länge des LED-Streifens",
             "bgpin": "Pin der Hintergrundbeleuchtung",
-            "bgcount": "Länge der Hintergrundbeleuchtung"
+            "bgcount": "Länge der Hintergrundbeleuchtung",
+            "pinslockedinfo": "Die Pins für die LED-Streifen können Sie in dieser Firmware-Variante nicht ändern. Wechseln Sie zur Version mit Bitbanging, um die Pins zu ändern!",
+            "bitbanginfo": "Diese Firmware verwendet das unzuverlässige Bitbanging-Verfahren zur Ansteuerung der LEDs und kann daher zu Abstürzen neigen."
         },
         "ledorder": {
             "title": "Positionierung der Zeiger",

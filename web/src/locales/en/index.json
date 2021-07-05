@@ -71,7 +71,9 @@
             "pin": "LED strip pin",
             "count": "LED strip length",
             "bgpin": "Backlight strip pin",
-            "bgcount": "Backlight strip length"
+            "bgcount": "Backlight strip length",
+            "pinslockedinfo": "The pins to drive the LED strips in this firmware are locked. To be able to change them, switch to a firmware using bitbanging!",
+            "bitbanginfo": "This firmware uses bitbanging to drive the LED strips. This is unreliable and might lead to crashes."
         },
         "ledorder": {
             "title": "Position of the hands",

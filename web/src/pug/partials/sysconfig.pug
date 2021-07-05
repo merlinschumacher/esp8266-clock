@@ -8,7 +8,9 @@
             .col-4
                 label.form-label(for='ledpin') ${{ index.sysconfig.led.pin }}$ 
             .col-8
-                input.form-input(type='number', min='1', step='1', rv-value='config.ledPin | int')
+                input.form-input(type='number', min='1', step='1', rv-value='config.ledPin | int', rv-disabled='config.pinsLocked')
+                p.form-input-hint.has-error(rv-show='config.pinsLocked') ${{ index.sysconfig.led.pinslockedinfo }}$
+                p.form-input-hint.has-error(rv-hide='config.pinsLocked') ${{ index.sysconfig.led.bitbanginfo}}$
         
         .form-group
 
@@ -25,7 +27,7 @@
             .col-4
                 label.form-label(for='ledpin') ${{ index.sysconfig.led.bgpin }}$ 
             .col-8
-                input.form-input(type='number', min='1', step='1', rv-value='config.bgLedPin | int')
+                input.form-input(type='number', min='1', step='1', rv-value='config.bgLedPin | int', rv-disabled='config.pinsLocked')
         
         .form-group
 
