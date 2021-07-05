@@ -41,7 +41,7 @@ void Webserver::_handleDataPut(Config &config)
   config.configToJSON(doc);
   serializeJson(doc, response);
   _server.send(200, "text/json", response);
-  if (Config::forceReset)
+  if (config.forceReset)
   {
     Serial.println("Config change required reboot!");
     delay(2000);
