@@ -37,14 +37,11 @@ void Webserver::_handleDataPut(Config &config)
   deserializeJson(doc, _server.arg(0));
   bool save = config.JSONToConfig(doc);
   bool reboot = false;
-  if (save == true)
-  {
-    reboot = config.save();
-  };
+  config.save();
   config.configToJSON(doc);
   serializeJson(doc, response);
   _server.send(200, "text/json", response);
-  if (reboot)
+  if (Config::forceReset)
   {
     Serial.println("Config change required reboot!");
     delay(2000);
