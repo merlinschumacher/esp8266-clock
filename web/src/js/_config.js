@@ -3,6 +3,7 @@ async function postConfig(saveData = false) {
     if (document.getElementById("configform").checkValidity()) {
         conf = app.models.config;
         conf.saveData = saveData;
+        conf.reset = resetRequired;
     } else {
         return false;
     }
@@ -24,6 +25,7 @@ async function postConfig(saveData = false) {
                 document.getElementById('save-button').classList.remove("loading");
                 document.getElementById('save-button').classList.remove("badge");
                 showToast('toast-success', 2, true)
+                resetRequired = false;
             }
         })
         .catch((error) => {

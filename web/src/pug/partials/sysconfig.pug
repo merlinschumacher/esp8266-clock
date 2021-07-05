@@ -8,7 +8,7 @@
             .col-4
                 label.form-label(for='ledpin') ${{ index.sysconfig.led.pin }}$ 
             .col-8
-                input.form-input(type='number', min='1', step='1', rv-value='config.ledPin | int', rv-disabled='config.pinsLocked')
+                input.resetneeded.form-input(type='number', min='1', step='1', rv-value='config.ledPin | int', rv-disabled='config.pinsLocked')
                 p.form-input-hint.has-error(rv-show='config.pinsLocked') ${{ index.sysconfig.led.pinslockedinfo }}$
                 p.form-input-hint.has-error(rv-hide='config.pinsLocked') ${{ index.sysconfig.led.bitbanginfo}}$
         
@@ -17,7 +17,7 @@
             .col-4
                 label.form-label(for='ledcount') ${{ index.sysconfig.led.count }}$ 
             .col-8
-                input.form-input(type='number', min='60', step='1', rv-value='config.ledCount | int')
+                input.resetneeded.form-input(type='number', min='60', step='1', rv-value='config.ledCount | int')
     
     .divider
 
@@ -27,14 +27,14 @@
             .col-4
                 label.form-label(for='ledpin') ${{ index.sysconfig.led.bgpin }}$ 
             .col-8
-                input.form-input(type='number', min='1', step='1', rv-value='config.bgLedPin | int', rv-disabled='config.pinsLocked')
+                input.resetneeded.form-input(type='number', min='1', step='1', rv-value='config.bgLedPin | int', rv-disabled='config.pinsLocked')
         
         .form-group
 
             .col-4
                 label.form-label(for='ledcount') ${{ index.sysconfig.led.bgcount }}$ 
             .col-8
-                input.form-input(type='number', min='1', step='1', rv-value='config.bgLedCount | int')
+                input.resetneeded.form-input(type='number', min='1', step='1', rv-value='config.bgLedCount | int')
     
     include ../partials/ledorder.pug
     .divider
@@ -46,13 +46,13 @@
             .col-4
                 label.form-label(for='timeserver') ${{ index.sysconfig.network.timeserver }}$ 
             .col-8
-                input.form-input(pattern='^([a-zA-Z0-9]([a-zA-Z0-9\-]{0,61 }}$[a-zA-Z0-9])?\.)+[a-zA-Z]{2,6 }}$$', maxlength='64', size='64', required, rv-value='config.timeserver')
+                input.resetneeded.form-input(pattern='^([a-zA-Z0-9]([a-zA-Z0-9\-]{0,61 }}$[a-zA-Z0-9])?\.)+[a-zA-Z]{2,6 }}$$', maxlength='64', size='64', required, rv-value='config.timeserver')
         
         .form-group
             .col-4
-                label.form-label(for='timeserver') ${{ index.sysconfig.network.hostname }}$ 
+                label.form-label(for='hostname') ${{ index.sysconfig.network.hostname }}$ 
             .col-8
-                input.form-input(pattern='^[a-zA-Z][a-zA-Z0-9-_\.]{1,64 }}$$', maxlength='64', size='64', required, rv-value='config.hostname')
+                input.resetneeded.form-input(pattern='^[a-zA-Z][a-zA-Z0-9-_\.]{1,64 }}$$', maxlength='64', size='64', required, rv-value='config.hostname')
     
     .divider
 

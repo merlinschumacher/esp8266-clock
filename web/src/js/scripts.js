@@ -3,6 +3,8 @@ let time = 0;
 let version = 0;
 let toastVisible = false;
 let app;
+var resetRequired = false;
+var configInterval = null;
 document.addEventListener("DOMContentLoaded", function () {
 
     initTabs();

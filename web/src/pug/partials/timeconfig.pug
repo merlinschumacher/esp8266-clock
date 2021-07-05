@@ -63,5 +63,5 @@
             .col-4
                 label.form-label(for='timezone') ${{ index.timeconfig.timezone }}$ 
             .col-8
-                select.form-select(id='timezone', rv-value='config.timezone')
+                select.resetneeded.form-select(id='timezone', rv-value='config.timezone')
                     option(rv-each-timezone='timezones' rv-value='timezone') { timezone | replaceUnderscore }

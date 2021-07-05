@@ -243,6 +243,18 @@ bool Config::JSONToConfig(JsonDocument &doc)
         config.monthOffset--;
         config.weekdayOffset--;
 
+        if (doc["reset"] == true)
+        {
+                Config::_resetRequest = true;
+        }
+        else
+        {
+                Config::_resetRequest = false;
+        };
+
+        Config::locked = false;
+        Config::tainted = true;
+
         if (doc["saveData"] == true)
         {
                 return true;
@@ -251,7 +263,6 @@ bool Config::JSONToConfig(JsonDocument &doc)
         {
                 return false;
         };
-        Config::locked = false;
 }
 
 void Config::load()
@@ -288,6 +299,7 @@ void Config::load()
 
 void Config::save()
 {
+        bool format = false;
         // Delete existing file, otherwise the configuration is appended to the file
         Config::locked = true;
 #if defined(ESP8266)
@@ -299,8 +311,9 @@ void Config::save()
         // Open file for writing
         if (!targetfile)
         {
-                Serial.println(F("Failed to create config file"));
-                return;
+                Serial.println(F("Failed to create config file. Reformatting FS and rebooting."));
+                format = true;
+
         }
 
         DynamicJsonDocument doc(2048);
@@ -309,7 +322,10 @@ void Config::save()
         if (serializeJson(doc, targetfile) == 0)
         {
                 Serial.println(F("Failed to write to config file. Reformatting FS and rebooting."));
+                format = true;
 
+        }
+        if (format) {
 #if defined(ESP8266)
                 LittleFS.format();
                 ESP.restart();
@@ -322,4 +338,5 @@ void Config::save()
         // Close the file
         targetfile.close();
         Config::locked = false;
+        Config::forceReset = Config::_resetRequest;
 }

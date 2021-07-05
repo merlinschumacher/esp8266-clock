@@ -36,13 +36,20 @@ void Webserver::_handleDataPut(Config &config)
   DynamicJsonDocument doc(2048);
   deserializeJson(doc, _server.arg(0));
   bool save = config.JSONToConfig(doc);
+  bool reboot = false;
   if (save == true)
   {
-    config.save();
+    reboot = config.save();
   };
   config.configToJSON(doc);
   serializeJson(doc, response);
   _server.send(200, "text/json", response);
+  if (reboot)
+  {
+    Serial.println("Config change required reboot!");
+    delay(2000);
+    ESP.restart();
+  };
 }
 
 void Webserver::_resetConfig(Config &config)
