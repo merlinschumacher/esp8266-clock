@@ -79,6 +79,8 @@ public:
     void configToJSON(JsonDocument &doc);
     bool JSONToConfig(JsonDocument &doc);
     bool locked = false;
+
+private:
     uint8_t _validateInt(uint8_t val, uint8_t min, uint8_t max);
 };
 
