@@ -36,8 +36,10 @@ void Webserver::_handleDataPut(Config &config)
   DynamicJsonDocument doc(2048);
   deserializeJson(doc, _server.arg(0));
   bool save = config.JSONToConfig(doc);
-  bool reboot = false;
-  config.save();
+  if (save)
+  {
+    config.save();
+  }
   config.configToJSON(doc);
   serializeJson(doc, response);
   _server.send(200, "text/json", response);
