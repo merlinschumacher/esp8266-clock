@@ -14,6 +14,7 @@
 #include <ezTime.h>
 #include "webserver.hpp"
 #include "config.hpp"
+#include "mqtt.hpp"
 #include "vars.hpp"
 #include "timefunc.hpp"
 #include "color.hpp"
@@ -213,9 +214,9 @@ void setup()
   initStrip();
   clearStrips();
   char hostname[64];
-  char apname[68] = "⏰";
+  char apname[68] = "";
   strlcpy(hostname, config.config.hostname, sizeof(hostname));
-  strncat(apname, hostname, sizeof(apname));
+  snprintf(apname, sizeof(apname), "⏰%s", hostname);
   Serial.print("Hostname: ");
   Serial.println(hostname);
 
@@ -237,6 +238,7 @@ void setup()
   localTime.setLocation(config.config.timezone);
   localTime.setDefault();
   webserver.setup(config);
+  mqtt.setup(config);
   MDNS.begin(hostname);
   MDNS.addService("ESPCLOCK", "tcp", 80);
   MDNS.addService("http", "tcp", 80);
@@ -251,8 +253,8 @@ void loop()
     clearStrips();
     WiFiManager wifiManager;
     wifiManager.resetSettings();
-    char apname[68] = "⏰";
-    strncat(apname, config.config.hostname, sizeof(apname));
+    char apname[68] = "";
+    snprintf(apname, sizeof(apname), "⏰%s", config.config.hostname);
     wifiManager.startConfigPortal(apname);
   }
 
@@ -269,6 +271,7 @@ void loop()
       night = isNight(h, m);
       updateColors(night);
       setBacklight();
+      mqtt.publishConfig(config);
       config.tainted = false;
     };
 
@@ -300,7 +303,7 @@ void loop()
     }
     if (tick())
     {
-      if (alarm)
+      if (alarm || strcmp(mqtt.currentCommand, "alarm") == 0)
       {
         if (!animationRendered)
         {
@@ -309,13 +312,14 @@ void loop()
             renderAlarm(night, true);
           animationRendered = true;
           showStrips();
+          mqtt.publishStatus("alarm");
           return;
         }
         shiftStrips(2);
         showStrips();
       }
 
-      else if (topHour)
+      else if (topHour || strcmp(mqtt.currentCommand, "rainbow") == 0)
       {
         if (!animationRendered)
         {
@@ -324,18 +328,27 @@ void loop()
             renderRainbow(night, true);
           animationRendered = true;
           showStrips();
+          mqtt.publishStatus("rainbow");
           return;
         }
         shiftStrips(2);
         showStrips();
+      }
+      else if (strcmp(mqtt.currentCommand, "off") == 0)
+      {
+        clearStrips();
+        showStrips();
+        mqtt.publishStatus("off");
       }
 
       else
       {
         animationRendered = false;
         renderTime();
+        mqtt.publishStatus("time");
       }
     }
   }
+  mqtt.loop();
   events();
 }

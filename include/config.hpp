@@ -67,6 +67,13 @@ struct ConfigData
     uint32_t ledRoot;
 
     char language[3];
+
+    bool mqttActive;
+    char mqttServer[64];
+    char mqttUser[128];
+    char mqttPassword[128];
+    char mqttBaseTopic[128];
+    uint16_t mqttPort;
 };
 
 class Config
@@ -76,8 +83,8 @@ public:
     ConfigData config = {};
     void save();
     void load();
-    void configToJSON(JsonDocument &doc);
-    bool JSONToConfig(JsonDocument &doc);
+    void configToJSON(JsonDocument &doc, bool skipSensitiveData = false);
+    bool JSONToConfig(JsonDocument &doc, bool skipSensitiveData = false);
     bool locked = false;
     bool forceReset = false;
     bool tainted = false;

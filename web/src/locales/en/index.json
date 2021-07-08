@@ -105,6 +105,17 @@
             "open": "Reset WiFi",
             "confirm": "RESET WIFI!",
             "cancel": "Cancel"
+        },
+        "mqtt": {
+            "active": "Enable MQTT for smart home integration",
+            "title": "MQTT settings",
+            "description": "Here you can enable MQTT to control the clock with your smart home / IoT service.",
+            "server": "Server hostname",
+            "user": "Username",
+            "password": "Password",
+            "port": "Port",
+            "tls": "Activate TLS",
+            "topic": "Base topic"
         }
     }
 }
