@@ -41,8 +41,10 @@ void renderSecondsHand(int s)
   {
     HsbColor currentPixelColor, upcomingPixelColor;
     currentPixelColor = upcomingPixelColor = HsbColor(secondColor);
-    float brightness = min(frame * 0.0166666, 255.0);
-    currentPixelColor.B = 1.0 - brightness;
+    float maxBrightness = currentPixelColor.B;
+    float brightnessStep = maxBrightness / 60;
+    float brightness = min(float(frame * brightnessStep), (float)maxBrightness);
+    currentPixelColor.B = maxBrightness - brightness;
     upcomingPixelColor.B = brightness;
 
     uint8_t nextPixel = (secondsHand + 1) % 60;

@@ -34,19 +34,31 @@ void initStrip()
     bgStrip->Show();
 }
 
-void setPixel(uint8_t pos, RgbColor color, bool blend = true)
+void setPixel(uint8_t pos, HsbColor color, bool blend = true)
 {
+    if (color.B == 0)
+        return;
     if (blend)
     {
-        RgbColor currentcolor = strip->GetPixelColor(pos);
-        if (currentcolor.CalculateBrightness() == 0)
+        HsbColor currentColor = strip->GetPixelColor(pos);
+        if (currentColor.B == 0)
         {
             strip->SetPixelColor(pos, color);
         }
         else
         {
-            RgbColor targetcolor = RgbColor::LinearBlend(currentcolor, color, 0.25);
-            strip->SetPixelColor(pos, targetcolor);
+            HsbColor targetColor;
+            float targetBlend = color.B;
+            float targetBrightness = max(currentColor.B, color.B);
+            float targetSaturation = max(currentColor.S, color.S);
+            if (targetSaturation == 0)
+            {
+                currentColor.H = color.H;
+                targetSaturation = color.S;
+            }
+            targetColor = RgbColor::LinearBlend(currentColor, color, targetBlend);
+            targetColor.B = targetBrightness;
+            strip->SetPixelColor(pos, targetColor);
         }
     }
     else
