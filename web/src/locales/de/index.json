@@ -115,6 +115,7 @@
             "password": "Passwort",
             "port": "Port",
             "tls": "TLS einschalten",
+            "fingerprint": "SHA1 Fingerabdruck des Servers",
             "topic": "Basis-Topic"
         }
     }

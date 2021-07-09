@@ -69,11 +69,15 @@ struct ConfigData
     char language[3];
 
     bool mqttActive;
+    bool mqttTLS;
     char mqttServer[64];
     char mqttUser[128];
     char mqttPassword[128];
     char mqttBaseTopic[128];
+    char mqttFingerprint[128];
     uint16_t mqttPort;
+
+    bool tlsBundleLoaded;
 };
 
 class Config

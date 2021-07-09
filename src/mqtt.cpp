@@ -1,5 +1,4 @@
 #include "mqtt.hpp"
-
 Mqtt::Mqtt()
 {
 }
