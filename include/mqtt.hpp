@@ -23,10 +23,16 @@ public:
     bool connect(Config &config);
     void publishConfig(Config &config);
     void publishStatus(const char *status);
+#ifdef DEBUG_BUILD
+    void publishUptime();
+#endif
     void loop();
     char statusTopic[255] = {0};
     char commandTopic[255] = {0};
     char configTopic[255] = {0};
+#ifdef DEBUG_BUILD
+    char debugTopic[255] = {0};
+#endif
     char setConfigTopic[255] = {0};
     char currentCommand[32];
 

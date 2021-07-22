@@ -75,6 +75,9 @@ bool Mqtt::setup(Config &config)
     snprintf(setConfigTopic, sizeof(setConfigTopic), "%s/setConfig", config.config.mqttBaseTopic);
     snprintf(statusTopic, sizeof(statusTopic), "%s/status", config.config.mqttBaseTopic);
     snprintf(commandTopic, sizeof(commandTopic), "%s/command", config.config.mqttBaseTopic);
+#ifdef DEBUG_BUILD
+    snprintf(debugTopic, sizeof(debugTopic), "%s/debug", config.config.mqttBaseTopic);
+#endif
 
     if (connect(config))
     {
@@ -100,6 +103,15 @@ void Mqtt::publishConfig(Config &config)
     serializeJson(doc, response, sizeof(response));
     publish(response, configTopic, false);
 }
+
+#ifdef DEBUG_BUILD
+void Mqtt::publishUptime()
+{
+    char s[128];
+    snprintf(s, sizeof(s), "{\"uptime\": %lu}", millis() / 1000);
+    _mqttClient.publish(debugTopic, s, false);
+}
+#endif
 
 void Mqtt::publishStatus(const char *status)
 {

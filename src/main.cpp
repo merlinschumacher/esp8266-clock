@@ -273,6 +273,7 @@ void loop()
       night = isNight(h, m);
       updateColors(night);
       setBacklight();
+      mqtt.connect(config);
       mqtt.publishConfig(config);
       config.tainted = false;
     };
@@ -283,6 +284,10 @@ void loop()
       alarm = isAlarm();
       frame = 0;
       uint8_t m = minute();
+      mqtt.connect(config);
+#ifdef DEBUG_BUILD
+      mqtt.publishUptime();
+#endif
       if (currentMinute != m)
       {
         currentMinute = m;
@@ -303,6 +308,7 @@ void loop()
         }
       }
     }
+
     if (tick())
     {
       if (alarm || strcmp(mqtt.currentCommand, "alarm") == 0)
