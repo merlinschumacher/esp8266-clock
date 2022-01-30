@@ -44,9 +44,6 @@ document.addEventListener("DOMContentLoaded", function () {
             return (+t[0]) * 60 + (+t[1]);
         }
     }
-    tinybind.formatters.addEmoji = function (value, emoji) {
-        return emoji + value;
-    };
 
     tinybind.formatters.replaceUnderscore = function (value) {
         return value.replace(/_/g, ' ');
@@ -91,11 +88,11 @@ document.addEventListener("DOMContentLoaded", function () {
         })
     })
 
-    // window.setInterval(function () {
-    //     getData('time').then(function (data) {
-    //         app.models.time = data;
-    //     });
-    // }, 1000);
     initWatcher();
+    let saveButton = document.getElementById("save-button");
+    saveButton.addEventListener("click", function () {
+       postConfig(true).then(c => {config = c});
+    });
+
 });
 
