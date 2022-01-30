@@ -26,6 +26,8 @@ async function postConfig(saveData = false) {
                 document.getElementById('save-button').classList.remove("badge");
                 showToast('toast-success', 2, true)
                 resetRequired = false;
+                console.log(data);
+                app.models.config = data;
             }
         })
         .catch((error) => {

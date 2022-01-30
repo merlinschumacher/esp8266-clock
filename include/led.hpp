@@ -54,7 +54,6 @@ void setPixel(uint8_t pos, HsbColor color, bool blend = true)
             if (targetSaturation == 0)
             {
                 currentColor.H = color.H;
-                targetSaturation = color.S;
             }
             targetColor = RgbColor::LinearBlend(currentColor, color, targetBlend);
             targetColor.B = targetBrightness;

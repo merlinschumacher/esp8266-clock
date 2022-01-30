@@ -105,6 +105,18 @@
             "open": "WLAN zurücksetzen",
             "confirm": "WLAN ZURÜCKSETZEN!",
             "cancel": "Abbruch"
+        },
+        "mqtt": {
+            "active": "MQTT für die Integration in Smart-Home-Systeme aktivieren.",
+            "title": "MQTT-Einstellungen",
+            "description": "Hier können Sie MQTT einschalten, um die Uhr über ihr Smart-Home- oder IoT-System zu steuern.",
+            "server": "Servername",
+            "user": "Benutzername",
+            "password": "Passwort",
+            "port": "Port",
+            "tls": "TLS einschalten",
+            "fingerprint": "SHA1 Fingerabdruck des Servers",
+            "topic": "Basis-Topic"
         }
     }
 }

@@ -5,6 +5,7 @@ Config config;
 Timezone localTime;
 Webserver webserver;
 WiFiClient espClient;
+Mqtt mqtt;
 
 uint8_t currentMinute = 60,
         currentSecond = 60,

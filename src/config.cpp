@@ -16,12 +16,15 @@ uint32_t _clampInt(uint32_t val, uint32_t min, uint32_t max)
         return t > max ? max : t;
 }
 
-void Config::configToJSON(JsonDocument &doc)
+void Config::configToJSON(JsonDocument &doc, bool skipSensitiveData)
 {
         Config::locked = true;
-        doc["hostname"] = config.hostname;
-        doc["timeserver"] = config.timeserver;
-        doc["timezone"] = config.timezone;
+        if (!skipSensitiveData)
+        {
+                doc["hostname"] = config.hostname;
+                doc["timeserver"] = config.timeserver;
+                doc["timezone"] = config.timezone;
+        }
 
         doc["hourColor"] = config.hourColor;
         doc["minuteColor"] = config.minuteColor;
@@ -75,7 +78,16 @@ void Config::configToJSON(JsonDocument &doc)
         doc["bgColorDimmed"] = config.bgColorDimmed;
 
         doc["language"] = config.language;
-        
+
+        if (!skipSensitiveData)
+        {
+                doc["mqttActive"] = config.mqttActive;
+                doc["mqttServer"] = config.mqttServer;
+                doc["mqttUser"] = config.mqttUser;
+                doc["mqttPassword"] = config.mqttPassword;
+                doc["mqttPort"] = config.mqttPort;
+                doc["mqttBaseTopic"] = config.mqttBaseTopic;
+        }
 
 #if defined(UART_MODE) || defined(DMA_MODE)
         doc["pinsLocked"] = true;
@@ -85,7 +97,7 @@ void Config::configToJSON(JsonDocument &doc)
         Config::locked = false;
 }
 
-bool Config::JSONToConfig(JsonDocument &doc)
+bool Config::JSONToConfig(JsonDocument &doc, bool skipSensitiveData)
 {
 
         Config::locked = true;
@@ -180,7 +192,7 @@ bool Config::JSONToConfig(JsonDocument &doc)
         config.nightTimeBegins = doc["nightTimeBegins"] | 1320;
         config.nightTimeBegins = _clampInt(config.nightTimeBegins, 0, 1440);
 
-        config.nightTimeEnds = doc["nightTimeEnds "] | 480;
+        config.nightTimeEnds = doc["nightTimeEnds"] | 480;
         config.nightTimeEnds = _clampInt(config.nightTimeEnds, 0, 1440);
 
         config.hourLight = doc["hourLight"] | false;
@@ -202,9 +214,11 @@ bool Config::JSONToConfig(JsonDocument &doc)
         config.bgLedPin = doc["bgLedPin"] | 15;
         config.bgLedPin = _clampInt(config.bgLedPin, 0, MAXPINS);
 #elif defined(UART_MODE)
-        config.bgLedPin = 1;
+        if (!skipSensitiveData)
+                config.bgLedPin = 1;
 #elif defined(DMA_MODE)
-        config.bgLedPin = 2;
+        if (!skipSensitiveData)
+                config.bgLedPin = 2;
 #endif
 
         config.bgLedCount = doc["bgLedCount"] | 60;
@@ -214,29 +228,56 @@ bool Config::JSONToConfig(JsonDocument &doc)
         config.ledPin = doc["ledPin"] | 4;
         config.ledPin = _clampInt(config.ledPin, 0, MAXPINS);
 #elif defined(UART_MODE)
-        config.ledPin = 2;
+        if (!skipSensitiveData)
+                config.ledPin = 2;
 #elif defined(DMA_MODE)
-        config.ledPin = 3;
+        if (!skipSensitiveData)
+                config.ledPin = 3;
 #endif
 
         config.ledCount = doc["ledCount"] | 60;
         config.ledCount = _clampInt(config.ledCount, 0, MAXLEDS);
 
         config.ledRoot = doc["ledRoot"] | 1;
-        config.ledRoot = _clampInt(config.ledRoot, 0, MAXLEDS);
+        config.ledRoot = _clampInt(config.ledRoot, 1, MAXLEDS);
 
         config.dayOffset = doc["dayOffset"] | 1;
-        config.dayOffset = _clampInt(config.dayOffset, 0, MAXLEDS);
+        config.dayOffset = _clampInt(config.dayOffset, 1, MAXLEDS);
 
         config.monthOffset = doc["monthOffset"] | 1;
-        config.monthOffset = _clampInt(config.monthOffset, 0, MAXLEDS);
+        config.monthOffset = _clampInt(config.monthOffset, 1, MAXLEDS);
 
         config.weekdayOffset = doc["weekdayOffset"] | 1;
-        config.weekdayOffset = _clampInt(config.weekdayOffset, 0, MAXLEDS);
+        config.weekdayOffset = _clampInt(config.weekdayOffset, 1, MAXLEDS);
 
         strlcpy(config.language,
                 doc["language"] | "en",
                 sizeof(config.language));
+
+        if (!skipSensitiveData)
+        {
+                config.mqttActive = doc["mqttActive"] | false;
+                strlcpy(config.mqttServer,
+                        doc["mqttServer"] | "mqtthost",
+                        sizeof(config.mqttServer));
+                strlcpy(config.mqttUser,
+                        doc["mqttUser"] | "mqttuser",
+                        sizeof(config.mqttUser));
+                strlcpy(config.mqttUser,
+                        doc["mqttUser"] | "username",
+                        sizeof(config.mqttUser));
+                strlcpy(config.mqttPassword,
+                        doc["mqttPassword"] | "password",
+                        sizeof(config.mqttPassword));
+                config.mqttPort = doc["mqttPort"] | 1883;
+                config.mqttPort = _clampInt(config.mqttPort, 1, 65535);
+        }
+        char defaultBaseTopic[144] = "espneopixelclock/";
+        snprintf(defaultBaseTopic, sizeof(defaultBaseTopic), "espneopixelclock/%s", config.hostname);
+
+        strlcpy(config.mqttBaseTopic,
+                doc["mqttBaseTopic"] | defaultBaseTopic,
+                sizeof(config.mqttBaseTopic));
 
         config.ledRoot--;
         config.dayOffset--;
@@ -253,7 +294,6 @@ bool Config::JSONToConfig(JsonDocument &doc)
         };
 
         Config::locked = false;
-        Config::tainted = true;
 
         if (doc["saveData"] == true)
         {
@@ -283,6 +323,7 @@ void Config::load()
 
         // Deserialize the JSON document
         DeserializationError error = deserializeJson(doc, sourcefile);
+        doc.shrinkToFit();
         Config::JSONToConfig(doc);
         if (error)
         {
@@ -318,6 +359,7 @@ void Config::save()
 
         DynamicJsonDocument doc(2048);
         Config::configToJSON(doc);
+        doc.shrinkToFit();
         // Serialize JSON to file
         if (serializeJson(doc, targetfile) == 0)
         {
