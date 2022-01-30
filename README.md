@@ -20,7 +20,7 @@ The firmware comes in three variants. The DMA variant that uses GPIO 3 for the t
 
 The UART variant useses GPIO 2 for the time strip and GPIO 1 for the backlight strip. The bitbanging variant enables you to freely select the pin, but it might be unstable and is not recommended. For more details see the [NeoPixelBus Wiki](https://github.com/Makuna/NeoPixelBus/wiki/ESP8266-NeoMethods).
 
-To flash the DMA and UART firmware make sure to disconnect the LED strips from the ESP, because they will turn on randomly and might turn out and burn out your power suppy or ESP.
+**To flash the DMA and UART firmware make sure to disconnect the LED strips from the ESP, because they will turn on randomly and might turn out and burn out your power suppy or ESP.**
 
 ![Wiring examples showing the different variants.](sketch.jpg)
 
@@ -76,11 +76,20 @@ You can dynamically define the position of the time, weekday, date and month on 
 
 If your LED strip does not start at the top for (12 o'clock). You can add an offset by specifing the pixel located at the top. This only affects the time, not the date.
 
-The clock will get the current time from the defined NTP time server. `pool.ntp.org` is a good start. `time.windows.com` and `time.google.com` are good alternatives. Some home routers even offer an NTP server.
+The clock will get the current time from the defined NTP time server. `pool.ntp.org` is a good start. `time.windows.com` and `time.google.com` are good alternatives. Some home routers even offer an integrated NTP server.
 
 To make the clock easier identifiable you can also change it's hostname. If your local WiFi router resolves local hostnames it will be reachable by that name.
 
-If something is messed or you just want to reset the clock click the "Reset all settings" button. It will completely remove all settings from the ESP.
+If you want to integrate the clock in to a smart home system, you can enable the MQTT feature. This will allow you to control the clock via MQTT. The following topics will be created:
+
+| Topic                 | Description                                                                                         |
+|-----------------------|-----------------------------------------------------------------------------------------------------|
+| (BASETOPIC)/status    | will show the current status of the clock.                                                          |
+| (BASETOPIC)/command   | receives a command to make the clock show the "time", an "alarm", a "rainbow" or turn itself "off". |
+| (BASETOPIC)/config    | dumps the config data everytime the clock settings are changed.                                     |
+| (BASETOPIC)/setConfig | receives config data to change the clock settings.                                                  |
+
+If something is messed up or you just want to reset the clock click the "Reset all settings" button. It will completely remove all settings from the ESP.
 
 You can update the firmware version using the web interface by uploading a file in the "Firmware update" section.
 
