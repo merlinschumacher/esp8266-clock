@@ -128,6 +128,7 @@ void renderHourSegment(uint8_t h)
 
 void setBacklight()
 {
+  bgStrip->ClearTo(off);
   for (size_t i = 0; i < config.config.bgLedCount; i++)
   {
     bgStrip->SetPixelColor(i, bgColor);
@@ -158,10 +159,18 @@ void printDebugInfo()
 
 void showStrips()
 {
-  if (strip->CanShow())
-    strip->Show();
-  if (bgStrip->CanShow())
-    bgStrip->Show();
+
+  while (!strip->CanShow())
+  {
+    delay(1);
+  }
+
+  strip->Show();
+  while (!bgStrip->CanShow())
+  {
+    delay(1);
+  }
+  bgStrip->Show();
 }
 void clearStrips()
 {
@@ -181,7 +190,6 @@ void shiftStrips(uint8_t frameskip = 1)
 
 void renderTime()
 {
-  strip->ClearTo(off);
   if (config.config.hourDot)
     renderHourDots();
   if (config.config.hourSegment)
@@ -196,8 +204,6 @@ void renderTime()
     setPixel(currentMonthPos, monthColor, config.config.blendColors);
     setPixel(currentWeekdayPos, weekdayColor, config.config.blendColors);
   }
-  if (strip->CanShow())
-    strip->Show();
 }
 
 void setup()
@@ -272,7 +278,6 @@ void loop()
       uint8_t h = hour();
       night = isNight(h, m);
       updateColors(night);
-      setBacklight();
       mqtt.connect(config);
       mqtt.publishConfig(config);
       config.tainted = false;
@@ -288,6 +293,7 @@ void loop()
 #ifdef DEBUG_BUILD
       mqtt.publishUptime();
 #endif
+
       if (currentMinute != m)
       {
         currentMinute = m;
@@ -296,9 +302,8 @@ void loop()
         night = isNight(h, m);
         topHour = (config.config.hourLight && currentMinute == 0);
         updateColors(night);
-        if (!alarm && !topHour)
-          setBacklight();
         printDebugInfo();
+
         if (currentHour != h)
         {
           currentHour = h;
@@ -352,7 +357,10 @@ void loop()
       else
       {
         animationRendered = false;
+        clearStrips();
         renderTime();
+        setBacklight();
+        showStrips();
         mqtt.publishStatus("time");
       }
     }
