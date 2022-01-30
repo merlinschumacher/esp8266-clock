@@ -192,7 +192,7 @@ bool Config::JSONToConfig(JsonDocument &doc, bool skipSensitiveData)
         config.nightTimeBegins = doc["nightTimeBegins"] | 1320;
         config.nightTimeBegins = _clampInt(config.nightTimeBegins, 0, 1440);
 
-        config.nightTimeEnds = doc["nightTimeEnds "] | 480;
+        config.nightTimeEnds = doc["nightTimeEnds"] | 480;
         config.nightTimeEnds = _clampInt(config.nightTimeEnds, 0, 1440);
 
         config.hourLight = doc["hourLight"] | false;
