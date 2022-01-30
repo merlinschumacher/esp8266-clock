@@ -46,13 +46,13 @@
             .col-4
                 label.form-label(for='timeserver') ${{ index.sysconfig.network.timeserver }}$ 
             .col-8
-                input.resetneeded.form-input(pattern='^([a-zA-Z0-9]([a-zA-Z0-9\-]{0,61 }}$[a-zA-Z0-9])?\.)+[a-zA-Z]{2,6 }}$$', maxlength='64', size='64', required, rv-value='config.timeserver')
+                input.resetneeded.form-input(maxlength='64', size='64', required, rv-value='config.timeserver')
         
         .form-group
             .col-4
                 label.form-label(for='hostname') ${{ index.sysconfig.network.hostname }}$ 
             .col-8
-                input.resetneeded.form-input(pattern='^[a-zA-Z][a-zA-Z0-9-_\.]{1,64 }}$$', maxlength='64', size='64', required, rv-value='config.hostname')
+                input.resetneeded.form-input(maxlength='64', size='64', required, rv-value='config.hostname')
     
     .divider
     
@@ -72,7 +72,7 @@
             .col-4
                 label.form-label(for='mqttServer') ${{ index.sysconfig.mqtt.server }}$ 
             .col-8
-                input.resetneeded.form-input(pattern='^([a-zA-Z0-9]([a-zA-Z0-9\-]{0,61 }}$[a-zA-Z0-9])?\.)+[a-zA-Z]{2,6 }}$$', maxlength='64', size='64', rv-value='config.mqttServer')
+                input.resetneeded.form-input(maxlength='64', size='64', rv-value='config.mqttServer')
         
         .form-group
             .col-4
