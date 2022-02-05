@@ -10,24 +10,24 @@ void Mqtt::_handleRequest(char *topic, byte *payload, unsigned int length, Confi
     {
         if (strncmp((char *)payload, "alarm", length) == 0)
         {
-            strlcpy(currentCommand, "alarm", 32);
+            strlcpy(currentCommand, "alarm", sizeof(currentCommand));
         }
         else if (strncmp((char *)payload, "rainbow", length) == 0)
         {
-            strlcpy(currentCommand, "rainbow", 32);
+            strlcpy(currentCommand, "rainbow", sizeof(currentCommand));
         }
         else if (strncmp((char *)payload, "off", length) == 0)
         {
-            strlcpy(currentCommand, "off", 32);
+            strlcpy(currentCommand, "off", sizeof(currentCommand));
         }
         else if (strncmp((char *)payload, "getConfig", length) == 0)
         {
-            strlcpy(currentCommand, "time", 32);
+            strlcpy(currentCommand, "time", sizeof(currentCommand));
             publishConfig(config);
         }
         else
         {
-            strlcpy(currentCommand, "time", 32);
+            strlcpy(currentCommand, "time", sizeof(currentCommand));
         }
     }
     else if (strncmp(topic, setConfigTopic, sizeof(setConfigTopic)) == 0)
