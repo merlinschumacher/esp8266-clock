@@ -8,7 +8,17 @@
                 label.form-switch(for='fluidmotion')
                     input(type='checkbox' id='fluidmotion' rv-checked='config.fluidMotion')
                     i.form-icon
-                    span ${{ index.colorconfig.fluidmotion }}$ 
+                    span ${{ index.timeconfig.fluidmotion }}$ 
+    
+    .divider
+    
+    fieldset.form-horizontal
+        .form-group
+            .col-4
+                label.form-label(for='hourhandstyle') ${{ index.timeconfig.hourhandstyle }}$ 
+            .col-8
+                select.form-select(id='hourhandstyle', rv-value='config.hourHandStyle')
+                    option(rv-each-hourhandstyle='hourhandstyles' rv-value='hourhandstyle') { hourhandstyle }
     
     .divider
     
@@ -19,6 +29,7 @@
                     input(type='checkbox' id='hourlight' rv-checked='config.hourLight')
                     i.form-icon
                     span ${{ index.timeconfig.hourlight }}$ 
+
     
     .divider
 
