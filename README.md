@@ -24,6 +24,8 @@ The UART variant useses GPIO 2 for the time strip and GPIO 1 for the backlight s
 
 ![Wiring examples showing the different variants.](sketch.jpg)
 
+If you use the firmware with the NeoPixelBus bitbanging method, there might be issues with longer LED strips. Strips up to 60 LEDs worked fine for me. If you have issues with the LEDs not lighting up correctly change the method in the code and build your own version. See the [NeoPixelBus wiki](https://github.com/Makuna/NeoPixelBus/wiki/ESP8266-NeoMethods#neoesp8266dma800kbpsmethod) for further details.
+
 ## Setup
 
 To use the firmware flash the `firmware_esp8266.bin` found in the releases list with the [esptool](https://github.com/espressif/esptool). The build for the ESP32 is experimental and unsupported.
@@ -54,7 +56,9 @@ If you want the colors of two elements to blend when they overlap enable "Blend 
 
 ### Time settings
 
-To enable a fluid progression of brightness between seconds set the fluid motion option. It is a little buggy.
+To enable a fluid progression of brightness between seconds set the fluid motion option.
+
+You can select the style of the hour hand. The "simple" mode is just one pixel lighting up. The "wide" mode is three pixels with the outer ones dimmed. The "split" mode is three pixels with the middle one off.
 
 To have the clock light up in a rainbow color on the hour just check the box.
 
@@ -97,17 +101,15 @@ If your clock misbehaves you can reset it with the "Reset clock" function.
 
 ### Saving
 
-Some changes, like the colors, are updated immediately but not permamently saved. To make them permanent click the big purple button at the top.
+Some changes, like the colors, are updated immediately but not permamently saved. To make save them permanently, click the big purple button at the top.
 
 Changes to the LED strip configuration or the timezone will need a restart of the ESP.
 
 ## Notes and Links
 
-The firmware has been build with [PlatformIO](https://platformio.org/). It uses the libraries [WifiManager](https://github.com/tzapu/WiFiManager), [ArduinoJSON](https://arduinojson.org/), [NeoPixelBus](https://github.com/Makuna/NeoPixelBus/) and [ezTime](https://github.com/ropg/ezTime). The web interface uses [Water.css](https://watercss.netlify.app/) for styling.
+The firmware has been build with [PlatformIO](https://platformio.org/). It uses the libraries [WifiManager](https://github.com/tzapu/WiFiManager), [ArduinoJSON](https://arduinojson.org/), [NeoPixelBus](https://github.com/Makuna/NeoPixelBus/), [PubSubClient](https://github.com/knolleary/pubsubclient) and [ezTime](https://github.com/ropg/ezTime). The web interface uses [Spectre.css](https://picturepan2.github.io/spectre/) for styling.
 
 The software was inspired by the [esp8266-NeoPixel-Clock](https://github.com/radimkeseg/esp8266-NeoPixel-Clock) by Radim Keseg. The rainbow was taken from an [example by ACROBOTIC](https://github.com/acrobotic/Ai_Demos_NeoPixelBus/blob/master/Rainbow/Rainbow.ino). The string splitting function was taken from [here](https://github.com/BenTommyE/Arduino_getStringPartByNr/blob/master/getStringPartByNr.ino).
-
-Due to the fact, that the firmware uses the NeoPixelBus bitbanging method there might be issues with longer LED strips. Strips up to 60 LEDs worked fine for me. If you have issues with the LEDs not lighting up correctly change the method in the code and build your own version. See the [NeoPixelBus wiki](https://github.com/Makuna/NeoPixelBus/wiki/ESP8266-NeoMethods#neoesp8266dma800kbpsmethod) for further details.
 
 If your strip uses a different color order than GRB you also have to modify the firmware, to have proper color reproduction. The [NeoPixelBus wiki](https://github.com/Makuna/NeoPixelBus/wiki/NeoPixelBus-object#neo-features) is also helpful for that.
 
