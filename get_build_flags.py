@@ -10,6 +10,8 @@ try:
 except:
     build_type = "release"
 
+variant = sys.argv[3].upper()
+
 if build_type  == "debug":
     revision = (
         subprocess.check_output(["git", "rev-parse", "--short", "HEAD"])
@@ -25,6 +27,6 @@ else:
         .strip()
         .decode("utf-8")
     )
-    flags = "-O3 -D"+sys.argv[3]
+    flags = "-O3 -D" + variant
 
-print(flags + " -DVERSION='\"%s\"'" % version + " -DPIO_FRAMEWORK_ARDUINO_LWIP_HIGHER_BANDWIDTH")
+print(flags + " -DVERSION='\"%s" % version + "-" + variant + "\"' -DPIO_FRAMEWORK_ARDUINO_LWIP_HIGHER_BANDWIDTH")
