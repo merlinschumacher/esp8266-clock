@@ -5,12 +5,24 @@ let toastVisible = false;
 let app;
 var resetRequired = false;
 var configInterval = null;
+
+const hourhandstyles = ["simple", "wide", "split"]
+
 document.addEventListener("DOMContentLoaded", function () {
 
     initTabs();
 
     tinybind.formatters.sub = function (target, val) {
         return (target - val);
+    };
+
+    tinybind.formatters.power = function (ledCount, bgLedCount, bgOn) {
+        if (!bgOn) {
+            bgLedCount = 0;
+        }
+        let mAh = (ledCount + bgLedCount) * 50;
+        return mAh;
+
     };
 
     tinybind.binders.barwidth = function (el, value) {
@@ -82,7 +94,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 config = c;
             }).then(function () {
                 app = tinybind.bind(document.getElementById("app"), {
-                    config, version, time, timezones, languages, toggleFirmwareModal, toggleResetModal, toggleWifiModal, loadLanguage, toastVisible
+                    config, version, time, timezones, languages, toggleFirmwareModal, toggleResetModal, toggleWifiModal, loadLanguage, toastVisible, hourhandstyles
                 });
             })
         })
@@ -91,7 +103,7 @@ document.addEventListener("DOMContentLoaded", function () {
     initWatcher();
     let saveButton = document.getElementById("save-button");
     saveButton.addEventListener("click", function () {
-       postConfig(true).then(c => {config = c});
+        postConfig(true).then(c => { config = c });
     });
 
 });
