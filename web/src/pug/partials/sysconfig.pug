@@ -19,7 +19,7 @@
             .col-8
                 input.resetneeded.form-input(type='number', min='60', step='1', rv-value='config.ledCount | int')
     
-    .divider
+    .divider(rv-if='config.bgLight')
 
     fieldset.form-horizontal(rv-if='config.bgLight')
 
@@ -36,11 +36,16 @@
             .col-8
                 input.resetneeded.form-input(type='number', min='1', step='1', rv-value='config.bgLedCount | int')
     
+    .col-12.text-gray.text-small
+        span ${{ index.sysconfig.led.maxcurrent }}$ 
+        span(rv-text="config.ledCount | power config.bgLedCount config.bgLight")
+        span mAh
+    
     include ../partials/ledorder.pug
     .divider
       
+    .h4 ${{ index.sysconfig.network.title }}$
     fieldset.form-horizontal
-        .h6 ${{ index.sysconfig.network.description }}$
 
         .form-group
             .col-4
