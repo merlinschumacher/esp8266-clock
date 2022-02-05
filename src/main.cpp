@@ -64,13 +64,36 @@ uint8_t calculateMinuteHand(int m)
   return minuteHand;
 }
 
-uint8_t calculateHourHand(int h, int m)
+void renderHourHand(int h, int m)
 {
   uint8_t hour = h % 12;
   uint8_t hourHand = floor((float)60 / 12 * hour);
   uint8_t minuteOffset = floor((float)m * 60 / 12 / 60);
   hourHand = (hourHand + minuteOffset + config.config.ledRoot) % 60;
-  return hourHand;
+  int8_t nextPixel = (hourHand + 1) % 60;
+  int8_t prevPixel = (hourHand - 1) % 60;
+
+  if (prevPixel == -1)
+  {
+    prevPixel = 59;
+  }
+
+  if (strcmp(config.config.hourHandStyle, "split") == 0)
+  {
+    setPixel(prevPixel, hourColor, config.config.blendColors);
+    setPixel(nextPixel, hourColor, config.config.blendColors);
+  }
+  else if (strcmp(config.config.hourHandStyle, "wide") == 0)
+  {
+    RgbColor dim = hourColor.Dim(32);
+    setPixel(prevPixel, dim, config.config.blendColors);
+    setPixel(hourHand, hourColor, config.config.blendColors);
+    setPixel(nextPixel, dim, config.config.blendColors);
+  }
+  else
+  {
+    setPixel(hourHand, hourColor, config.config.blendColors);
+  }
 }
 
 uint8_t calculateDayHand()
@@ -195,7 +218,7 @@ void renderTime()
   if (config.config.hourSegment)
     renderHourSegment(currentHour);
 
-  setPixel(calculateHourHand(currentHour, currentMinute), hourColor, config.config.blendColors);
+  renderHourHand(currentHour, currentMinute);
   setPixel(calculateMinuteHand(currentMinute), minuteColor, config.config.blendColors);
   renderSecondsHand(currentSecond);
   if (config.config.dayMonth)
@@ -366,5 +389,6 @@ void loop()
     }
   }
   mqtt.loop();
+  MDNS.update();
   events();
 }

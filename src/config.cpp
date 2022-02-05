@@ -60,6 +60,7 @@ void Config::configToJSON(JsonDocument &doc, bool skipSensitiveData)
         doc["nightTimeBegins"] = config.nightTimeBegins;
         doc["nightTimeEnds"] = config.nightTimeEnds;
 
+        doc["hourHandStyle"] = config.hourHandStyle;
         doc["hourLight"] = config.hourLight;
         doc["blendColors"] = config.blendColors;
         doc["fluidMotion"] = config.fluidMotion;
@@ -144,6 +145,9 @@ bool Config::JSONToConfig(JsonDocument &doc, bool skipSensitiveData)
                 doc["secondColorDimmed"] | "#000077",
                 sizeof(config.secondColorDimmed));
 
+        strlcpy(config.hourHandStyle,
+                doc["hourHandStyle"] | "simple",
+                sizeof(config.hourHandStyle));
         config.hourDot = doc["hourDot"] | false;
         config.hourSegment = doc["hourSegment"] | false;
         config.hourQuarter = doc["hourQuarter"] | false;
