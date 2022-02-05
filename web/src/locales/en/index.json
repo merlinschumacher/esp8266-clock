@@ -40,7 +40,6 @@
             "active": "Display weekday, date and month"
         },
         "blendcolors": "Blend overlapping colors into one.",
-        "fluidmotion": "Flowing motion for the second hand.",
         "hourdot": "Enable dots at every hour.",
         "hourquarter": "Enable dots at every quarter.",
         "hoursegment": "Light up current hour segment."
@@ -60,7 +59,9 @@
             "end": "End"
         },
         "hourlight": "Show a rainbow on top of the hour.",
-        "timezone": "Timezone"
+        "timezone": "Timezone",
+        "hourhandstyle": "Style of the hour hand",
+        "fluidmotion": "Flowing motion for the second hand."
     },
     "sysconfig": {
         "title": "System configuration",
@@ -73,7 +74,8 @@
             "bgpin": "Backlight strip pin",
             "bgcount": "Backlight strip length",
             "pinslockedinfo": "The pins to drive the LED strips in this firmware are locked. To be able to change them, switch to a firmware using bitbanging!",
-            "bitbanginfo": "This firmware uses bitbanging to drive the LED strips. This is unreliable and might lead to crashes."
+            "bitbanginfo": "This firmware uses bitbanging to drive the LED strips. This is unreliable and might lead to crashes.",
+            "maxcurrent": "Maximum current of all LEDs:"
         },
         "ledorder": {
             "title": "Position of the hands",
@@ -81,7 +83,7 @@
             "twelveoclock": "12 o'clock"
         },
         "network": {
-            "description": "Network settings",
+            "title": "Network settings",
             "timeserver": "NTP time server",
             "hostname": "Hostname"
         },

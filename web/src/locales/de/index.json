@@ -40,7 +40,6 @@
             "active": "Wochentag, Datum und Monat anzeigen."
         },
         "blendcolors": "Überlagernde Zeigerfarben miteinander vermischen.",
-        "fluidmotion": "Flüssige Bewegung des Sekundenzeigers einschalten.",
         "hourdot": "Stunden mit einem Punkt markieren.",
         "hourquarter": "Jedes Viertel mit einem Punkt markieren.",
         "hoursegment": "Das aktuelle Stundensegment beleuchten."
@@ -60,7 +59,9 @@
             "end": "Ende"
         },
         "hourlight": "Einen Regenbogen zur vollen Stunde anzeigen.",
-        "timezone": "Zeitzone"
+        "timezone": "Zeitzone",
+        "fluidmotion": "Flüssige Bewegung des Sekundenzeigers einschalten.",
+        "hourhandstyle": "Stil des Stundenzeigers:"
     },
     "sysconfig": {
         "title": "Systemeinstellungen",
@@ -73,7 +74,8 @@
             "bgpin": "Pin der Hintergrundbeleuchtung",
             "bgcount": "Länge der Hintergrundbeleuchtung",
             "pinslockedinfo": "Die Pins für die LED-Streifen können Sie in dieser Firmware-Variante nicht ändern. Wechseln Sie zur Version mit Bitbanging, um die Pins zu ändern!",
-            "bitbanginfo": "Diese Firmware verwendet das unzuverlässige Bitbanging-Verfahren zur Ansteuerung der LEDs und kann daher zu Abstürzen neigen."
+            "bitbanginfo": "Diese Firmware verwendet das unzuverlässige Bitbanging-Verfahren zur Ansteuerung der LEDs und kann daher zu Abstürzen neigen.",
+            "maxcurrent": "Maximaler Strombedarf aller LEDs:"
         },
         "ledorder": {
             "title": "Positionierung der Zeiger",
@@ -81,7 +83,7 @@
             "twelveoclock": "12 Uhr Position"
         },
         "network": {
-            "description": "Netzwerkeinstellungen",
+            "title": "Netzwerkeinstellungen",
             "timeserver": "NTP-Zeitserver",
             "hostname": "Hostname"
         },
@@ -101,7 +103,7 @@
         },
         "wificonf": {
             "title": "Zurücksetzen der WLAN-Einstellungen",
-            "description": "Die Funktion setzt die WLAN-instellungen der Uhr zurück. Sie müssen diese anschließend neu einrichten.",
+            "description": "Die Funktion setzt die WLAN-Einstellungen der Uhr zurück. Sie müssen diese anschließend neu einrichten.",
             "open": "WLAN zurücksetzen",
             "confirm": "WLAN ZURÜCKSETZEN!",
             "cancel": "Abbruch"
