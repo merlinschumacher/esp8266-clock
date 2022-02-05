@@ -49,6 +49,7 @@ struct ConfigData
     uint16_t nightTimeBegins;
     uint16_t nightTimeEnds;
 
+    char hourHandStyle[8];
     bool hourLight;
     bool blendColors;
     bool fluidMotion;
