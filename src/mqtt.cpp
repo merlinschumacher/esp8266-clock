@@ -47,6 +47,13 @@ void Mqtt::_handleRequest(char *topic, byte *payload, unsigned int length, Confi
 
 bool Mqtt::connect(Config &config)
 {
+    Mqtt::_isEnabled = config.config.mqttActive;
+
+    if (!Mqtt::_isEnabled)
+    {
+        return false;
+    }
+
     if (_mqttClient.connected())
     {
         return true;
@@ -91,11 +98,15 @@ bool Mqtt::setup(Config &config)
 
 void Mqtt::publish(const char *message, const char *topic, bool retain)
 {
+    if (!Mqtt::_isEnabled || !_mqttClient.connected())
+        return;
     _mqttClient.publish(topic, message, retain);
 }
 
 void Mqtt::publishConfig(Config &config)
 {
+    if (!Mqtt::_isEnabled || !_mqttClient.connected())
+        return;
     DynamicJsonDocument doc(2048);
     config.configToJSON(doc, true);
     doc.shrinkToFit();
@@ -107,6 +118,8 @@ void Mqtt::publishConfig(Config &config)
 #ifdef DEBUG_BUILD
 void Mqtt::publishUptime()
 {
+    if (!Mqtt::_isEnabled || !_mqttClient.connected())
+        return;
     char s[128];
     snprintf(s, sizeof(s), "{\"uptime\": %lu}", millis() / 1000);
     _mqttClient.publish(debugTopic, s, false);
@@ -115,6 +128,8 @@ void Mqtt::publishUptime()
 
 void Mqtt::publishStatus(const char *status)
 {
+    if (!Mqtt::_isEnabled || !_mqttClient.connected())
+        return;
     if (strncmp(status, _lastStatus, sizeof(_lastStatus)) != 0)
     {
         publish(status, statusTopic, true);
@@ -124,5 +139,7 @@ void Mqtt::publishStatus(const char *status)
 
 void Mqtt::loop()
 {
+    if (!Mqtt::_isEnabled || !_mqttClient.connected())
+        return;
     _mqttClient.loop();
 }

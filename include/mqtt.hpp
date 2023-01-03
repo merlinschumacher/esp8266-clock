@@ -42,6 +42,7 @@ private:
     WiFiClientSecure _wifiClientSecure = WiFiClientSecure();
     PubSubClient _mqttClient = PubSubClient();
     char _lastStatus[32] = {0};
+    bool _isEnabled = false;
 };
 
 #endif // mqtt_h
