@@ -6,6 +6,7 @@
 #include <ESP8266WiFi.h>
 #include <ESP8266WebServer.h>
 #include <ESP8266HTTPUpdateServer.h>
+// #include <ESP8266SSDP.h>
 #elif defined(ESP32)
 #include <WiFi.h>
 #include <WebServer.h>

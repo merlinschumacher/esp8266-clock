@@ -92,32 +92,53 @@ void Webserver::_handleTime()
 
 void Webserver::setup(Config &config)
 {
-  _server.on("/", HTTP_GET, [this, &config]() { _handleIndex(config.config.language); });
-  _server.on("/index.html", HTTP_GET, [this, &config]() { _handleIndex(config.config.language); });
-  _server.on("/styles.css", HTTP_GET, [this]() { _server.sendHeader("Content-Encoding", "gzip");_server.send_P(200, "text/css", styles_css_gz, styles_css_gz_len); });
-  _server.on("/scripts.js", HTTP_GET, [this]() { _server.sendHeader("Content-Encoding", "gzip");_server.send_P(200, "application/javascript", scripts_js_gz, scripts_js_gz_len); });
+  // SSDP.setSchemaURL("description.xml");
+  // SSDP.setHTTPPort(80);
+  // SSDP.setName(config.config.hostname);
+  // SSDP.setURL("index.html");
+  // SSDP.setModelName("ESPCLOCK");
+  // SSDP.setModelNumber(VERSION);
+  // SSDP.setModelURL("https://github.com/merlinschumacher/esp8266-clock");
+  // SSDP.begin();
+  _server.on("/", HTTP_GET, [this, &config]()
+             { _handleIndex(config.config.language); });
+  _server.on("/index.html", HTTP_GET, [this, &config]()
+             { _handleIndex(config.config.language); });
+  _server.on("/styles.css", HTTP_GET, [this]()
+             { _server.sendHeader("Content-Encoding", "gzip");_server.send_P(200, "text/css", styles_css_gz, styles_css_gz_len); });
+  _server.on("/scripts.js", HTTP_GET, [this]()
+             { _server.sendHeader("Content-Encoding", "gzip");_server.send_P(200, "application/javascript", scripts_js_gz, scripts_js_gz_len); });
 
-  _server.on("/time", HTTP_GET, [this]() { _handleTime(); });
+  _server.on("/time", HTTP_GET, [this]()
+             { _handleTime(); });
   _server.on("/wificonf", HTTP_GET, [this]()
              { _handleWifiConf(); });
-  _server.on("/version", HTTP_GET, [this]() { _server.send(200, "text/plain", VERSION); });
+  _server.on("/version", HTTP_GET, [this]()
+             { _server.send(200, "text/plain", VERSION); });
 
-  _server.on("/reset", HTTP_GET, [this, &config]() { _resetConfig(config); _server.send(200, "text/plain", ""); });
+  _server.on("/reset", HTTP_GET, [this, &config]()
+             { _resetConfig(config); _server.send(200, "text/plain", ""); });
 
-  _server.on("/data.json", HTTP_GET, [this, &config]() { _handleDataGet(config); });
-  _server.on("/data.json", HTTP_POST, [this, &config]() { _handleDataPut(config); });
+  _server.on("/data.json", HTTP_GET, [this, &config]()
+             { _handleDataGet(config); });
+  _server.on("/data.json", HTTP_POST, [this, &config]()
+             { _handleDataPut(config); });
 
-  _server.onNotFound([this]() {
-    _server.send(404, "text/plain", "File not found");
-  });
+  _server.onNotFound([this]()
+                     { _server.send(404, "text/plain", "File not found"); });
+  // _server.on("/description.xml", HTTP_GET, []()
+  //            { SSDP.schema(_server.client()); });
 #if defined(ESP8266)
   _httpUpdater.setup(&_server);
 #elif defined(ESP32)
   _server.on(
-      "/update", HTTP_POST, []() {
+      "/update", HTTP_POST, []()
+      {
       _server.sendHeader("Connection", "close");
       _server.send(200, "text/plain", (Update.hasError()) ? "FAIL" : "OK");
-      ESP.restart(); }, []() {
+      ESP.restart(); },
+      []()
+      {
       HTTPUpload& upload = _server.upload();
       if (upload.status == UPLOAD_FILE_START) {
         Serial.setDebugOutput(true);
