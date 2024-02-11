@@ -82,7 +82,6 @@ jobs:
       if: ${{ matrix.language == 'c-cpp' }}
 
     - name: Run PlatformIO
-      working-directory: firmware
       run: platformio run
 
     # ℹ️ Command-line programs to run using the OS shell.
