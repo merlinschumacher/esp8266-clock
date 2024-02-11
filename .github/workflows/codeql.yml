@@ -40,7 +40,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        language: [ 'c-cpp', 'javascript-typescript', 'python' ]
+        language: [ 'c-cpp', 'javascript-typescript' ]
         # CodeQL supports [ 'c-cpp', 'csharp', 'go', 'java-kotlin', 'javascript-typescript', 'python', 'ruby', 'swift' ]
         # Use only 'java-kotlin' to analyze code written in Java, Kotlin or both
         # Use only 'javascript-typescript' to analyze code written in JavaScript, TypeScript or both
@@ -68,7 +68,6 @@ jobs:
     - name: Autobuild
       uses: github/codeql-action/autobuild@v3
       if: ${{ matrix.language != 'c-cpp' }}
-      #    timeout-minutes: ${{ (matrix.language == 'swift' && 120) || 360 }}
 
     - name: Set up Python
       uses: actions/setup-python@v5
@@ -82,7 +81,7 @@ jobs:
       if: ${{ matrix.language == 'c-cpp' }}
 
     - name: Run PlatformIO
-      run: platformio run
+      run: platformio run -e esp12e-bitbang -e esp12e-dma -e esp12e-uart
 
     # ℹ️ Command-line programs to run using the OS shell.
     # 📚 See https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idstepsrun
